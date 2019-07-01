@@ -19,7 +19,6 @@ import com.pmarchenko.itdroid.trykotlin.view.ViewStateHandler
  * @author Pavel Marchenko (Pavel.Marchenko@datart.com -- DataArt)
  */
 class EditorFragment : Fragment(), ViewStateHandler<EditorViewState> {
-
     private lateinit var view: EditorView
     private lateinit var presenter: EditorPresenter
 
@@ -33,13 +32,13 @@ class EditorFragment : Fragment(), ViewStateHandler<EditorViewState> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        this.view = EditorView(lifecycle, this)
+        codeEditor.setText("fun main(args: Array<String>) {\n    println(\"Hello, world!\")\n}")
+        this.view = EditorView(viewLifecycleOwner.lifecycle, this)
         presenter = EditorPresenter(this.view, ViewModelProviders.of(this).get(EditorViewModel::class.java))
 
         executeCodeFab.setOnClickListener {
-            val code = codeEditor.text.toString()
-            presenter.executeProgram(code)
+            presenter.project.setCode(codeEditor.text.toString())
+            presenter.executeProject()
         }
     }
 
@@ -48,10 +47,12 @@ class EditorFragment : Fragment(), ViewStateHandler<EditorViewState> {
         codeEditor.isEnabled = !state.progressVisibility
         executeCodeFab.isEnabled = !state.progressVisibility
 
+        state.codeExecutionResult?.let {
+            Toast.makeText(requireContext(), it.text, Toast.LENGTH_LONG).show()
+        }
+
         if (!TextUtils.isEmpty(state.errorMessage)) {
             Toast.makeText(requireContext(), "ERROR: ${state.errorMessage}", Toast.LENGTH_LONG).show()
-        } else if (!TextUtils.isEmpty(state.infoMessage)) {
-            Toast.makeText(requireContext(), state.infoMessage, Toast.LENGTH_SHORT).show()
         }
     }
 }

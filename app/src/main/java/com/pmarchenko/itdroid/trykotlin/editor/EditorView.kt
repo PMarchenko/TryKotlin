@@ -9,9 +9,9 @@ import com.pmarchenko.itdroid.trykotlin.view.ViewStateHandler
  * @author Pavel Marchenko (Pavel.Marchenko@datart.com -- DataArt)
  */
 class EditorView(
-    private val lcycle: Lifecycle,
+    private val lifecycle: Lifecycle,
     stateHandler: ViewStateHandler<EditorViewState>
 ) : View<EditorViewState>(stateHandler), LifecycleOwner {
 
-    override fun getLifecycle() = lcycle
+    override fun getLifecycle() = lifecycle
 }

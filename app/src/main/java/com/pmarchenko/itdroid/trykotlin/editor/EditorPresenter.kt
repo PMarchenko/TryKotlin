@@ -9,13 +9,15 @@ import com.pmarchenko.itdroid.trykotlin.presenter.Presenter
  */
 class EditorPresenter(view: EditorView, viewModel: EditorViewModel) : Presenter<EditorView, EditorViewModel, EditorViewState>(view, viewModel) {
 
+    val project = SimpleProject()
+
     init {
         viewModel.executionResult.observe(view,
-            Observer<Resource<CodeExecutionResult>> { result ->
+            Observer<Resource<ProjectExecutionResult>> { result ->
                 if (result is ConsumableResource) {
                     if (!result.consumed) {
-                        result.consumed = true
                         onCodeExecutionResult(result)
+                        result.consumed = true
                     }
                 } else {
                     onCodeExecutionResult(result)
@@ -24,17 +26,20 @@ class EditorPresenter(view: EditorView, viewModel: EditorViewModel) : Presenter<
         )
     }
 
-    fun executeProgram(program: String) {
-        viewModel.executeProgram(program)
+    fun executeProject() {
+        if (validProject(project)) {
+            viewModel.executeProgram(project)
+        } else {
+            onCodeExecutionResult(Error("Empty project"))
+        }
     }
 
-    private fun onCodeExecutionResult(resource: Resource<CodeExecutionResult>) {
+    private fun onCodeExecutionResult(resource: Resource<ProjectExecutionResult>) {
         view.handleNewState(
             when (resource) {
                 is Success -> {
                     EditorViewState(
-                        codeExecutionResult = resource.data,
-                        infoMessage = "Success"
+                        codeExecutionResult = resource.data
                     )
                 }
                 is Loading -> {
@@ -46,5 +51,9 @@ class EditorPresenter(view: EditorView, viewModel: EditorViewModel) : Presenter<
                 else -> throw IllegalArgumentException("Unsupported resource $resource")
             }
         )
+    }
+
+    private fun validProject(project: Project): Boolean {
+        return project.files.isNotEmpty()
     }
 }

@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.trykotlin.editor
 
-import com.pmarchenko.itdroid.trykotlin.model.CodeExecutionResult
+import com.pmarchenko.itdroid.trykotlin.model.ProjectExecutionResult
 import com.pmarchenko.itdroid.trykotlin.view.State
 
 /**
@@ -8,7 +8,6 @@ import com.pmarchenko.itdroid.trykotlin.view.State
  */
 data class EditorViewState(
     var progressVisibility: Boolean = false,
-    var infoMessage: String = "",
     var errorMessage: String = "",
-    var codeExecutionResult: CodeExecutionResult? = null
+    var codeExecutionResult: ProjectExecutionResult? = null
 ) : State

@@ -11,7 +11,7 @@ abstract class ConsumableResource<out T> : Resource<T> {
 
 }
 
-data class Success<out T>(val data: T?) : Resource<T>
+data class Success<out T>(val data: T) : Resource<T>
 
 class Loading<out T> : Resource<T>
 
