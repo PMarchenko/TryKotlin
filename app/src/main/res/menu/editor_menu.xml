@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/project_args"
+        android:icon="@drawable/ic_command_line_args_24dp"
+        android:title="@string/menu_item.command_line_args"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/clear_logs"
+        android:title="@string/menu_item.clear_logs"
+        app:showAsAction="never"/>
+
+</menu>

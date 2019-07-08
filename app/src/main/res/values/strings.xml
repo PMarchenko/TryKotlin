@@ -1,3 +1,26 @@
-<resources>
-    <string name="app_name">TryKotlin</string>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="ExtraTranslation">
+    <!-- TODO: investigate ExtraTranslation and MissingDefaultResource -->
+    <string name="app_name">PocketKotlin</string>
+
+    <string name="logs.date_format">MM/dd/YY hh:mm:ss:SSS</string>
+    <string name="logs.template.run">Run project \'%1$s\'</string>
+    <string name="logs.template.run_with_args">Run project \'%1$s\', args \'%2$s\'</string>
+    <string name="logs.template.exception">\nException in thread \"main\" %1$s: %2$s</string>
+    <string name="logs.template.exception_cause">\tcaused by:\n</string>
+
+    <string name="menu_item.command_line_args">Command line args</string>
+    <string name="menu_item.clear_logs">Clear logs</string>
+
+    <string name="dialog.command_line_args.title">Command line args</string>
+    <string name="dialog.command_line_args.hint">args</string>
+    <string name="dialog.command_line_args.positive_button">Save</string>
+    <string name="dialog.command_line_args.negative_button">Cancel</string>
+
+    <string name="editor.tab_output">Output</string>
+    <string name="editor.tab_errors">Errors</string>
+
+    <string name="editor.tab.log">Log (%1$d)</string>
+    <string name="editor.tab.log_no_logs">Log</string>
+
 </resources>
