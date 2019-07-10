@@ -12,6 +12,6 @@ import kotlin.reflect.KProperty
 fun <V : View> Fragment.findView(@IdRes id: Int): ReadOnlyProperty<Fragment, V> =
     object : ReadOnlyProperty<Fragment, V> {
         override fun getValue(thisRef: Fragment, property: KProperty<*>): V {
-            return thisRef.view?.findViewById(id) ?: throw IllegalArgumentException("Cannot find view with id 0x${id.toString(16)}")
+            return thisRef.view?.findViewById(id) ?: error("Cannot find view with id 0x${id.toString(16)}")
         }
     }

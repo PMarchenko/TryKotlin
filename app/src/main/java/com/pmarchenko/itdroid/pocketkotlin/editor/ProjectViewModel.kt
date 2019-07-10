@@ -3,10 +3,9 @@ package com.pmarchenko.itdroid.pocketkotlin.editor
 import androidx.annotation.UiThread
 import androidx.lifecycle.*
 import com.pmarchenko.itdroid.pocketkotlin.model.*
+import com.pmarchenko.itdroid.pocketkotlin.model.log.LogLiveData
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
 import com.pmarchenko.itdroid.pocketkotlin.repository.KotlinProjectRepository
-import com.pmarchenko.itdroid.pocketkotlin.model.log.LogLiveData
-import java.lang.IllegalStateException
 
 /**
  * @author Pavel Marchenko
@@ -33,7 +32,7 @@ class ProjectViewModel : ViewModel() {
             Transformations.switchMap(projectExecutor) { project ->
                 when (project) {
                     is KotlinProject -> kProjectRepository.execute(_log, project)
-                    else -> throw IllegalStateException("Unsupported project")
+                    else -> error("Unsupported project")
                 }
             }) { resource -> _viewState.value = asState(resource) }
     }
@@ -47,17 +46,31 @@ class ProjectViewModel : ViewModel() {
         _log.value = arrayListOf()
     }
 
+    @UiThread
+    fun editProjectFile(file: ProjectFile, text: String) {
+        project.files[file.name]?.text = text
+
+        var state = viewState.value
+
+        if (state != null) {
+            val executionResult = state.executionResult
+            if (executionResult != null) {
+                val newResults = executionResult.copy()
+                newResults.errors[file.name]?.clear()
+                state = ProjectViewState(executionResult = newResults)
+            }
+        } else {
+            state = ProjectViewState()
+        }
+
+        _viewState.value = state
+    }
+
     private fun asState(resource: Resource<ProjectExecutionResult>) =
         when (resource) {
-            is Success -> {
-                ProjectViewState(executionResult = resource.data)
-            }
-            is Loading -> {
-                ProjectViewState(progressVisibility = true)
-            }
-            is Error -> {
-                ProjectViewState(errorMessage = resource.message)
-            }
-            else -> throw IllegalArgumentException("Unsupported resource $resource")
+            is Success -> ProjectViewState(executionResult = resource.data)
+            is Loading -> ProjectViewState(progressVisibility = true)
+            is Error -> ProjectViewState(errorMessage = resource.message)
+            else -> error("Unsupported resource $resource")
         }
 }

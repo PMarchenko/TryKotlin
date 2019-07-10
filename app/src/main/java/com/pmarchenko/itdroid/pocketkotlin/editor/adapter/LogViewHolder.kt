@@ -7,34 +7,40 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
+import com.pmarchenko.itdroid.pocketkotlin.editor.syntax.ColorUnderlineSpan
 import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
+import com.pmarchenko.itdroid.pocketkotlin.extentions.formatTimestamp
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
-import java.text.DateFormat
+import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpan
+import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * @author Pavel Marchenko
  */
-open class LogViewHolder<T : LogRecord>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+open class LogViewHolder<T : LogRecord>(itemView: View, protected val callback: ProjectCallback) : RecyclerView.ViewHolder(itemView) {
 
     //todo color to resources
     protected val errorTextColor = "#EC5424"
 
     private val logView by findView<TextView>(R.id.log_timestamp)
-    private val dateFormat: DateFormat
+    private val dateFormat: SimpleDateFormat
 
     protected val resources: Resources
         get() = itemView.resources
 
     init {
         dateFormat = SimpleDateFormat(resources.getString(R.string.logs_date_format), Locale.getDefault())
+        logView.movementMethod = LinkMovementMethod.getInstance()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -43,15 +49,25 @@ open class LogViewHolder<T : LogRecord>(itemView: View) : RecyclerView.ViewHolde
     }
 
     open fun prepareText(log: T): CharSequence {
-        val timestamp = SpannableStringBuilder(dateFormat.format(log.timestamp))
+        val timestamp = SpannableStringBuilder(dateFormat.formatTimestamp(log.timestamp))
         timestamp.setSpan(StyleSpan(Typeface.BOLD), 0, timestamp.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         timestamp.append(':')
         return timestamp
     }
 
-    protected fun asError(text: CharSequence) = applyColor(text, Color.parseColor(errorTextColor))
+    protected fun asError(text: CharSequence) = asColoredText(text, Color.parseColor(errorTextColor))
 
-    protected fun applyColor(text: CharSequence, color: Int): CharSequence {
+    protected fun <D> asLink(text: CharSequence,
+                             data: D,
+                             callback: ClickableSpanListener<D>,
+                             underlineColor: Int): CharSequence {
+        val out = if (text is Spannable) text else SpannableString(text)
+        out.setSpan(ClickableSpan(data, callback), 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        out.setSpan(ColorUnderlineSpan(underlineColor), 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return out
+    }
+
+    protected fun asColoredText(text: CharSequence, color: Int): CharSequence {
         val out = if (text is Spannable) text else SpannableString(text)
         out.setSpan(ForegroundColorSpan(color), 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         return out

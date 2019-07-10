@@ -24,7 +24,9 @@ class KotlinProjectRepository {
             .client(
                 OkHttpClient.Builder()
                     .addNetworkInterceptor(StethoInterceptor())
-                    .callTimeout(1, TimeUnit.MINUTES)
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(20, TimeUnit.SECONDS)
                     .build()
             )
             .baseUrl("https://try.kotlinlang.org/")

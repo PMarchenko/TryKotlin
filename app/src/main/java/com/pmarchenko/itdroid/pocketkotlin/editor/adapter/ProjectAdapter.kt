@@ -8,19 +8,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectFileEditCallback
+import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
+import com.pmarchenko.itdroid.pocketkotlin.model.ErrorSeverity
 import com.pmarchenko.itdroid.pocketkotlin.model.Project
 import com.pmarchenko.itdroid.pocketkotlin.model.ProjectExecutionResult
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
+import com.pmarchenko.itdroid.pocketkotlin.recycler.ContentData
+import com.pmarchenko.itdroid.pocketkotlin.recycler.DiffAdapter
 
 /**
  * @author Pavel Marchenko
  */
 class ProjectAdapter(
         private val context: Context,
-        private val callback: ProjectFileEditCallback
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private val callback: ProjectCallback
+) : DiffAdapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_LOGS = 0
@@ -28,80 +30,67 @@ class ProjectAdapter(
     }
 
     private var project: Project? = null
-    var projectExecutionResult: ProjectExecutionResult? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
+    private var executionResult: ProjectExecutionResult? = null
     private var logs = listOf<LogRecord>()
 
     private val inflater = LayoutInflater.from(context)
-    private val data = mutableListOf<Pair<Int, Any>>()
+    private val content = ArrayList<ContentData>()
 
-    init {
-        setHasStableIds(true)
-    }
+    private val pendingSelections = mutableMapOf<String, Pair<Int, Int>>()
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = content.size
 
     override fun getItemViewType(position: Int): Int {
-        return data[position].first
+        return content[position].viewType
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getItem(position: Int): T = (data[position].second) as T
+    private fun <T> getItem(position: Int): T = (content[position]) as T
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recyclerView.itemAnimator = ProjectItemsAnimator()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        VIEW_TYPE_LOGS -> {
-            val view = inflater.inflate(R.layout.content_logs, parent, false)
-            LogsViewHolder(view)
-        }
-        VIEW_TYPE_PROJECT_FILE -> {
-            val view = inflater.inflate(R.layout.content_project_file, parent, false)
-            ProjectFileViewHolder(view, callback)
-        }
-        else -> throw IllegalArgumentException("Unsupported viewType=$viewType")
+        VIEW_TYPE_LOGS -> LogsViewHolder(
+                inflater.inflate(R.layout.content_logs, parent, false), callback
+        )
+        VIEW_TYPE_PROJECT_FILE -> ProjectFileViewHolder(
+                inflater.inflate(R.layout.content_project_file, parent, false), callback
+        )
+        else -> error("Unsupported viewType=$viewType")
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is LogsViewHolder -> holder.bindView(logs)
-            is ProjectFileViewHolder -> holder.bindView(project!!, getItem(position))
-            else -> throw IllegalArgumentException("Unsupported viewType=${holder.itemViewType}")
+            is LogsViewHolder -> holder.bindView((getItem<LogsContentData>(position)).logs)
+            is ProjectFileViewHolder -> holder.bindView(getItem(position))
+            else -> error("Unsupported viewType=${holder.itemViewType}")
         }
     }
 
-    fun setProject(project: Project) {
-        if (this.project != project) {
-            this.project = project
-            data.clear()
-            data.add(Pair(VIEW_TYPE_LOGS, logs))
-            project.files.values.forEach { file ->
-                data.add(VIEW_TYPE_PROJECT_FILE to file)
-            }
-            notifyUpdates()
-        }
+    fun updateState(project: Project, executionResults: ProjectExecutionResult?) {
+        this.project = project
+        this.executionResult = executionResults
+
+        updateContent()
     }
 
-    fun clearErrors(file: ProjectFile) {
-        val errors = projectExecutionResult?.errors?.get(file.name)
-        if (!errors.isNullOrEmpty()) {
-            errors.clear()
-            notifyUpdates()
-        }
+    fun applySelection(fileName: String, line: Int, linePosition: Int) {
+        pendingSelections[fileName] = Pair(line, linePosition)
+        updateContent()
     }
 
     fun setLog(log: List<LogRecord>) {
         if (this.logs != log) {
             this.logs = log
-            notifyUpdates()
+            updateContent()
         }
     }
 
     fun getTitle(position: Int): CharSequence {
-        val item = data[position]
-        return when (item.first) {
+        return when (getItemViewType(position)) {
             VIEW_TYPE_LOGS -> {
                 if (logs.isEmpty()) {
                     context.getString(R.string.editor_tab_log_no_logs)
@@ -110,26 +99,54 @@ class ProjectAdapter(
                 }
             }
             VIEW_TYPE_PROJECT_FILE -> {
-                val fileName = getItem<ProjectFile>(position).name
-
-                if (projectExecutionResult?.hasErrors(fileName) == true) {
+                val fileData = getItem<FileContentData>(position)
+                val fileName = fileData.file.name
+                val errors = fileData.errors
+                val hasErrors = errors.any { it.severity == ErrorSeverity.ERROR }
+                val hasWarnings = errors.any { it.severity == ErrorSeverity.WARNING }
+                if (hasErrors || hasWarnings) {
                     val out = SpannableStringBuilder(fileName)
                     out.append(" ")
-                    out.setSpan(ImageSpan(context, R.drawable.ic_warning_12dp, ImageSpan.ALIGN_BASELINE),
+                    val icon = if (hasErrors) R.drawable.ic_error_12dp else R.drawable.ic_warning_12dp
+                    out.setSpan(
+                            ImageSpan(context, icon, ImageSpan.ALIGN_BASELINE),
                             out.length - 1,
                             out.length,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
                     out
                 } else {
                     fileName
                 }
             }
-            else -> throw IllegalArgumentException("Unsupported title position=$position")
+            else -> error("Unsupported title position=$position")
         }
     }
 
-    private fun notifyUpdates() {
-        //todo implement me
-        notifyDataSetChanged()
+    private fun updateContent() {
+        val oldContent = ArrayList(content)
+        content.clear()
+        content.addAll(createContent())
+        dispatchUpdates(oldContent, content)
+    }
+
+    private fun createContent(): ArrayList<ContentData> {
+        val out = ArrayList<ContentData>()
+
+        out.add(LogsContentData(VIEW_TYPE_LOGS, logs))
+
+        val files = project?.files?.values ?: emptyList()
+        files.forEach { file ->
+            var errors = executionResult?.errors?.get(file.name)
+            errors = if (errors == null) ArrayList() else ArrayList(errors)
+            val selection = pendingSelections.remove(file.name)
+            out.add(FileContentData(VIEW_TYPE_PROJECT_FILE, file, errors, selection))
+        }
+
+        return out
+    }
+
+    fun getFilePosition(fileName: String): Int {
+        return content.indexOfFirst { data -> data is FileContentData && data.file.name == fileName }
     }
 }

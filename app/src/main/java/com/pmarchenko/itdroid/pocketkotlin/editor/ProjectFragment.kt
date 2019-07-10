@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -14,15 +15,17 @@ import com.pmarchenko.itdroid.pocketkotlin.MainActivity
 import com.pmarchenko.itdroid.pocketkotlin.R
 import com.pmarchenko.itdroid.pocketkotlin.editor.adapter.ProjectAdapter
 import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
+import com.pmarchenko.itdroid.pocketkotlin.extentions.isVisible
 import com.pmarchenko.itdroid.pocketkotlin.extentions.scale
 import com.pmarchenko.itdroid.pocketkotlin.extentions.setVisibility
+import com.pmarchenko.itdroid.pocketkotlin.model.ProjectError
 import com.pmarchenko.itdroid.pocketkotlin.model.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.utils.TabLayoutMediator
 
 /**
  * @author Pavel Marchenko
  */
-class ProjectFragment : Fragment(), CommandLineArgsDialogCallback, ProjectFileEditCallback {
+class ProjectFragment : Fragment(), CommandLineArgsDialogCallback, ProjectCallback {
 
     private lateinit var viewModel: ProjectViewModel
 
@@ -62,11 +65,11 @@ class ProjectFragment : Fragment(), CommandLineArgsDialogCallback, ProjectFileEd
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.project_args -> {
-            editCommandLineArgs()
+            CommandLineArgsDialog.show(this, viewModel.project.args)
             true
         }
         R.id.clear_logs -> {
-            clearLogs()
+            viewModel.clearLogs()
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -77,39 +80,31 @@ class ProjectFragment : Fragment(), CommandLineArgsDialogCallback, ProjectFileEd
 
         adapter = ProjectAdapter(requireContext(), this)
         viewPager.adapter = adapter
-        adapter.setProject(viewModel.project)
+        adapter.updateState(viewModel.project, null)
 
         TabLayoutMediator(tabs, viewPager, true,
-                TabLayoutMediator.OnConfigureTabCallback { tab, position ->
-                    tab.text = adapter.getTitle(position)
-                }
+                TabLayoutMediator.OnConfigureTabCallback { tab, position -> tab.text = adapter.getTitle(position) }
         ).attach()
 
         executeCodeFab.setOnClickListener { viewModel.executeProject() }
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { state -> onNewViewState(state) })
-        viewModel.log.observe(viewLifecycleOwner, Observer { logs ->
-            adapter.setLog(logs)
-        })
+        viewModel.log.observe(viewLifecycleOwner, Observer { logs -> adapter.setLog(logs) })
     }
 
     private fun onNewViewState(state: ProjectViewState) {
-        progressView.setVisibility(state.progressVisibility)
-        progressView.animate().scale(if (state.progressVisibility) 1f else 0f).setDuration(150).start()
+        if (progressView.isVisible() != state.progressVisibility) {
+            progressView.setVisibility(state.progressVisibility)
+            progressView.animate().scale(if (state.progressVisibility) 1f else 0f).setDuration(150).start()
+        }
 
-        executeCodeFab.isEnabled = !state.progressVisibility
-        executeCodeFab.animate().scale(if (state.progressVisibility) 0f else 1f).setDuration(150).start()
+        if (executeCodeFab.isEnabled != !state.progressVisibility) {
+            executeCodeFab.isEnabled = !state.progressVisibility
+            executeCodeFab.animate().scale(if (state.progressVisibility) 0f else 1f).setDuration(150).start()
+        }
 
-        adapter.projectExecutionResult = state.executionResult
+        adapter.updateState(viewModel.project, state.executionResult)
         state.consume()
-    }
-
-    private fun editCommandLineArgs() {
-        CommandLineArgsDialog.show(this, viewModel.project.args)
-    }
-
-    private fun clearLogs() {
-        viewModel.clearLogs()
     }
 
     override fun onCommandLineArgsUpdate(args: String) {
@@ -117,7 +112,19 @@ class ProjectFragment : Fragment(), CommandLineArgsDialogCallback, ProjectFileEd
         requireActivity().invalidateOptionsMenu()
     }
 
-    override fun onProjectFileEdit(file: ProjectFile) {
-        adapter.clearErrors(file)
+    override fun showErrorDetails(fileName: String, line: Int, errors: ArrayList<ProjectError>) {
+        LineErrorsDialog.show(this, fileName, line, errors)
+    }
+
+    override fun editProjectFile(file: ProjectFile, text: String) {
+        viewModel.editProjectFile(file, text)
+    }
+
+    override fun openProjectFile(fileName: String, line: Int, linePosition: Int) {
+        val position = adapter.getFilePosition(fileName)
+        if (position != RecyclerView.NO_POSITION) {
+            viewPager.setCurrentItem(position, false)
+            if (line >= 0) adapter.applySelection(fileName, line, linePosition)
+        }
     }
 }

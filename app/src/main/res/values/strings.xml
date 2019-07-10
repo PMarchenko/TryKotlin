@@ -17,6 +17,9 @@
     <string name="dialog.command_line_args.positive_button">Save</string>
     <string name="dialog.command_line_args.negative_button">Cancel</string>
 
+    <string name="dialog.line_errors.title">%1$s at line %2$d</string>
+    <string name="dialog.line_errors.positive_button">OK</string>
+
     <string name="editor.tab_output">Output</string>
     <string name="editor.tab_errors">Errors</string>
 

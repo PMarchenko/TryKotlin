@@ -56,8 +56,7 @@ class CommandLineArgsDialog : DialogFragment(), DialogInterface.OnClickListener 
 
     override fun onStart() {
         super.onStart()
-        editText = dialog?.findViewById(R.id.command_line_args)
-                ?: throw IllegalArgumentException("Cannot find edit text")
+        editText = dialog?.findViewById(R.id.command_line_args) ?: error("Cannot find edit text")
         if (!clArgs.isNullOrEmpty()) {
             editText.setText(clArgs)
             editText.setSelection(editText.text.length)

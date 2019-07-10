@@ -3,12 +3,14 @@ package com.pmarchenko.itdroid.pocketkotlin.editor.adapter
 import android.text.SpannableStringBuilder
 import android.view.View
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.model.log.RunLogRecord
 
 /**
  * @author Pavel Marchenko
  */
-class RunLogViewHolder(itemView: View) : LogViewHolder<RunLogRecord>(itemView) {
+class RunLogViewHolder(itemView: View, callback: ProjectCallback) :
+        LogViewHolder<RunLogRecord>(itemView, callback) {
 
     override fun prepareText(log: RunLogRecord): CharSequence {
         val text = SpannableStringBuilder(super.prepareText(log))

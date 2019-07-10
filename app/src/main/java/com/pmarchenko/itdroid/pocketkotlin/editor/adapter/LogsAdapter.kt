@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.model.log.*
 
 /**
  * @author Pavel Marchenko
  */
-class LogsAdapter(context: Context) : RecyclerView.Adapter<LogViewHolder<out LogRecord>>() {
+class LogsAdapter(context: Context, private val callback: ProjectCallback) : RecyclerView.Adapter<LogViewHolder<out LogRecord>>() {
 
     companion object {
         const val VIEW_TYPE_LOG_RUN = 0
@@ -33,27 +34,27 @@ class LogsAdapter(context: Context) : RecyclerView.Adapter<LogViewHolder<out Log
         is InfoLogRecord -> VIEW_TYPE_LOG_INFO
         is ErrorLogRecord -> VIEW_TYPE_LOG_ERROR
         is ExceptionLogRecord -> VIEW_TYPE_EXCEPTION
-        else -> throw IllegalStateException("Unsupported log type: ${logs[position]}")
+        else -> error("Unsupported log type: ${logs[position]}")
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder<out LogRecord> = when (viewType) {
         VIEW_TYPE_LOG_RUN -> {
             val view = inflater.inflate(R.layout.content_log, parent, false)
-            RunLogViewHolder(view)
+            RunLogViewHolder(view, callback)
         }
         VIEW_TYPE_LOG_INFO -> {
             val view = inflater.inflate(R.layout.content_log, parent, false)
-            InfoLogViewHolder(view)
+            InfoLogViewHolder(view, callback)
         }
         VIEW_TYPE_LOG_ERROR -> {
             val view = inflater.inflate(R.layout.content_log, parent, false)
-            ErrorLogViewHolder(view)
+            ErrorLogViewHolder(view, callback)
         }
         VIEW_TYPE_EXCEPTION -> {
             val view = inflater.inflate(R.layout.content_log, parent, false)
-            ExceptionLogViewHolder(view)
+            ExceptionLogViewHolder(view, callback)
         }
-        else -> throw IllegalStateException("Unsupported viewType: $viewType")
+        else -> error("Unsupported viewType: $viewType")
     }
 
     override fun onBindViewHolder(holder: LogViewHolder<out LogRecord>, position: Int) {
@@ -75,10 +76,9 @@ class LogsAdapter(context: Context) : RecyclerView.Adapter<LogViewHolder<out Log
         override fun getNewListSize() = newList.size
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            oldList[oldItemPosition].timestampNano == newList[newItemPosition].timestampNano
-
+                oldList[oldItemPosition].timestampNano == newList[newItemPosition].timestampNano
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            oldList[oldItemPosition] == newList[newItemPosition]
+                oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

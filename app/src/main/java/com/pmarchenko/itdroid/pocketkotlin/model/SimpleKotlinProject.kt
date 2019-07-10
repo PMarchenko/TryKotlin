@@ -3,11 +3,13 @@ package com.pmarchenko.itdroid.pocketkotlin.model
 /**
  * @author Pavel Marchenko
  */
-open class SimpleKotlinProject(name: String) : KotlinProject(
-    name = name,
-    searchForMain = true,
-    mainFileName = MAIN_FILE_NAME,
-    files = mapOf(MAIN_FILE_NAME to ProjectFile(publicId = PUBLIC_ID, name = MAIN_FILE_NAME, text = ""))
+open class SimpleKotlinProject(name: String,
+                               file: String = MAIN_FILE_NAME,
+                               publicId: String = PUBLIC_ID) : KotlinProject(
+        name = name,
+        searchForMain = true,
+        mainFileName = file,
+        files = mapOf(file to ProjectFile(publicId = publicId, name = file, text = ""))
 ) {
 
     companion object {
