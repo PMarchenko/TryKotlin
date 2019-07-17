@@ -1,8 +1,9 @@
-package com.pmarchenko.itdroid.pocketkotlin.model
+package com.pmarchenko.itdroid.pocketkotlin.repository
 
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 
 /**
  * @author Pavel Marchenko

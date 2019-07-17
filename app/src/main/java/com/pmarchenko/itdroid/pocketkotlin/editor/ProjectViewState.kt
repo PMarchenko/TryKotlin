@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.editor
 
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectExecutionResult
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
 import com.pmarchenko.itdroid.pocketkotlin.model.ViewState
 
 /**

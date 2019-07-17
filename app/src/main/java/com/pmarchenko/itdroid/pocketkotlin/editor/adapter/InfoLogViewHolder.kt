@@ -1,5 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.editor.adapter
 
+import android.os.Build
 import android.text.Html
 import android.text.SpannableStringBuilder
 import android.view.View
@@ -17,7 +18,13 @@ class InfoLogViewHolder(itemView: View, callback: ProjectCallback) :
         val logText = log.message
                 .replace("<errStream>", "<font color=\"$errorTextColor\">").replace("</errStream>", "</font>")
                 .replace("\n", "<br>")
-        text.append(Html.fromHtml(logText))
+        val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(logText, Html.FROM_HTML_MODE_COMPACT)
+        } else {
+            @Suppress("DEPRECATION")
+            Html.fromHtml(logText)
+        }
+        text.append(html)
         return text
     }
 }

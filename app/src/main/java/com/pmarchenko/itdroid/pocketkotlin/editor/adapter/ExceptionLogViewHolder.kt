@@ -5,11 +5,10 @@ import android.text.SpannableStringBuilder
 import android.view.View
 import com.pmarchenko.itdroid.pocketkotlin.R
 import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectException
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectExceptionStackTrace
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectException
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExceptionStackTrace
 import com.pmarchenko.itdroid.pocketkotlin.model.log.ExceptionLogRecord
 import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
-import kotlin.math.max
 
 /**
  * @author Pavel Marchenko

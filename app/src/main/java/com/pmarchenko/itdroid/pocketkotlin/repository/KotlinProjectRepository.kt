@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.pmarchenko.itdroid.pocketkotlin.model.*
 import com.pmarchenko.itdroid.pocketkotlin.model.log.*
+import com.pmarchenko.itdroid.pocketkotlin.model.project.KotlinProject
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
 import com.pmarchenko.itdroid.pocketkotlin.service.KotlinProgramExecutionService
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -20,6 +22,7 @@ import java.util.concurrent.TimeUnit
 class KotlinProjectRepository {
 
     companion object {
+
         val KOTLIN_SERVICE: KotlinProgramExecutionService = Retrofit.Builder()
             .client(
                 OkHttpClient.Builder()
@@ -68,9 +71,9 @@ class KotlinProjectRepository {
     }
 
     private fun onSuccess(
-        out: MutableLiveData<Resource<ProjectExecutionResult>>,
-        log: LogLiveData,
-        result: ProjectExecutionResult
+            out: MutableLiveData<Resource<ProjectExecutionResult>>,
+            log: LogLiveData,
+            result: ProjectExecutionResult
     ) {
         out.postValue(Success(result))
         if (result.exception != null) {
@@ -85,10 +88,10 @@ class KotlinProjectRepository {
     }
 
     private fun onError(
-        result: MutableLiveData<Resource<ProjectExecutionResult>>,
-        log: LogLiveData,
-        errorMessage: String?,
-        errorCode: Int
+            result: MutableLiveData<Resource<ProjectExecutionResult>>,
+            log: LogLiveData,
+            errorMessage: String?,
+            errorCode: Int
     ) {
         result.postValue(Error(errorMessage ?: ""))
         log.postValue(ErrorLogRecord(errorCode, errorMessage))

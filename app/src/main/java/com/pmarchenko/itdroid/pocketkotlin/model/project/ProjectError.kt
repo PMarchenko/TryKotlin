@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin.model
+package com.pmarchenko.itdroid.pocketkotlin.model.project
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -17,7 +17,7 @@ data class ProjectError(
             message = parcel.readString()!!,
             severity = ErrorSeverity.valueOf(parcel.readString()!!),
             type = parcel.readString()!!,
-            interval = parcel.readParcelable<Interval>(Interval::class.java.classLoader))
+            interval = parcel.readParcelable<Interval>(Interval::class.java.classLoader)!!)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(message)
@@ -44,8 +44,8 @@ data class ProjectError(
 data class Interval(val start: Position, val end: Position) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-            parcel.readParcelable(Position::class.java.classLoader),
-            parcel.readParcelable(Position::class.java.classLoader))
+            parcel.readParcelable(Position::class.java.classLoader)!!,
+            parcel.readParcelable(Position::class.java.classLoader)!!)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(start, flags)

@@ -15,7 +15,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
 import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
-import com.pmarchenko.itdroid.pocketkotlin.editor.syntax.ColorUnderlineSpan
+import com.pmarchenko.itdroid.pocketkotlin.service.syntax.ColorUnderlineSpan
 import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
 import com.pmarchenko.itdroid.pocketkotlin.extentions.formatTimestamp
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
@@ -30,7 +30,7 @@ import java.util.*
 open class LogViewHolder<T : LogRecord>(itemView: View, protected val callback: ProjectCallback) : RecyclerView.ViewHolder(itemView) {
 
     //todo color to resources
-    protected val errorTextColor = "#EC5424"
+    protected val errorTextColor = "#BBEC5424"
 
     private val logView by findView<TextView>(R.id.log_timestamp)
     private val dateFormat: SimpleDateFormat

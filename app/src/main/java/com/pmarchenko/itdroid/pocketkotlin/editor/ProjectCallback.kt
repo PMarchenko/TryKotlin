@@ -1,14 +1,15 @@
 package com.pmarchenko.itdroid.pocketkotlin.editor
 
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 
 /**
  * @author Pavel Marchenko
  */
 interface ProjectCallback {
 
-    fun showErrorDetails(fileName: String, line: Int, errors: ArrayList<ProjectError>)
+    fun showErrorDetails(file: ProjectFile, line: Int, errors: ArrayList<EditorError>)
 
     fun editProjectFile(file: ProjectFile, text: String)
 

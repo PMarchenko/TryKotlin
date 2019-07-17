@@ -1,23 +1,23 @@
-package com.pmarchenko.itdroid.pocketkotlin.model
+package com.pmarchenko.itdroid.pocketkotlin.model.project
 
 /**
  * @author Pavel Marchenko
  */
 abstract class KotlinProject(
 
-    name: String,
+        name: String,
 
-    files: Map<String, ProjectFile>,
+        files: Map<String, ProjectFile>,
 
-    var type: String = TYPE_RUN,
+        var type: String = TYPE_RUN,
 
-    var runConfig: String = CONFIG_JAVA,
+        var runConfig: String = CONFIG_JAVA,
 
-    var searchForMain: Boolean,
+        var searchForMain: Boolean,
 
-    open val mainFileName: String
+        open val mainFileName: String
 
-) : Project(name = name, files = files) {
+) : Project(name = name, files = files, projectType = ProjectType.KOTLIN) {
     companion object {
         const val TYPE_RUN = "run"
         const val CONFIG_JAVA = "java"

@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.view.View
 import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
 import com.pmarchenko.itdroid.pocketkotlin.model.log.ErrorLogRecord
 import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
 

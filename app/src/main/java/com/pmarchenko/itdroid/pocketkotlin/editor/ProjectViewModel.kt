@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.pmarchenko.itdroid.pocketkotlin.model.*
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogLiveData
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
+import com.pmarchenko.itdroid.pocketkotlin.model.project.*
 import com.pmarchenko.itdroid.pocketkotlin.repository.KotlinProjectRepository
 
 /**

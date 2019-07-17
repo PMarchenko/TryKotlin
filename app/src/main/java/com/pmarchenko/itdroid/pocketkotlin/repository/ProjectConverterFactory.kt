@@ -1,6 +1,7 @@
-package com.pmarchenko.itdroid.pocketkotlin.model
+package com.pmarchenko.itdroid.pocketkotlin.repository
 
 import com.google.gson.Gson
+import com.pmarchenko.itdroid.pocketkotlin.model.project.KotlinProject
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.reflect.Type

@@ -1,13 +1,13 @@
-package com.pmarchenko.itdroid.pocketkotlin.model
+package com.pmarchenko.itdroid.pocketkotlin.model.project
 
 /**
  * @author Pavel Marchenko
  */
 data class ProjectException(
-    val message: String,
-    val fullName: String,
-    val stackTrace: List<ProjectExceptionStackTrace>,
-    val cause: ProjectException?
+        val message: String,
+        val fullName: String,
+        val stackTrace: List<ProjectExceptionStackTrace>,
+        val cause: ProjectException?
 )
 
 data class ProjectExceptionStackTrace(

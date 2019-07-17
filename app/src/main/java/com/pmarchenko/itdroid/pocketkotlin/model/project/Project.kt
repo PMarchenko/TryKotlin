@@ -1,17 +1,20 @@
-package com.pmarchenko.itdroid.pocketkotlin.model
+package com.pmarchenko.itdroid.pocketkotlin.model.project
 
 import com.google.gson.annotations.JsonAdapter
+import com.pmarchenko.itdroid.pocketkotlin.repository.ProjectFilesJsonSerialized
 
 /**
  * @author Pavel Marchenko
  */
 abstract class Project(
 
-    val name: String,
+        val name: String,
 
-    var args: String = "",
+        var args: String = "",
 
-    @JsonAdapter(ProjectFilesJsonSerialized::class)
+        val projectType: ProjectType,
+
+        @JsonAdapter(ProjectFilesJsonSerialized::class)
     open val files: Map<String, ProjectFile>
 ) {
     abstract fun isValid(): Boolean

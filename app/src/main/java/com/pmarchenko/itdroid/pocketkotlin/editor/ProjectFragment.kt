@@ -18,8 +18,8 @@ import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
 import com.pmarchenko.itdroid.pocketkotlin.extentions.isVisible
 import com.pmarchenko.itdroid.pocketkotlin.extentions.scale
 import com.pmarchenko.itdroid.pocketkotlin.extentions.setVisibility
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.utils.TabLayoutMediator
 
 /**
@@ -79,6 +79,7 @@ class ProjectFragment : Fragment(), CommandLineArgsDialogCallback, ProjectCallba
         (activity as MainActivity).setSupportActionBar(view?.findViewById<Toolbar>(R.id.toolbar))
 
         adapter = ProjectAdapter(requireContext(), this)
+        viewPager.isUserInputEnabled = false
         viewPager.adapter = adapter
         adapter.updateState(viewModel.project, null)
 
@@ -112,8 +113,8 @@ class ProjectFragment : Fragment(), CommandLineArgsDialogCallback, ProjectCallba
         requireActivity().invalidateOptionsMenu()
     }
 
-    override fun showErrorDetails(fileName: String, line: Int, errors: ArrayList<ProjectError>) {
-        LineErrorsDialog.show(this, fileName, line, errors)
+    override fun showErrorDetails(file: ProjectFile, line: Int, errors: ArrayList<EditorError>) {
+        LineErrorsDialog.show(this, file, line, errors)
     }
 
     override fun editProjectFile(file: ProjectFile, text: String) {

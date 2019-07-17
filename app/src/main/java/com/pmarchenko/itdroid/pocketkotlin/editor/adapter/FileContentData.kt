@@ -1,11 +1,11 @@
 package com.pmarchenko.itdroid.pocketkotlin.editor.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.recycler.ContentData
 import java.util.*
 
-class FileContentData(
+data class FileContentData(
         override val viewType: Int,
         val file: ProjectFile,
         val errors: ArrayList<ProjectError>,

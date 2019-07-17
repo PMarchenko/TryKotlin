@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.model.log
 
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectException
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectException
 
 /**
  * @author Pavel Marchenko

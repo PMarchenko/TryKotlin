@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin.editor.syntax
+package com.pmarchenko.itdroid.pocketkotlin.service.syntax
 
 import android.text.TextPaint
 import android.text.style.UnderlineSpan

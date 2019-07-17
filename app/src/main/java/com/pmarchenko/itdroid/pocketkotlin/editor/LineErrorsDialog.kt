@@ -6,7 +6,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 
 /**
  * @author Pavel Marchenko
@@ -17,10 +18,10 @@ class LineErrorsDialog : DialogFragment() {
 
         private const val TAG = "LineErrorsDialog"
 
-        fun show(fragment: Fragment, fileName: String, line: Int, errors: ArrayList<ProjectError>) {
+        fun show(fragment: Fragment, file: ProjectFile, line: Int, errors: ArrayList<EditorError>) {
             val dialog = LineErrorsDialog()
             dialog.arguments = Bundle(3).apply {
-                putString("file_name", fileName)
+                putString("file_name", file.name)
                 putInt("line", line)
                 putParcelableArrayList("errors", errors)
             }
@@ -31,7 +32,7 @@ class LineErrorsDialog : DialogFragment() {
 
     private var fileName: String = ""
     private var line: Int = -1
-    private var errors: ArrayList<ProjectError> = ArrayList()
+    private var errors: ArrayList<EditorError> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,7 @@ class LineErrorsDialog : DialogFragment() {
                 .create()
     }
 
-    private fun errorsToMessage(errors: ArrayList<ProjectError>): CharSequence {
+    private fun errorsToMessage(errors: ArrayList<EditorError>): CharSequence {
         val out = StringBuilder()
         val duplicates = mutableListOf<String>()
         errors.forEach { error ->

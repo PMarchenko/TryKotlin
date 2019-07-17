@@ -1,7 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.extentions
 
 import android.content.res.Resources
-import android.util.Log
 import android.view.View
 import android.view.ViewPropertyAnimator
 import androidx.annotation.FloatRange
@@ -30,18 +29,11 @@ fun ViewPropertyAnimator.scale(@FloatRange(from = 0.0, to = 1.0) value: Float): 
 fun SimpleDateFormat.formatTimestamp(timestamp: Long): String = format(Date(timestamp))
 
 fun <V : View> findView(@IdRes id: Int): ReadOnlyProperty<RecyclerView.ViewHolder, V> =
-        object : ReadOnlyProperty<RecyclerView.ViewHolder, V> {
-            override fun getValue(thisRef: RecyclerView.ViewHolder, property: KProperty<*>): V {
-                return thisRef.itemView.findViewById(id) ?: error("Cannot find view with id 0x${id.toString(16)}")
-            }
+    object : ReadOnlyProperty<RecyclerView.ViewHolder, V> {
+        override fun getValue(thisRef: RecyclerView.ViewHolder, property: KProperty<*>): V {
+            return thisRef.itemView.findViewById(id) ?: error("Cannot find view with id 0x${id.toString(16)}")
         }
-
-inline fun <T> T.measure(tag: String = "MeasureUtils", block: T.() -> Unit) {
-    val start = System.nanoTime()
-    block()
-    val end = System.nanoTime()
-    Log.e(tag, "block execution took ${(end - start) / 1e6} ms")
-}
+    }
 
 inline fun <K, V> Map<out K, V>.findAnyKey(opt: K, predicate: (V) -> Boolean): K {
     for (entry in this) {

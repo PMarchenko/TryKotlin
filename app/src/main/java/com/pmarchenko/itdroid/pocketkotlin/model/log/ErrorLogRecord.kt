@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.model.log
 
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
 
 /**
  * @author Pavel Marchenko

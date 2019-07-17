@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin.model
+package com.pmarchenko.itdroid.pocketkotlin.model.project
 
 /**
  * @author Pavel Marchenko

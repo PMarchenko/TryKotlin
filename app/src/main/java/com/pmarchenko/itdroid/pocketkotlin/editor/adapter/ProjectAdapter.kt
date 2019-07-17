@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
 import com.pmarchenko.itdroid.pocketkotlin.editor.ProjectCallback
-import com.pmarchenko.itdroid.pocketkotlin.model.ErrorSeverity
-import com.pmarchenko.itdroid.pocketkotlin.model.Project
-import com.pmarchenko.itdroid.pocketkotlin.model.ProjectExecutionResult
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
+import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
 import com.pmarchenko.itdroid.pocketkotlin.recycler.ContentData
 import com.pmarchenko.itdroid.pocketkotlin.recycler.DiffAdapter

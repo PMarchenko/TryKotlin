@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pmarchenko.itdroid.pocketkotlin.editor.EditorView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/EditorViewStyle"
-    />
+    android:fillViewport="true"
+    >
+
+    <com.pmarchenko.itdroid.pocketkotlin.editor.EditorView
+        android:id="@+id/editor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/EditorViewStyle"
+        />
+</androidx.core.widget.NestedScrollView>
