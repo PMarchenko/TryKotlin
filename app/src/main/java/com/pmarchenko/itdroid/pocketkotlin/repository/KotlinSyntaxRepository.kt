@@ -8,6 +8,7 @@ import com.pmarchenko.itdroid.pocketkotlin.service.syntax.KotlinSyntaxService
  * @author Pavel Marchenko
  */
 class KotlinSyntaxRepository {
+
     companion object {
 
         val SYNTAX_SERVICE = KotlinSyntaxService()
