@@ -3,18 +3,18 @@ package com.pmarchenko.itdroid.pocketkotlin.model.project
 /**
  * @author Pavel Marchenko
  */
-class HelloWorldProject :
-        SimpleKotlinProject("Hello world", "HelloWorld.kt", "HelloWorldProject") {
+class HelloWorldProject : SimpleKotlinProject("Hello world", "HelloWorld.kt", "HelloWorldProject") {
 
     init {
         setCode(
-                """
+            """
                 /**
-                 * Test
+                 * Simple 'Hello world' example!
                  */
                 fun main() {
                     println("Hello world!")
                 }
-                """.trimIndent())
+                """.trimIndent()
+        )
     }
 }

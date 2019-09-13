@@ -6,7 +6,7 @@
     android:fillViewport="true"
     >
 
-    <com.pmarchenko.itdroid.pocketkotlin.editor.EditorView
+    <com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorView
         android:id="@+id/editor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

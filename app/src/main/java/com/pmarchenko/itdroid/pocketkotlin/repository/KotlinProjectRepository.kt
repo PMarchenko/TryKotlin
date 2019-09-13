@@ -51,19 +51,19 @@ class KotlinProjectRepository {
         KOTLIN_SERVICE.execute(project = project).enqueue(object : Callback<ProjectExecutionResult> {
 
             override fun onFailure(call: Call<ProjectExecutionResult>, t: Throwable) {
-                onError(result, log, t.message, ErrorLogRecord.ERROR_MESSAGE)
+                onError(result, log, t.message)
             }
 
             override fun onResponse(call: Call<ProjectExecutionResult>, response: Response<ProjectExecutionResult>) {
                 if (response.isSuccessful) {
                     val executionResult = response.body()
                     if (executionResult == null) {
-                        onError(result, log, null, ErrorLogRecord.ERROR_MESSAGE)
+                        onError(result, log, null)
                     } else {
                         onSuccess(result, log, executionResult)
                     }
                 } else {
-                    onError(result, log, response.errorBody()?.string(), ErrorLogRecord.ERROR_MESSAGE)
+                    onError(result, log, response.errorBody()?.string())
                 }
             }
         })
@@ -91,7 +91,7 @@ class KotlinProjectRepository {
             result: MutableLiveData<Resource<ProjectExecutionResult>>,
             log: LogLiveData,
             errorMessage: String?,
-            errorCode: Int
+            errorCode: Int = ErrorLogRecord.ERROR_MESSAGE
     ) {
         result.postValue(Error(errorMessage ?: ""))
         log.postValue(ErrorLogRecord(errorCode, errorMessage))

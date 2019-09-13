@@ -35,6 +35,12 @@ fun logd(tag: String = LOG_TAG, msg: String, e: Throwable? = null) {
     }
 }
 
+fun logd(tag: String = LOG_TAG, e: Throwable? = null, lazyMsg: () -> String) {
+    if (BuildConfig.DEBUG) {
+        logd(tag, lazyMsg.invoke(), e)
+    }
+}
+
 fun logw(tag: String = LOG_TAG, msg: String, e: Throwable? = null) {
     if (BuildConfig.DEBUG) {
         if (e == null) {

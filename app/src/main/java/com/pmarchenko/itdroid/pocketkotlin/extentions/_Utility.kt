@@ -1,5 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.extentions
 
+import android.app.Activity
 import android.content.res.Resources
 import android.view.View
 import android.view.ViewPropertyAnimator

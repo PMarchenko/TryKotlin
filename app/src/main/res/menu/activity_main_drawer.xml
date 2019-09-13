@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:showIn="navigation_view">
+
+    <item android:title="@string/menu_item.category.test">
+        <menu>
+            <group android:checkableBehavior="single">
+
+
+                <item
+                        android:id="@+id/menu_item_my_projects"
+                        android:icon="@drawable/ic_projects_feed_black_24dp"
+                        android:title="@string/menu_item.my_projects" />
+
+                <item
+                        android:id="@+id/menu_item_examples"
+                        android:icon="@drawable/ic_projects_feed_black_24dp"
+                        android:title="@string/menu_item.examples" />
+
+                <item
+                        android:id="@+id/menu_item_koans"
+                        android:icon="@drawable/ic_projects_feed_black_24dp"
+                        android:title="@string/menu_item.koans" />
+
+                <item
+                        android:id="@+id/menu_item_kotlin_in_action"
+                        android:icon="@drawable/ic_projects_feed_black_24dp"
+                        android:title="@string/menu_item.kotlin_in_action" />
+
+            </group>
+        </menu>
+    </item>
+</menu>
