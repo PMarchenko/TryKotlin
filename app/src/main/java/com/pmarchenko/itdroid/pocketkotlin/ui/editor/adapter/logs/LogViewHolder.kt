@@ -15,7 +15,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
-import com.pmarchenko.itdroid.pocketkotlin.service.syntax.ColorUnderlineSpan
+import com.pmarchenko.itdroid.pocketkotlin.syntax.ColorUnderlineSpan
 import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
 import com.pmarchenko.itdroid.pocketkotlin.extentions.formatTimestamp
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
@@ -39,7 +39,7 @@ open class LogViewHolder<T : LogRecord>(itemView: View, protected val callback: 
         get() = itemView.resources
 
     init {
-        dateFormat = SimpleDateFormat(resources.getString(R.string.logs_date_format), Locale.getDefault())
+        dateFormat = SimpleDateFormat(resources.getString(R.string.logs__date_format), Locale.getDefault())
         logView.movementMethod = LinkMovementMethod.getInstance()
     }
 

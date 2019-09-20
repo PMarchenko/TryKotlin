@@ -1,9 +1,10 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,39 +18,27 @@ import com.pmarchenko.itdroid.pocketkotlin.extentions.isVisible
 import com.pmarchenko.itdroid.pocketkotlin.extentions.scale
 import com.pmarchenko.itdroid.pocketkotlin.extentions.setVisibility
 import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.ProjectAdapter
+import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ChangeProjectNameDialog
 import com.pmarchenko.itdroid.pocketkotlin.utils.TabLayoutMediator
+import com.pmarchenko.itdroid.pocketkotlin.utils.toast
 
 /**
  * @author Pavel Marchenko
  */
-class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback, EditorBridge {
+class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback {
 
-    companion object {
-        const val TAG = "EditorFragment"
-    }
-
-    private lateinit var editorHost: EditorHost
     private lateinit var viewModel: EditorViewModel
 
-    private val executeCodeFab by findView<FloatingActionButton>(R.id.editor_fab)
-    private val progressView by findView<View>(R.id.progress)
-    private val tabs by findView<TabLayout>(R.id.editor_tabs)
+    private val executeCodeFab by findView<FloatingActionButton>(R.id.fabEditor)
+    private val executeProgressView by findView<View>(R.id.executeProgress)
+    private val mainProgressView by findView<View>(R.id.progressMain)
+    private val tabs by findView<TabLayout>(R.id.editorTabs)
     private val viewPager by findView<ViewPager2>(R.id.pages)
 
     private lateinit var adapter: ProjectAdapter
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        editorHost = context as EditorHost
-        editorHost.registerEditor(this)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        editorHost.unregisterEditor()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,15 +54,28 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
         super.onViewCreated(root, savedInstanceState)
 
         initUI()
+    }
 
-        if (savedInstanceState == null) viewPager.post { viewPager.currentItem = 1 }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("tabPosition", viewPager.currentItem)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val projectId = arguments?.getLong("projectId") ?: -1L
+        if (projectId > 0) {
+            viewModel.loadProject(projectId)
+        } else {
+            toast(R.string.error_message__invalid_project_id)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        viewModel.project?.let { project ->
+        if (viewModel.hasProject()) {
             inflater.inflate(R.menu.editor_menu, menu)
             menu.findItem(R.id.projectArgs)?.setIcon(
-                if (project.args.isEmpty()) {
+                if (viewModel.getProjectArgs().isEmpty()) {
                     R.drawable.ic_command_line_args_empty_24dp
                 } else {
                     R.drawable.ic_command_line_args_24dp
@@ -84,25 +86,31 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.projectArgs -> {
-            viewModel.project?.let { project -> CommandLineArgsDialog.show(this, project.args) }
+            if (viewModel.hasProject()) {
+                CommandLineArgsDialog.show(this, viewModel.getProjectArgs())
+            }
             true
         }
         R.id.clearLogs -> {
             viewModel.clearLogs()
             true
         }
-        R.id.closeProject -> {
-            viewModel.project = null
+        R.id.actionChangeName -> {
+            viewModel.getProject()?.let { project ->
+                ChangeProjectNameDialog.show(this, project)
+            }
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
     private fun initUI() {
+        view?.findViewById<Toolbar>(R.id.toolbar)?.let {
+            (requireActivity() as AppCompatActivity).setSupportActionBar(it)
+        }
         adapter = ProjectAdapter(requireContext(), this)
         viewPager.isUserInputEnabled = false
         viewPager.adapter = adapter
-        adapter.updateState(viewModel.project, null)
 
         TabLayoutMediator(tabs, viewPager, true,
             TabLayoutMediator.OnConfigureTabCallback { tab, position -> tab.text = adapter.getTitle(position) }
@@ -116,29 +124,31 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
 
     private fun onNewViewState(state: EditorViewState) {
         val project = state.project
-        val hasProject = project != null
-        if (hasProject) {
-            executeCodeFab.setVisibility(true)
+        if (project == null) {
+            mainProgressView.setVisibility(true)
+            tabs.setVisibility(false)
+            executeProgressView.setVisibility(false)
+            executeCodeFab.setVisibility(false)
+        } else {
+            (requireActivity() as AppCompatActivity).supportActionBar?.let { it.title = project.name }
+            mainProgressView.setVisibility(false)
             tabs.setVisibility(true)
-
-            if (progressView.isVisible() != state.progressVisibility) {
-                progressView.setVisibility(state.progressVisibility)
-                progressView.animate().scale(if (state.progressVisibility) 1f else 0f).setDuration(150).start()
+            if (executeProgressView.isVisible() != state.progressVisibility) {
+                executeProgressView.setVisibility(state.progressVisibility)
+                executeProgressView.animate().scale(if (state.progressVisibility) 1f else 0f).setDuration(150).start()
             }
 
-            executeCodeFab.setVisibility(true)
             if (executeCodeFab.isEnabled != !state.progressVisibility) {
                 executeCodeFab.isEnabled = !state.progressVisibility
                 executeCodeFab.animate().scale(if (state.progressVisibility) 0f else 1f).setDuration(150).start()
             }
-        } else {
-            progressView.setVisibility(false)
-            executeCodeFab.setVisibility(false)
-            tabs.setVisibility(false)
+            val currentItem = if (viewPager.adapter!!.itemCount == 0) 1 else viewPager.currentItem
+            adapter.setProject(project, state.executionResult?.errors)
+            // TODO BUG view pager resets its position to 0
+            viewPager.post {
+                viewPager.currentItem = currentItem
+            }
         }
-
-        adapter.updateState(project, state.executionResult)
-
         requireActivity().invalidateOptionsMenu()
 
         state.consume()
@@ -152,8 +162,8 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
         LineErrorsDialog.show(this, file, line, errors)
     }
 
-    override fun onFileEdited(file: ProjectFile, text: String) {
-        viewModel.editProjectFile(file, text)
+    override fun onFileEdited(project: Project, file: ProjectFile, program: String) {
+        viewModel.editProjectFile(project, file, program)
     }
 
     override fun openFile(fileName: String, line: Int, linePosition: Int) {
@@ -161,6 +171,24 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
         if (position != RecyclerView.NO_POSITION) {
             viewPager.setCurrentItem(position, false)
             if (line >= 0) adapter.applySelection(fileName, line, linePosition)
+        }
+    }
+
+    override fun onProjectName(project: Project, name: String) {
+        viewModel.updateProjectName(project, name)
+    }
+
+    companion object {
+
+        const val TAG = "EditorFragment"
+
+        fun newInstance(projectId: Long): Fragment {
+            val args = Bundle(1)
+            args.putLong("projectId", projectId)
+
+            val fragment = EditorFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
 }

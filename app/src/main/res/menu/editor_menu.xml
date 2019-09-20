@@ -5,17 +5,17 @@
     <item
             android:id="@+id/projectArgs"
             android:icon="@drawable/ic_command_line_args_24dp"
-            android:title="@string/menu_item.command_line_args"
+            android:title="@string/menu_item__command_line_args"
             app:showAsAction="ifRoom" />
 
     <item
-            android:id="@+id/clearLogs"
-            android:title="@string/menu_item.clear_logs"
+            android:id="@+id/actionChangeName"
+            android:title="@string/menu_item__change_name"
             app:showAsAction="never" />
 
     <item
-            android:id="@+id/closeProject"
-            android:title="@string/menu_item.close_project"
+            android:id="@+id/clearLogs"
+            android:title="@string/menu_item__clear_logs"
             app:showAsAction="never" />
 
 </menu>

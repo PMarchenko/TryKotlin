@@ -8,24 +8,25 @@
     <fragment
             android:id="@+id/menu_item_my_projects"
             android:name="com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.MyProjectsFragment"
-            android:label="@string/menu_item.my_projects" />
+            android:label="@string/menu_item__my_projects"
+            tools:layout="@layout/fragment_my_projects"/>
 
     <fragment
             android:id="@+id/menu_item_examples"
             android:name="com.pmarchenko.itdroid.pocketkotlin.ui.examples.ExamplesFragment"
-            android:label="@string/menu_item.examples"
+            android:label="@string/menu_item__examples"
             tools:layout="@layout/fragment_examples" />
 
     <fragment
             android:id="@+id/menu_item_koans"
             android:name="com.pmarchenko.itdroid.pocketkotlin.ui.koans.KotlinKoansFragment"
-            android:label="@string/menu_item.koans"
+            android:label="@string/menu_item__koans"
             tools:layout="@layout/fragment_kotlin_koans" />
 
     <fragment
             android:id="@+id/menu_item_kotlin_in_action"
             android:name="com.pmarchenko.itdroid.pocketkotlin.ui.actions.KotlinInActionFragment"
-            android:label="@string/menu_item.kotlin_in_action"
+            android:label="@string/menu_item__kotlin_in_action"
             tools:layout="@layout/fragment_kotlin_in_action" />
 
 </navigation>

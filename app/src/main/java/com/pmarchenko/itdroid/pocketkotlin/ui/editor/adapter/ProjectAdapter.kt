@@ -4,100 +4,43 @@ import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ImageSpan
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
-import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogsContentData
-import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogsViewHolder
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
 import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
-import com.pmarchenko.itdroid.pocketkotlin.recycler.ContentData
-import com.pmarchenko.itdroid.pocketkotlin.recycler.DiffAdapter
+import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
+import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogsContentData
+import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentAdapter
+import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
+import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegateManager
 
 /**
  * @author Pavel Marchenko
  */
 class ProjectAdapter(
     private val context: Context,
-    private val callback: EditorCallback
-) : DiffAdapter<RecyclerView.ViewHolder>() {
-
-    companion object {
-        private const val VIEW_TYPE_LOGS = 0
-        private const val VIEW_TYPE_PROJECT_FILE = 1
-    }
+    callback: EditorCallback
+) : ContentAdapter(DelegateManager(callback)) {
 
     private var project: Project? = null
-    private var executionResult: ProjectExecutionResult? = null
+    private var errors = emptyMap<String, ArrayList<ProjectError>>()
     private var logs = listOf<LogRecord>()
-
-    private val inflater = LayoutInflater.from(context)
-    private val content = ArrayList<ContentData>()
-
-    private val pendingSelections = mutableMapOf<String, Pair<Int, Int>>()
-
-    override fun getItemCount() = content.size
-
-    override fun getItemViewType(position: Int): Int {
-        return content[position].viewType
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun <T> getItem(position: Int): T = (content[position]) as T
+    private val selections = mutableMapOf<String, Pair<Int, Int>>()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.itemAnimator = ProjectItemsAnimator()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        VIEW_TYPE_LOGS -> LogsViewHolder(
-            inflater.inflate(R.layout.content_logs, parent, false), callback
-        )
-        VIEW_TYPE_PROJECT_FILE -> ProjectFileViewHolder(
-            inflater.inflate(R.layout.content_project_file, parent, false), callback
-        )
-        else -> error("Unsupported viewType=$viewType")
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is LogsViewHolder -> holder.bindView((getItem<LogsContentData>(position)).logs)
-            is ProjectFileViewHolder -> holder.bindView(getItem(position))
-            else -> error("Unsupported viewType=${holder.itemViewType}")
-        }
-    }
-
-    fun updateState(project: Project?, executionResults: ProjectExecutionResult?) {
-        this.project = project
-        this.executionResult = executionResults
-
-        updateContent()
-    }
-
-    fun applySelection(fileName: String, line: Int, linePosition: Int) {
-        pendingSelections[fileName] = Pair(line, linePosition)
-        updateContent()
-    }
-
-    fun setLog(log: List<LogRecord>) {
-        if (this.logs != log) {
-            this.logs = log
-            updateContent()
-        }
-    }
-
     fun getTitle(position: Int): CharSequence {
         return when (getItemViewType(position)) {
             VIEW_TYPE_LOGS -> {
                 if (logs.isEmpty()) {
-                    context.getString(R.string.editor_tab_log_no_logs)
+                    context.getString(R.string.editor__tab__log_no_logs)
                 } else {
-                    context.getString(R.string.editor_tab_log, logs.size)
+                    context.getString(R.string.editor__tab__log, logs.size)
                 }
             }
             VIEW_TYPE_PROJECT_FILE -> {
@@ -125,30 +68,65 @@ class ProjectAdapter(
         }
     }
 
-    private fun updateContent() {
-        val oldContent = ArrayList(content)
-        content.clear()
-        content.addAll(createContent())
-        dispatchUpdates(oldContent, content)
-    }
-
-    private fun createContent(): ArrayList<ContentData> {
-        val out = ArrayList<ContentData>()
-        project?.let { project ->
-            out.add(LogsContentData(VIEW_TYPE_LOGS, logs))
-
-            val files = project.files.values
-            files.forEach { file ->
-                var errors = executionResult?.errors?.get(file.name)
-                errors = if (errors == null) ArrayList() else ArrayList(errors)
-                val selection = pendingSelections.remove(file.name)
-                out.add(FileContentData(VIEW_TYPE_PROJECT_FILE, file, errors, selection))
+    fun getFilePosition(fileName: String): Int {
+        for (position in 0 until itemCount) {
+            if (getItemViewType(position) == VIEW_TYPE_PROJECT_FILE && getItem<FileContentData>(position).file.name == fileName) {
+                return position
             }
         }
-        return out
+
+        return RecyclerView.NO_POSITION
     }
 
-    fun getFilePosition(fileName: String): Int {
-        return content.indexOfFirst { data -> data is FileContentData && data.file.name == fileName }
+    fun setProject(project: Project?, errors: Map<String, ArrayList<ProjectError>>?) {
+        this.project = project
+        this.errors = errors ?: emptyMap()
+        updateContent()
+    }
+
+    fun applySelection(fileName: String, line: Int, linePosition: Int) {
+        selections[fileName] = Pair(line, linePosition)
+        updateContent()
+    }
+
+    fun setLog(log: List<LogRecord>) {
+        if (this.logs != log) {
+            this.logs = log
+            updateContent()
+        }
+    }
+
+    private fun updateContent() {
+        val content = mutableListOf<ContentData>()
+        project?.let { project ->
+            content.add(LogsContentData(VIEW_TYPE_LOGS, logs))
+
+            project.files.forEach { file ->
+                content.add(
+                    FileContentData(
+                        VIEW_TYPE_PROJECT_FILE,
+                        project,
+                        file,
+                        errors[file.name]?.let { ArrayList(it) } ?: emptyList(),
+                        selections.remove(file.name)
+                    )
+                )
+            }
+        }
+
+        setContent(content)
+    }
+
+    companion object {
+        private const val VIEW_TYPE_LOGS = 0
+        private const val VIEW_TYPE_PROJECT_FILE = 1
+    }
+
+    class DelegateManager(callback: EditorCallback) : HolderDelegateManager() {
+
+        init {
+            register(HolderDelegateLogs(VIEW_TYPE_LOGS, callback))
+            register(HolderDelegateProjectFile(VIEW_TYPE_PROJECT_FILE, callback))
+        }
     }
 }

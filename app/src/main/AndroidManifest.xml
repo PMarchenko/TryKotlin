@@ -16,12 +16,31 @@
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
-                android:name=".MainActivity"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:name=".ui.MainActivity"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name=".ui.editor.EditorActivity"
+                android:exported="false"
+                android:label="@string/activity_title_editor"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="pocketkotlin.VIEW_PROJECT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                        android:host="pocketkotlin"
+                        android:pathPattern="/project/.*"
+                        android:scheme="app" />
             </intent-filter>
         </activity>
     </application>

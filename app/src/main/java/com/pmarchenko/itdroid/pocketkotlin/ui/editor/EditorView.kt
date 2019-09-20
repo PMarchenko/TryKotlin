@@ -16,7 +16,7 @@ import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.repository.KotlinSyntaxRepository
+import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxRepository
 import com.pmarchenko.itdroid.pocketkotlin.utils.TextWatcherAdapter
 import kotlin.math.max
 
@@ -39,6 +39,8 @@ class EditorView : AppCompatEditText {
     private val errorAreas = mutableMapOf<Int, RectF>()
     private val realToVirtualLines = SparseIntArray()
     private var pendingErrors: Pair<ProjectFile, List<ProjectError>>? = null
+
+    var handleTouchEvents = true
 
     private var lineBarWidth = 32f.dp
     private var lineBarBgPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -66,6 +68,7 @@ class EditorView : AppCompatEditText {
     init {
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         addTextChangedListener(object : TextWatcherAdapter() {
+
             override fun afterTextChanged(s: Editable?) {
                 mapRealToVirtualLInes(realToVirtualLines)
                 if (initialized && !s.isNullOrEmpty()) {
@@ -75,6 +78,10 @@ class EditorView : AppCompatEditText {
             }
         })
         initialized = true
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        return if (handleTouchEvents) super.dispatchTouchEvent(event) else false
     }
 
     fun setProjectCallback(callback: EditorCallback) {
@@ -104,6 +111,7 @@ class EditorView : AppCompatEditText {
             if (touchedLine != NO_LINE) {
                 if (event.action == MotionEvent.ACTION_UP) {
                     val lineErrors = errors.filter { it.startLine == touchedLine } as ArrayList<EditorError>
+                    realToVirtualLines
                     callback.showErrorDetails(file, touchedLine, lineErrors)
                 }
                 return true
@@ -122,8 +130,9 @@ class EditorView : AppCompatEditText {
         } ?: analyzeSyntax(editableText)
     }
 
-    override fun draw(canvas: Canvas?) {
-        canvas!!
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        canvas ?: return
 
         drawSizeBar(canvas)
 
@@ -151,7 +160,6 @@ class EditorView : AppCompatEditText {
             lineNumberPaint.color = if (hasError) Color.WHITE else Color.parseColor("#656E76")
             canvas.drawText(text, textX, textY, lineNumberPaint)
         }
-        super.draw(canvas)
     }
 
     private fun mapRealToVirtualLInes(map: SparseIntArray) {
@@ -167,8 +175,8 @@ class EditorView : AppCompatEditText {
 
     private fun drawSizeBar(canvas: Canvas) {
         val bottom = max(layout.getLineBottom(lineCount - 1) + paddingTop, bottom).toFloat()
-        canvas.drawRect(0f, paddingTop.toFloat(), lineBarWidth, bottom, lineBarBgPaint)
-        canvas.drawLine(lineBarWidth, paddingTop.toFloat(), lineBarWidth, bottom, lineNumberPaint)
+        canvas.drawRoundRect(0f, 0f, lineBarWidth, bottom, 4f.dp, 4f.dp, lineBarBgPaint)
+        canvas.drawLine(lineBarWidth, 0f, lineBarWidth, bottom, lineNumberPaint)
     }
 
     @Suppress("REDUNDANT_ELSE_IN_WHEN")
@@ -220,5 +228,11 @@ class EditorView : AppCompatEditText {
             val position = layout.getLineStart(realToVirtualLines.valueAt(selection.first)) + selection.second
             setSelection(position)
         }
+    }
+
+    fun getProgram() = text.toString()
+
+    fun setProgram(program: String) {
+        setText(program)
     }
 }

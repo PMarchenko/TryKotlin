@@ -43,9 +43,9 @@ class LineErrorsDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.dialog_line_errors_title, fileName, line + 1))
+                .setTitle(getString(R.string.dialog__line_errors__title, fileName, line))
                 .setMessage(errorsToMessage(errors))
-                .setPositiveButton(R.string.dialog_line_errors_positive_button, null)
+                .setPositiveButton(R.string.dialog__line_errors__positive_button, null)
                 .create()
     }
 

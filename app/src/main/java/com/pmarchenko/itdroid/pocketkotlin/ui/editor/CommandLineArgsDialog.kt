@@ -29,7 +29,7 @@ class CommandLineArgsDialog : DialogFragment(), DialogInterface.OnClickListener 
         }
     }
 
-    private lateinit var editText: EditText
+    private lateinit var argsView: EditText
     private lateinit var callback: CommandLineArgsDialogCallback
     private var clArgs: String? = null
 
@@ -47,25 +47,25 @@ class CommandLineArgsDialog : DialogFragment(), DialogInterface.OnClickListener 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
-                .setTitle(R.string.dialog_command_line_args_title)
+                .setTitle(R.string.dialog__command_line_args__title)
                 .setView(R.layout.dialog_command_line_args)
-                .setNegativeButton(R.string.dialog_command_line_args_negative_button, null)
-                .setPositiveButton(R.string.dialog_command_line_args_positive_button, this)
+                .setNegativeButton(R.string.dialog__command_line_args__negative_button, null)
+                .setPositiveButton(R.string.dialog__command_line_args__positive_button, this)
                 .create()
     }
 
     override fun onStart() {
         super.onStart()
-        editText = dialog?.findViewById(R.id.command_line_args) ?: error("Cannot find edit text")
+        argsView = dialog?.findViewById(R.id.commandLineArgs) ?: error("Cannot find edit text")
         if (!clArgs.isNullOrEmpty()) {
-            editText.setText(clArgs)
-            editText.setSelection(editText.text.length)
+            argsView.setText(clArgs)
+            argsView.setSelection(argsView.text.length)
         }
     }
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
-            val args = editText.text.toString().trim()
+            val args = argsView.text.toString().trim()
             callback.onCommandLineArgsUpdate(args)
         }
     }

@@ -1,19 +1,118 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.extentions.dp
+import com.pmarchenko.itdroid.pocketkotlin.extentions.setVisibility
+import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorActivity
+import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.adapter.MyProjectsAdapter
 
-class MyProjectsFragment : Fragment() {
 
-    private lateinit var homeViewModel: ProjectsFeedViewModel
+class MyProjectsFragment : Fragment(), ProjectCallback {
+
+    private lateinit var viewModel: MyProjectsViewModel
+
+    private lateinit var progressView: View
+    private lateinit var emptyView: View
+    private lateinit var projectsList: RecyclerView
+    private lateinit var adapter: MyProjectsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        homeViewModel = ViewModelProviders.of(this).get(ProjectsFeedViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(MyProjectsViewModel::class.java)
         return inflater.inflate(R.layout.fragment_my_projects, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initUI()
+    }
+
+    private fun initUI() {
+        view?.findViewById<View>(R.id.fabAddProject)?.setOnClickListener { addNewProject() } ?: error("Cannot find fab")
+        progressView = view?.findViewById(R.id.progress) ?: error("Cannot find pregress view")
+        emptyView = view?.findViewById(R.id.emptyView) ?: error("Cannot find emptyView")
+        projectsList = view?.findViewById(R.id.projectsList) ?: error("Cannot find projects list")
+
+        projectsList.layoutManager = GridLayoutManager(context, requireContext().resources.getInteger(R.integer.projectsListGridSize))
+        adapter = MyProjectsAdapter(this as ProjectCallback)
+        projectsList.adapter = adapter
+        projectsList.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                outRect.set(8.dp, 8.dp, 8.dp, 8.dp)
+            }
+        })
+        progressView.setVisibility(true)
+        viewModel.myProjects.observe(viewLifecycleOwner, Observer { onProjects(it ?: emptyList()) })
+        viewModel.newProjectCreated.observe(viewLifecycleOwner, Observer { liveDataHolder -> liveDataHolder.get()?.let { onNewProject(it) } })
+    }
+
+    private fun onProjects(projects: List<Project>) {
+        progressView.setVisibility(false)
+        val atTop = !projectsList.canScrollVertically(-1)
+        adapter.setProjects(projects)
+        emptyView.setVisibility(projects.isEmpty())
+        projectsList.setVisibility(projects.isNotEmpty())
+        if (projects.isNotEmpty()) {
+            if (atTop) projectsList.layoutManager!!.scrollToPosition(0)
+        }
+    }
+
+    private fun addNewProject() {
+        AddProjectDialog.show(this)
+    }
+
+    private fun onNewProject(projectId: Long) {
+        if (projectId > 0) {
+            projectsList.layoutManager!!.scrollToPosition(0)
+            openProject(projectId)
+        }
+    }
+
+    private fun openProject(projectId: Long) {
+        val intent = EditorActivity.asDeepLinkIntent(projectId)
+        intent.setPackage(requireContext().packageName)
+        startActivity(intent)
+    }
+
+    override fun onProjectClick(project: Project) {
+        openProject(project.id)
+    }
+
+    override fun onProjectMenuClick(anchor: View, project: Project) {
+        val popup = PopupMenu(requireContext(), anchor)
+        popup.inflate(R.menu.project)
+        popup.setOnMenuItemClickListener { item ->
+            when (item?.itemId) {
+                R.id.action_change_name -> {
+                    ChangeProjectNameDialog.show(this, project)
+                    true
+                }
+                R.id.action_delete -> {
+                    viewModel.deleteProject(project)
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
+    }
+
+    override fun onAddProject(project: Project) {
+        viewModel.addNewProject(project)
+    }
+
+    override fun onProjectName(project: Project, name: String) {
+        viewModel.updateProjectName(project, name)
     }
 }
