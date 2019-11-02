@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <item name="projectArgs" type="id"/>
+    <item name="resetExample" type="id"/>
+    <item name="clearLogs" type="id"/>
+    <item name="changeName" type="id"/>
 </resources>

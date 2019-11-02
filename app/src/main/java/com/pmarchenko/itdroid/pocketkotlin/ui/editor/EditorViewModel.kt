@@ -1,51 +1,54 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.pmarchenko.itdroid.pocketkotlin.db.AppDatabase
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.model.Error
 import com.pmarchenko.itdroid.pocketkotlin.model.Loading
 import com.pmarchenko.itdroid.pocketkotlin.model.Resource
 import com.pmarchenko.itdroid.pocketkotlin.model.Success
-import com.pmarchenko.itdroid.pocketkotlin.model.log.LogLiveData
-import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.model.log.*
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.repository.ProjectsRepository
-import com.pmarchenko.itdroid.pocketkotlin.utils.ThrottleTaskExecutor
-import com.pmarchenko.itdroid.pocketkotlin.utils.async
+import com.pmarchenko.itdroid.pocketkotlin.utils.doInBackground
+import com.pmarchenko.itdroid.pocketkotlin.utils.executor.TaskExecutor
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 
 /**
  * @author Pavel Marchenko
  */
-class EditorViewModel(app: Application) : AndroidViewModel(app) {
-
-    private val projectRepo = ProjectsRepository(AppDatabase.getDatabase(app).getProjectDao())
+class EditorViewModel(
+    private val projectRepo: ProjectsRepository,
+    private val saveExecutor: TaskExecutor
+) : ViewModel() {
 
     private val projectExecutor = MutableLiveData<Project>()
-
-    private val throttleExecutor = ThrottleTaskExecutor(tag = "ProjectThrottler")
 
     private val _log = LogLiveData()
     val log: LiveData<List<LogRecord>> = _log
 
     private val _projectId = MutableLiveData<Long>()
-    private val _project: LiveData<Project> = Transformations.map(
-        Transformations.switchMap(_projectId) { projectId ->
-            projectRepo.loadProject(projectId)
-        }
-    ) { projectWithFiles ->
-        val project = projectWithFiles.project
-        project.files.addAll(projectWithFiles.files)
-        project
-    }
+    private val _project: LiveData<Project> = Transformations.switchMap(_projectId) { projectRepo.loadProject(it) }
 
     private val _viewState = MediatorLiveData<EditorViewState>().apply {
         addSource(
             Transformations.switchMap(projectExecutor) { project ->
-                projectRepo.execute(_log, project)
-            }) { resource -> value = asState(resource) }
+                projectRepo.execute(project)
+                    .onStart {
+                        emit(Loading())
+                        _log.postValue(RunLogRecord(project.name, project.args))
+                    }
+                    .map {
+                        logResource(it)
+                        asState(it)
+                    }
+                    .onCompletion {}
+                    .asLiveData()
+
+            }
+        ) { value = it }
 
         addSource(_project) { project ->
             value = value?.copy(project = project) ?: EditorViewState(project)
@@ -77,8 +80,7 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setCommandLineArgs(args: String) {
         _project.value?.let { project ->
-            async {
-                project.args = args
+            doInBackground {
                 projectRepo.updateProject(project.copy(args = args))
             }
         }
@@ -86,14 +88,23 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
 
     fun editProjectFile(project: Project, file: ProjectFile, program: String) {
         file.program = program
-        throttleExecutor.throttle {
+        viewState.value?.let { state ->
+            state.executionResult?.errors?.remove(file.name)
+        }
+        saveExecutor.execute {
             projectRepo.updateFile(project, file.copy(program = program))
         }
     }
 
     fun updateProjectName(project: Project, name: String) {
-        async {
+        doInBackground {
             projectRepo.updateProject(project.copy(name = name))
+        }
+    }
+
+    fun resetExample(project: Project) {
+        doInBackground {
+            projectRepo.resetExampleProject(project)
         }
     }
 
@@ -106,8 +117,36 @@ class EditorViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    private fun logResource(resource: Resource<ProjectExecutionResult>) {
+        when (resource) {
+            is Success -> {
+                val result = resource.data
+                val hasOutput = !result.text.isNullOrEmpty() || !(result.exception != null || result.hasErrors())
+
+                if (hasOutput) {
+                    _log.postValue(InfoLogRecord(result.text ?: ""))
+                }
+
+                result.exception?.let {
+                    _log.postValue(ExceptionLogRecord(it))
+                }
+
+                if (result.hasErrors()) {
+                    _log.postValue(ErrorLogRecord(ErrorLogRecord.ERROR_PROJECT, errors = result.errors))
+                }
+
+                result.testResults?.let {
+                    _log.postValue(TestResultsLogRecord(it))
+                }
+            }
+            is Error -> {
+                _log.postValue(ErrorLogRecord(ErrorLogRecord.ERROR_MESSAGE, resource.message))
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
-        throttleExecutor.release()
+        saveExecutor.release()
     }
 }

@@ -5,17 +5,19 @@
     <string name="activity_title_editor">Editor</string>
 
     <string name="logs__date_format">MM/dd/YY hh:mm:ss:SSS</string>
-    <string name="logs__template.run">Run project \'%1$s\'</string>
-    <string name="logs__template.run_with_args">Run project \'%1$s\', args \'%2$s\'</string>
-    <string name="logs__template.exception">\nException in thread \"main\" %1$s: %2$s</string>
-    <string name="logs__template.exception_cause">\tcaused by:\n</string>
+    <string name="logs__template__run">Run project \'%1$s\'</string>
+    <string name="logs__template__run_with_args">Run project \'%1$s\', args \'%2$s\'</string>
+    <string name="logs__template__exception">\nException in thread \"main\" %1$s: %2$s</string>
+    <string name="logs__template__exception_cause">\tcaused by:\n</string>
+    <string name="logs__test_results__status_passed">All tests passed in %1$.3fs</string>
+    <string name="logs__test_results__status_failed">Failed: %1$d of %2$d tests in %3$.3fs</string>
 
     <string name="menu_item__settings">Settings</string>
     <string name="menu_item__command_line_args">Command line args</string>
     <string name="menu_item__clear_logs">Clear logs</string>
+    <string name="menu_item__reset_example">Reset example</string>
     <string name="menu_item__delete">Delete</string>
     <string name="menu_item__change_name">Change Name</string>
-
     <string name="menu_item__my_projects">My Projects</string>
     <string name="menu_item__examples">Examples</string>
     <string name="menu_item__koans">Kotlin Koans</string>
@@ -38,6 +40,8 @@
     <string name="dialog__add_project__negative_button">Cancel</string>
 
     <string name="dialog__change_project_name__positive_button">Save</string>
+
+    <string name="dialog__text__positive_button">@android:string/ok</string>
 
     <string name="editor__tab__log">Log (%1$d)</string>
     <string name="editor__tab__log_no_logs">Log</string>

@@ -1,6 +1,5 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs
 
-import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +13,7 @@ import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateErrorLog(
-    viewType: Int,
-    private val callback: EditorCallback
-) : HolderDelegateLog<ErrorLogRecord, HolderDelegateErrorLog.ErrorLogViewHolder>(viewType) {
+class HolderDelegateErrorLog(private val callback: EditorCallback) : HolderDelegateLog<ErrorLogRecord, HolderDelegateErrorLog.ErrorLogViewHolder>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): ErrorLogViewHolder {
         return ErrorLogViewHolder(inflater.inflate(R.layout.viewholder_log, parent, false), callback)
@@ -32,14 +28,15 @@ class HolderDelegateErrorLog(
                 ErrorLogRecord.ERROR_MESSAGE -> log.message
                 ErrorLogRecord.ERROR_PROJECT -> {
                     val combinedErrors = SpannableStringBuilder("\n")
-                    log.errors.forEach { errors ->
-                        val fileName = errors.key
-                        errors.value.forEach { error ->
+                    for (fileErrors in log.errors) {
+                        val fileName = fileErrors.key
+                        for (error in fileErrors.value) {
                             val linkText = "$fileName:${error.interval.start.line + 1}:${error.interval.start.ch + 1}"
-                            val link = asLink(linkText, Pair(fileName, error), this, Color.parseColor("#2196F3"))
-                            combinedErrors.append(error.severity.name).append(" (").append(link).append("): ${error.message}\n")
+                            val link = asLink(linkText, Pair(fileName, error), this, linkUnderlineTextColor)
+                            combinedErrors.append("${error.severity.name} ($link): ${error.message}\n")
                         }
                     }
+
                     combinedErrors
                 }
                 else -> error("Unsupported error type ${log.errorCode}")

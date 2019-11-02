@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.utils.TextWatcherAdapter
 
 /**
@@ -46,6 +46,7 @@ class ChangeProjectNameDialog : DialogFragment(), DialogInterface.OnClickListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         project = arguments?.getParcelable<Project>("project") ?: error("No project provided")
+        //ATTENTION project files not restored
         projectName = savedInstanceState?.getString("name") ?: project.name
     }
 

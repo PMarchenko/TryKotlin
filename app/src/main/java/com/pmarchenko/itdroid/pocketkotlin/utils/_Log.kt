@@ -2,6 +2,7 @@ package com.pmarchenko.itdroid.pocketkotlin.utils
 
 import android.util.Log
 import com.pmarchenko.itdroid.pocketkotlin.BuildConfig
+import kotlin.system.measureNanoTime
 
 const val LOG_TAG: String = "PocketKotlin"
 
@@ -37,7 +38,7 @@ fun logd(tag: String = LOG_TAG, msg: String, e: Throwable? = null) {
 
 fun logd(tag: String = LOG_TAG, e: Throwable? = null, lazyMsg: () -> String) {
     if (BuildConfig.DEBUG) {
-        logd(tag, lazyMsg.invoke(), e)
+        logd(tag, lazyMsg(), e)
     }
 }
 
@@ -61,6 +62,16 @@ fun loge(tag: String = LOG_TAG, msg: String, e: Throwable? = null) {
     }
 }
 
+fun loge(tag: String = LOG_TAG, e: Throwable? = null, lazyMsg: () -> String) {
+    if (BuildConfig.DEBUG) {
+        if (e == null) {
+            Log.e(tag, lazyMsg())
+        } else {
+            Log.e(tag, lazyMsg(), e)
+        }
+    }
+}
+
 fun logWtf(tag: String = LOG_TAG, msg: String, e: Throwable? = null) {
     if (BuildConfig.DEBUG) {
         if (e == null) {
@@ -72,9 +83,9 @@ fun logWtf(tag: String = LOG_TAG, msg: String, e: Throwable? = null) {
 }
 
 
-inline fun <T> T.measure(tag: String = "$LOG_TAG:Measure", block: T.() -> Unit) {
-    val start = System.nanoTime()
-    block()
-    val end = System.nanoTime()
-    Log.e(tag, "block execution took ${(end - start) / 1e6} ms")
+inline fun <T> T.measureTimeAndLog(tag: String = "$LOG_TAG:Measure", block: T.() -> Unit) {
+    val time = measureNanoTime {
+        block()
+    }
+    logd(tag) { "block execution took ${time / 1e6} ms" }
 }

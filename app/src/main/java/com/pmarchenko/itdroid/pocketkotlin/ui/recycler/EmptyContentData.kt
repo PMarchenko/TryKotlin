@@ -1,6 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.adapter
-
-import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
+package com.pmarchenko.itdroid.pocketkotlin.ui.recycler
 
 /**
  * @author Pavel Marchenko
@@ -14,6 +12,6 @@ class EmptyContentData(override val viewType: Int) : ContentData {
     }
 
     override fun isContentTheSame(data: ContentData): Boolean {
-        return viewType == data.viewType
+        return equals(data)
     }
 }

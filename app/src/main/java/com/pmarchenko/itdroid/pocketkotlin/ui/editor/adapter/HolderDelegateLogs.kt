@@ -15,10 +15,7 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateLogs(
-    viewType: Int,
-    private val callback: EditorCallback
-) : HolderDelegate<HolderDelegateLogs.LogsViewHolder, LogsContentData>(viewType) {
+class HolderDelegateLogs(private val callback: EditorCallback) : HolderDelegate<HolderDelegateLogs.LogsViewHolder, LogsContentData>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): LogsViewHolder {
         return LogsViewHolder(inflater.inflate(R.layout.viewholder_logs, parent, false), callback)

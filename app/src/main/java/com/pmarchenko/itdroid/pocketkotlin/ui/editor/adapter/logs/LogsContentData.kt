@@ -15,8 +15,6 @@ class LogsContentData(override val viewType: Int, val logs: List<LogRecord>) : C
     }
 
     override fun isContentTheSame(data: ContentData): Boolean {
-        return if (data is LogsContentData) {
-            logs == data.logs
-        } else false
+        return equals(data)
     }
 }

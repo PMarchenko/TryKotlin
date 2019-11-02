@@ -13,12 +13,29 @@ object AppDatabaseInfo {
 
 }
 
+object ExamplesTable {
 
-object ProjectTable {
+    const val TABLE = "Examples"
+
+    const val ID = BaseColumns._ID
+
+    const val EXAMPLE_PROJECT_ID = "ExampleProjectId"
+
+    const val MODIFIED_PROJECT_ID = "ModifiedProjectId"
+
+    const val CATEGORY = "Category"
+
+    const val DESCRIPTION = "Description"
+
+}
+
+object ProjectsTable {
 
     const val TABLE = "Project"
 
     const val ID = BaseColumns._ID
+
+    const val PUBLIC_ID = "PublicId"
 
     const val PROJECT_TYPE = "ProjectType"
 
@@ -42,9 +59,13 @@ object ProjectTable {
 
     const val RUN_CONFIG = "RunConfig"
 
+    const val ORIGINAL_URL = "OriginalUrl"
+
+    const val READ_ONLY_FILE_NAMES = "ReadOnlyFileNames"
+
 }
 
-object FileTable {
+object FilesTable {
 
     const val TABLE = "File"
 
@@ -61,4 +82,5 @@ object FileTable {
     const val DATE_MODIFIED = "ModifiedTimestamp"
 
     const val PROGRAM = "Program"
+
 }

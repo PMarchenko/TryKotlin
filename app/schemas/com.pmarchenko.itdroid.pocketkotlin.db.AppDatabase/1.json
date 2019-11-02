@@ -2,17 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c5ac2546955739b19b9f1453e068bd27",
+    "identityHash": "a0896677acfcd091a1b1a6da891ef3e0",
     "entities": [
       {
         "tableName": "Project",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ProjectType` TEXT NOT NULL, `Name` TEXT NOT NULL, `Language` TEXT NOT NULL, `MainFile` TEXT NOT NULL, `searchForMain` INTEGER NOT NULL, `CreatedTimestamp` INTEGER NOT NULL, `ModifiedTimestamp` INTEGER NOT NULL, `Args` TEXT NOT NULL, `CompilerVersion` TEXT, `ExecutionType` TEXT NOT NULL, `RunConfig` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `PublicId` TEXT, `ProjectType` TEXT NOT NULL, `Name` TEXT NOT NULL, `Language` TEXT NOT NULL, `MainFile` TEXT NOT NULL, `searchForMain` INTEGER NOT NULL, `CreatedTimestamp` INTEGER NOT NULL, `ModifiedTimestamp` INTEGER NOT NULL, `Args` TEXT NOT NULL, `CompilerVersion` TEXT, `ExecutionType` TEXT NOT NULL, `RunConfig` TEXT NOT NULL, `OriginalUrl` TEXT, `ReadOnlyFileNames` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "publicId",
+            "columnName": "PublicId",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "projectType",
@@ -77,6 +83,18 @@
           {
             "fieldPath": "runConfig",
             "columnName": "RunConfig",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "originalUrl",
+            "columnName": "OriginalUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "readOnlyFileNames",
+            "columnName": "ReadOnlyFileNames",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -168,12 +186,77 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "Examples",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ExampleProjectId` INTEGER NOT NULL, `ModifiedProjectId` INTEGER NOT NULL, `Category` TEXT NOT NULL, `Description` TEXT NOT NULL, FOREIGN KEY(`ExampleProjectId`) REFERENCES `Project`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exampleProjectId",
+            "columnName": "ExampleProjectId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "modifiedProjectId",
+            "columnName": "ModifiedProjectId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "Category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "Description",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Examples_ExampleProjectId",
+            "unique": false,
+            "columnNames": [
+              "ExampleProjectId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Examples_ExampleProjectId` ON `${TABLE_NAME}` (`ExampleProjectId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Project",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "ExampleProjectId"
+            ],
+            "referencedColumns": [
+              "_id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c5ac2546955739b19b9f1453e068bd27')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a0896677acfcd091a1b1a6da891ef3e0')"
     ]
   }
 }

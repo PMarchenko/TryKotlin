@@ -5,14 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.utils.async
+import com.pmarchenko.itdroid.pocketkotlin.db.content.DatabaseContentManager
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Example
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * @author Pavel Marchenko
  */
-@Database(entities = [Project::class, ProjectFile::class], version = AppDatabaseInfo.VERSION)
+@Database(entities = [Project::class, ProjectFile::class, Example::class], version = AppDatabaseInfo.VERSION)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getProjectDao(): ProjectDao
@@ -27,8 +31,8 @@ abstract class AppDatabase : RoomDatabase() {
                     .fallbackToDestructiveMigration()
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
-                            async {
-                                getDatabase(context).getProjectDao().insert(Project.helloWorld("HelloWorld"))
+                            GlobalScope.launch(Dispatchers.IO) {
+                                DatabaseContentManager(context).fillDatabase(getDatabase(context))
                             }
                         }
                     })

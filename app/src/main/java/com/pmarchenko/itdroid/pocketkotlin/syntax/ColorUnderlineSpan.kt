@@ -13,7 +13,7 @@ class ColorUnderlineSpan(val color: Int) : UnderlineSpan() {
         ds.isUnderlineText = false
         try {
             TextPaint::class.java.getField("underlineColor").setInt(ds, color)
-            TextPaint::class.java.getField("underlineThickness").setFloat(ds, 2f.dp)
+            TextPaint::class.java.getField("underlineThickness").setFloat(ds, 1.5f.dp)
         } catch (e: Throwable) {
         }
     }

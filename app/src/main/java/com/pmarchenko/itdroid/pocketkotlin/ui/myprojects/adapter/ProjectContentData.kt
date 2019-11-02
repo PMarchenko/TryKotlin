@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
 
 /**
@@ -17,9 +17,6 @@ class ProjectContentData(override val viewType: Int, val project: Project) : Con
     }
 
     override fun isContentTheSame(data: ContentData): Boolean {
-        return if (data is ProjectContentData) {
-            project == data.project
-                    && project.mainFile() == data.project.mainFile()
-        } else false
+        return equals(data)
     }
 }

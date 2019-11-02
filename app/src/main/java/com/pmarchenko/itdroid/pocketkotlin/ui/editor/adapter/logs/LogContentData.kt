@@ -20,8 +20,6 @@ class LogContentData(
     }
 
     override fun isContentTheSame(data: ContentData): Boolean {
-        return if (data is LogContentData) {
-            log == data.log
-        } else false
+        return equals(data)
     }
 }

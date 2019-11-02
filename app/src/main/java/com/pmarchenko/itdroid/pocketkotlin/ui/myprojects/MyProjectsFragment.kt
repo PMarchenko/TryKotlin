@@ -8,13 +8,18 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.db.AppDatabase
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.extentions.dp
 import com.pmarchenko.itdroid.pocketkotlin.extentions.setVisibility
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.network.DummyProjectExecutionService
+import com.pmarchenko.itdroid.pocketkotlin.repository.ProjectsRepository
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorActivity
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.adapter.MyProjectsAdapter
 
@@ -22,6 +27,18 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.adapter.MyProjectsAdapt
 class MyProjectsFragment : Fragment(), ProjectCallback {
 
     private lateinit var viewModel: MyProjectsViewModel
+    private val viewModelProvider = object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MyProjectsViewModel::class.java)) {
+                val projectDao = AppDatabase.getDatabase(requireActivity().applicationContext).getProjectDao()
+                val executionService = DummyProjectExecutionService
+                val projectRepo = ProjectsRepository(projectDao, executionService)
+                @Suppress("UNCHECKED_CAST")
+                return MyProjectsViewModel(projectRepo) as T
+            }
+            error("Cannot create viewModel for $modelClass")
+        }
+    }
 
     private lateinit var progressView: View
     private lateinit var emptyView: View
@@ -29,18 +46,21 @@ class MyProjectsFragment : Fragment(), ProjectCallback {
     private lateinit var adapter: MyProjectsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewModel = ViewModelProviders.of(this).get(MyProjectsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelProvider).get(MyProjectsViewModel::class.java)
         return inflater.inflate(R.layout.fragment_my_projects, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
+
+        viewModel.userProjects.observe(viewLifecycleOwner, Observer { onProjects(it ?: emptyList()) })
+        viewModel.newProjectCreated.observe(viewLifecycleOwner, Observer { liveDataHolder -> liveDataHolder.get()?.let { onNewProject(it) } })
     }
 
     private fun initUI() {
         view?.findViewById<View>(R.id.fabAddProject)?.setOnClickListener { addNewProject() } ?: error("Cannot find fab")
-        progressView = view?.findViewById(R.id.progress) ?: error("Cannot find pregress view")
+        progressView = view?.findViewById(R.id.progress) ?: error("Cannot find progress view")
         emptyView = view?.findViewById(R.id.emptyView) ?: error("Cannot find emptyView")
         projectsList = view?.findViewById(R.id.projectsList) ?: error("Cannot find projects list")
 
@@ -53,8 +73,6 @@ class MyProjectsFragment : Fragment(), ProjectCallback {
             }
         })
         progressView.setVisibility(true)
-        viewModel.myProjects.observe(viewLifecycleOwner, Observer { onProjects(it ?: emptyList()) })
-        viewModel.newProjectCreated.observe(viewLifecycleOwner, Observer { liveDataHolder -> liveDataHolder.get()?.let { onNewProject(it) } })
     }
 
     private fun onProjects(projects: List<Project>) {
@@ -64,7 +82,7 @@ class MyProjectsFragment : Fragment(), ProjectCallback {
         emptyView.setVisibility(projects.isEmpty())
         projectsList.setVisibility(projects.isNotEmpty())
         if (projects.isNotEmpty()) {
-            if (atTop) projectsList.layoutManager!!.scrollToPosition(0)
+            if (atTop) projectsList.layoutManager?.scrollToPosition(0)
         }
     }
 
@@ -74,7 +92,7 @@ class MyProjectsFragment : Fragment(), ProjectCallback {
 
     private fun onNewProject(projectId: Long) {
         if (projectId > 0) {
-            projectsList.layoutManager!!.scrollToPosition(0)
+            projectsList.layoutManager?.scrollToPosition(0)
             openProject(projectId)
         }
     }

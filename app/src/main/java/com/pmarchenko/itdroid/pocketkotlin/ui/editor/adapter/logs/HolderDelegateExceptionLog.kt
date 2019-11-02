@@ -1,6 +1,5 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs
 
-import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +14,8 @@ import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateExceptionLog(
-    viewType: Int,
-    private val callback: EditorCallback
-) : HolderDelegateLog<ExceptionLogRecord, HolderDelegateExceptionLog.ExceptionLogViewHolder>(viewType) {
+class HolderDelegateExceptionLog(private val callback: EditorCallback) :
+    HolderDelegateLog<ExceptionLogRecord, HolderDelegateExceptionLog.ExceptionLogViewHolder>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): ExceptionLogViewHolder {
         return ExceptionLogViewHolder(inflater.inflate(R.layout.viewholder_log, parent, false), callback)
@@ -34,8 +31,12 @@ class HolderDelegateExceptionLog(
         }
 
         private fun appendException(text: SpannableStringBuilder, exception: ProjectException) {
-            text.append(resources.getString(R.string.logs__template_exception, exception.fullName, exception.message))
-            exception.stackTrace.forEach { stackTrace -> appendStackTrace(text, stackTrace) }
+            text.append(resources.getString(R.string.logs__template__exception, exception.fullName, exception.message))
+
+            exception.stackTrace.fold(text) { text, stackTrace ->
+                appendStackTrace(text, stackTrace)
+                text
+            }
             if (exception.cause != null) {
                 text.append("\tcaused by:\n")
                 appendException(text, exception.cause)
@@ -44,7 +45,7 @@ class HolderDelegateExceptionLog(
 
         private fun appendStackTrace(text: SpannableStringBuilder, stackTrace: ProjectExceptionStackTrace) {
             val linkText = "${stackTrace.fileName}${readableLineNumber(stackTrace.lineNumber)}"
-            val link = asLink(linkText, stackTrace, this, Color.parseColor("#2196F3"))
+            val link = asLink(linkText, stackTrace, this, linkUnderlineTextColor)
 
             text.append("\n\tat ")
                 .append(stackTrace.className).append(".").append(stackTrace.methodName)

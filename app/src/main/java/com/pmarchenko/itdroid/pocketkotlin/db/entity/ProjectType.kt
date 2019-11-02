@@ -7,11 +7,13 @@ package com.pmarchenko.itdroid.pocketkotlin.db.entity
  */
 enum class ProjectType {
 
-    USER_PROJECT;
+    USER_PROJECT, EXAMPLE;
 
     companion object {
 
-        const val DB_PROJECT = "USER_PROJECT"
+        const val DB_USER_PROJECT = "USER_PROJECT"
+
+        const val DB_EXAMPLE = "EXAMPLE"
     }
 }
 

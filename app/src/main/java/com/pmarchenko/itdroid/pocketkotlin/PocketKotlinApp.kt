@@ -5,7 +5,8 @@ import android.app.Application
 /**
  * @author Pavel Marchenko
  */
-class TryKotlinApp : Application() {
+@Suppress("unused")
+class PocketKotlinApp : Application() {
 
     override fun onCreate() {
         super.onCreate()

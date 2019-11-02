@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * @author Pavel Marchenko
  */
-open class HolderDelegateManager {
+class HolderDelegateManager {
 
     private val delegates: MutableMap<Int, HolderDelegate<RecyclerView.ViewHolder, ContentData>> = mutableMapOf()
 
-    protected fun <VH : RecyclerView.ViewHolder, C : ContentData> register(delegate: HolderDelegate<VH, C>) {
+    fun <VH : RecyclerView.ViewHolder, C : ContentData> register(viewType: Int, delegate: HolderDelegate<VH, C>) {
         @Suppress("UNCHECKED_CAST")
-        delegates[delegate.viewType] = delegate as HolderDelegate<RecyclerView.ViewHolder, ContentData>
+        delegates[viewType] = delegate as HolderDelegate<RecyclerView.ViewHolder, ContentData>
     }
 
     fun create(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -22,6 +22,15 @@ open class HolderDelegateManager {
 
     fun bind(holder: RecyclerView.ViewHolder, position: Int, content: ContentData) {
         delegate(holder.itemViewType).bind(holder, position, content)
+    }
+
+
+    fun attach(holder: RecyclerView.ViewHolder) {
+        delegate(holder.itemViewType).attach(holder)
+    }
+
+    fun detach(holder: RecyclerView.ViewHolder) {
+        delegate(holder.itemViewType).detach(holder)
     }
 
     private fun delegate(viewType: Int) = delegates[viewType]

@@ -1,8 +1,8 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
 
 data class FileContentData(
@@ -21,12 +21,5 @@ data class FileContentData(
         } else false
     }
 
-    override fun isContentTheSame(data: ContentData): Boolean {
-        return if (data is FileContentData) {
-            project == data.project
-                    && file == data.file
-                    && errors == data.errors
-                    && selection == data.selection
-        } else false
-    }
+    override fun isContentTheSame(data: ContentData) = equals(data)
 }

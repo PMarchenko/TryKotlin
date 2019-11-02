@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects
 
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 
 /**
  * @author Pavel Marchenko

@@ -6,32 +6,43 @@ import android.text.Spanned
 import android.text.style.ImageSpan
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogsContentData
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
-import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegateManager
+import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 
 /**
  * @author Pavel Marchenko
  */
-class ProjectAdapter(
-    private val context: Context,
-    callback: EditorCallback
-) : ContentAdapter(DelegateManager(callback)) {
+class ProjectAdapter(private val context: Context, private val callback: EditorCallback) : ContentAdapter() {
+
+    private var recyclerView: RecyclerView? = null
 
     private var project: Project? = null
     private var errors = emptyMap<String, ArrayList<ProjectError>>()
     private var logs = listOf<LogRecord>()
     private val selections = mutableMapOf<String, Pair<Int, Int>>()
 
+    override fun delegates(): Map<Int, HolderDelegate<*, *>> =
+        mapOf(
+            VIEW_TYPE_LOGS to HolderDelegateLogs(callback),
+            VIEW_TYPE_PROJECT_FILE to HolderDelegateProjectFile(callback)
+        )
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
         recyclerView.itemAnimator = ProjectItemsAnimator()
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        this.recyclerView = null
     }
 
     fun getTitle(position: Int): CharSequence {
@@ -78,6 +89,11 @@ class ProjectAdapter(
         return RecyclerView.NO_POSITION
     }
 
+    fun resetProject() {
+        recyclerView?.recycledViewPool?.clear()
+        setProject(null, null)
+    }
+
     fun setProject(project: Project?, errors: Map<String, ArrayList<ProjectError>>?) {
         this.project = project
         this.errors = errors ?: emptyMap()
@@ -101,15 +117,13 @@ class ProjectAdapter(
         project?.let { project ->
             content.add(LogsContentData(VIEW_TYPE_LOGS, logs))
 
-            project.files.forEach { file ->
-                content.add(
-                    FileContentData(
-                        VIEW_TYPE_PROJECT_FILE,
-                        project,
-                        file,
-                        errors[file.name]?.let { ArrayList(it) } ?: emptyList(),
-                        selections.remove(file.name)
-                    )
+            project.files.mapTo(content) { file ->
+                FileContentData(
+                    VIEW_TYPE_PROJECT_FILE,
+                    project,
+                    file,
+                    errors[file.name]?.let { ArrayList(it) } ?: emptyList(),
+                    selections.remove(file.name)
                 )
             }
         }
@@ -120,13 +134,5 @@ class ProjectAdapter(
     companion object {
         private const val VIEW_TYPE_LOGS = 0
         private const val VIEW_TYPE_PROJECT_FILE = 1
-    }
-
-    class DelegateManager(callback: EditorCallback) : HolderDelegateManager() {
-
-        init {
-            register(HolderDelegateLogs(VIEW_TYPE_LOGS, callback))
-            register(HolderDelegateProjectFile(VIEW_TYPE_PROJECT_FILE, callback))
-        }
     }
 }

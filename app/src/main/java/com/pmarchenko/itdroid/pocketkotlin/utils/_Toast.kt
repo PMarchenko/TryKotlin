@@ -1,6 +1,7 @@
 package com.pmarchenko.itdroid.pocketkotlin.utils
 
 import android.app.Activity
+import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -8,19 +9,19 @@ import androidx.fragment.app.Fragment
 /**
  * @author Pavel Marchenko
  */
-fun Activity.toast(@StringRes text: Int) {
+fun Context.toast(@StringRes text: Int) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }
 
-fun Activity.toast(text: String) {
+fun Context.toast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }
 
-fun Activity.toastLong(@StringRes text: Int) {
+fun Context.toastLong(@StringRes text: Int) {
     Toast.makeText(this, text, Toast.LENGTH_LONG).show()
 }
 
-fun Activity.toastLong(text: String) {
+fun Context.toastLong(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_LONG).show()
 }
 

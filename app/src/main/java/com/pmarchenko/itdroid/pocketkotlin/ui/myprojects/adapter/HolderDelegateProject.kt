@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorView
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
@@ -16,15 +16,14 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateProject(viewType: Int, private val projectListCallback: ProjectCallback) :
-    HolderDelegate<HolderDelegateProject.ProjectViewHolder, ProjectContentData>(viewType) {
+class HolderDelegateProject(private val callback: ProjectCallback) : HolderDelegate<HolderDelegateProject.ProjectViewHolder, ProjectContentData>() {
+
+    override fun create(inflater: LayoutInflater, parent: ViewGroup): ProjectViewHolder {
+        return ProjectViewHolder(inflater.inflate(R.layout.viewholder_project, parent, false), callback)
+    }
 
     override fun bind(holder: ProjectViewHolder, position: Int, contentData: ProjectContentData) {
         holder.bind(contentData.project)
-    }
-
-    override fun create(inflater: LayoutInflater, parent: ViewGroup): ProjectViewHolder {
-        return ProjectViewHolder(inflater.inflate(R.layout.viewholder_project, parent, false), projectListCallback)
     }
 
     class ProjectViewHolder(itemView: View, private val projectListCallback: ProjectCallback) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -46,8 +45,10 @@ class HolderDelegateProject(viewType: Int, private val projectListCallback: Proj
             editorView.setText(project.mainFile().program)
             editorView.handleTouchEvents = false
             nameView.text = project.name
+
+            val date = if (project.dateModified > 0) project.dateModified else project.dateCreated
             dateView.text = DateUtils.formatDateTime(
-                dateView.context, project.dateModified,
+                dateView.context, date,
                 DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_TIME
             )
         }

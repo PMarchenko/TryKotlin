@@ -30,7 +30,8 @@ import java.util.*
 open class LogViewHolder<T : LogRecord>(itemView: View, protected val callback: EditorCallback) : RecyclerView.ViewHolder(itemView) {
 
     //todo color to resources
-    protected val errorTextColor = "#BBEC5424"
+    protected val errorTextColor = Color.parseColor("#BBEC5424")
+    protected val linkUnderlineTextColor = Color.parseColor("#2196F3")
 
     private val logView by findView<TextView>(R.id.logMessage)
     private val dateFormat: SimpleDateFormat
@@ -55,7 +56,7 @@ open class LogViewHolder<T : LogRecord>(itemView: View, protected val callback: 
         return timestamp
     }
 
-    protected fun asError(text: CharSequence) = asColoredText(text, Color.parseColor(errorTextColor))
+    protected fun asError(text: CharSequence) = asColoredText(text, errorTextColor)
 
     protected fun <D> asLink(text: CharSequence,
                              data: D,

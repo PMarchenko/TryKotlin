@@ -7,16 +7,10 @@ import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxService
 /**
  * @author Pavel Marchenko
  */
-class KotlinSyntaxRepository {
+class KotlinSyntaxRepository(private val syntaxService: KotlinSyntaxService) {
 
-    companion object {
+    fun highlightSyntax(programText: Editable, errors: MutableList<EditorError>) {
 
-        val SYNTAX_SERVICE = KotlinSyntaxService()
-    }
-
-    fun highlightSyntax(programText: Editable,
-                        errors: MutableList<EditorError>) {
-
-        SYNTAX_SERVICE.highlightSyntax(programText, errors)
+        syntaxService.highlightSyntax(programText, errors)
     }
 }

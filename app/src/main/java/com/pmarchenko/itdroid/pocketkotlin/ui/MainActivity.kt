@@ -3,7 +3,6 @@ package com.pmarchenko.itdroid.pocketkotlin.ui
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -16,6 +15,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.utils.loge
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         appBarLayout = findViewById(R.id.appBar)
         navigationView = findViewById(R.id.nav_view)
 
-        setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         drawerLayout = findViewById(R.id.drawer_layout)
 

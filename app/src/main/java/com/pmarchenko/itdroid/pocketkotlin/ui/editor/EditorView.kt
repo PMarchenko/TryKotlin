@@ -9,14 +9,15 @@ import android.util.SparseIntArray
 import android.view.MotionEvent
 import androidx.appcompat.R
 import androidx.appcompat.widget.AppCompatEditText
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.extentions.dp
 import com.pmarchenko.itdroid.pocketkotlin.extentions.findAnyKey
 import com.pmarchenko.itdroid.pocketkotlin.extentions.isRtl
 import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxRepository
+import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxService
 import com.pmarchenko.itdroid.pocketkotlin.utils.TextWatcherAdapter
 import kotlin.math.max
 
@@ -29,7 +30,7 @@ class EditorView : AppCompatEditText {
         private const val NO_LINE = -1
     }
 
-    private val syntaxRepository = KotlinSyntaxRepository()
+    private val syntaxRepository = KotlinSyntaxRepository(KotlinSyntaxService())
 
     private var initialized: Boolean = false
 
@@ -70,7 +71,7 @@ class EditorView : AppCompatEditText {
         addTextChangedListener(object : TextWatcherAdapter() {
 
             override fun afterTextChanged(s: Editable?) {
-                mapRealToVirtualLInes(realToVirtualLines)
+                mapRealToVirtualLines(realToVirtualLines)
                 if (initialized && !s.isNullOrEmpty()) {
                     errors.clear()
                     analyzeSyntax(s)
@@ -123,11 +124,7 @@ class EditorView : AppCompatEditText {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        mapRealToVirtualLInes(realToVirtualLines)
-        pendingErrors?.let {
-            setErrors(it.first, it.second)
-            pendingErrors = null
-        } ?: analyzeSyntax(editableText)
+        mapRealToVirtualLines(realToVirtualLines)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -142,7 +139,8 @@ class EditorView : AppCompatEditText {
             errors.find { error -> error.startLine == lineVirtual }?.let { error ->
                 hasError = true
                 val area = errorAreas[lineVirtual]
-                area!!
+                area ?: return@let
+
                 if (area.isEmpty) {
                     area.left = 2f.dp
                     area.right = lineBarWidth.toInt() - 2f.dp
@@ -162,7 +160,7 @@ class EditorView : AppCompatEditText {
         }
     }
 
-    private fun mapRealToVirtualLInes(map: SparseIntArray) {
+    private fun mapRealToVirtualLines(map: SparseIntArray) {
         map.clear()
         layout?.let { layout ->
             var realLine = 0
@@ -200,20 +198,22 @@ class EditorView : AppCompatEditText {
         this.file = file
         this.errors.clear()
         errorAreas.clear()
-        errors.forEach {
-            val startLine = realToVirtualLines.valueAt(it.interval.start.line)
-            val start = layout.getLineStart(startLine) + it.interval.start.ch
 
-            val endLine = realToVirtualLines.valueAt(it.interval.end.line)
-            val end = layout.getLineStart(endLine) + it.interval.end.ch
+        for (error in errors) {
+            val startLine = realToVirtualLines.valueAt(error.interval.start.line)
+            val start = layout.getLineStart(startLine) + error.interval.start.ch
+
+            val endLine = realToVirtualLines.valueAt(error.interval.end.line)
+            val end = layout.getLineStart(endLine) + error.interval.end.ch
             if (start >= 0 && end <= editableText.length) {
-                this.errors.add(EditorError(it.message, it.severity, startLine, endLine, start, end))
+                val editorError = EditorError(error.message, error.severity, startLine, endLine, start, end)
+                this.errors.add(editorError)
+                errorAreas[editorError.startLine] = RectF()
             }
         }
-        this.errors.forEach {
-            errorAreas[it.startLine] = RectF()
-        }
+
         analyzeSyntax(editableText)
+        invalidate()
     }
 
     private fun analyzeSyntax(text: Editable?) {

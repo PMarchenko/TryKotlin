@@ -2,10 +2,7 @@ package com.pmarchenko.itdroid.pocketkotlin.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectType
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectWithFiles
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.*
 
 /**
  * @author Pavel Marchenko
@@ -16,20 +13,20 @@ abstract class ProjectDao {
     @Query(
         """
             SELECT *
-            FROM ${ProjectTable.TABLE}
-            WHERE ${ProjectTable.PROJECT_TYPE} = '${ProjectType.DB_PROJECT}'
-            ORDER BY ${ProjectTable.DATE_MODIFIED} DESC
+            FROM ${ProjectsTable.TABLE}
+            WHERE ${ProjectsTable.PROJECT_TYPE} = '${ProjectType.DB_USER_PROJECT}'
+            ORDER BY ${ProjectsTable.DATE_MODIFIED} DESC
               """
     )
     @Transaction
-    abstract fun getMyProjects(): LiveData<List<ProjectWithFiles>>
+    abstract fun getUserProjects(): LiveData<List<ProjectWithFiles>>
 
     @Query(
         """
             SELECT * 
-            FROM ${ProjectTable.TABLE}
-            WHERE ${ProjectTable.PROJECT_TYPE} = '${ProjectType.DB_PROJECT}' AND ${ProjectTable.ID} = :projectId
-            ORDER BY ${ProjectTable.DATE_MODIFIED} DESC
+            FROM ${ProjectsTable.TABLE}
+            WHERE ${ProjectsTable.ID} = :projectId
+            LIMIT 1
               """
     )
     @Transaction
@@ -37,19 +34,52 @@ abstract class ProjectDao {
 
     @Transaction
     open fun insert(project: Project): Long {
-        val projectId = insertPrivate(project)
-        project.files.forEach { file ->
+        val projectId = insertInternal(project)
+        for (file in project.files) {
             file.projectId = projectId
-            insertPrivate(file)
+            insertInternal(file)
         }
         return projectId
     }
 
-    @Insert
-    abstract fun insertPrivate(project: Project): Long
+    @Query(
+        """
+            SELECT *
+            FROM ${ExamplesTable.TABLE}
+              """
+    )
+    //TODO BUG what if wrong sort order?
+    @Transaction
+    abstract fun getExamples(): LiveData<List<ExampleWithProjects>>
+
+    @Transaction
+    @Query(
+        """
+            SELECT *
+            FROM ${ExamplesTable.TABLE}
+            WHERE ${ExamplesTable.MODIFIED_PROJECT_ID} = :modifiedProjectId
+              """
+    )
+    abstract fun getExample(modifiedProjectId: Long): ExampleWithProjects
+
+    @Transaction
+    open fun insertExamples(examples: List<Example>) {
+        for (example in examples) {
+            example.exampleProject?.let { example.exampleProjectId = insert(it) }
+            example.modifiedProject?.let { example.modifiedProjectId = insert(it) }
+
+            insertInternal(example)
+        }
+    }
 
     @Insert
-    abstract fun insertPrivate(file: ProjectFile): Long
+    protected abstract fun insertInternal(project: Project): Long
+
+    @Insert
+    protected abstract fun insertInternal(file: ProjectFile): Long
+
+    @Insert
+    protected abstract fun insertInternal(example: Example): Long
 
     @Delete
     abstract fun deleteProject(project: Project)

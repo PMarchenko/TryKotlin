@@ -6,7 +6,7 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 /**
  * @author Pavel Marchenko
  */
-abstract class HolderDelegateLog<L: LogRecord, VH: LogViewHolder<L>>(viewType: Int): HolderDelegate<VH, LogContentData>(viewType) {
+abstract class HolderDelegateLog<L: LogRecord, VH: LogViewHolder<L>>: HolderDelegate<VH, LogContentData>() {
 
     override fun bind(holder: VH, position: Int, contentData: LogContentData) {
         holder.bindView(contentData.log)

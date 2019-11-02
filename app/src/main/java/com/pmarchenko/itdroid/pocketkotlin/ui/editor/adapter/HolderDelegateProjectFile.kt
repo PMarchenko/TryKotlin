@@ -10,15 +10,11 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorView
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 import com.pmarchenko.itdroid.pocketkotlin.utils.TextWatcherAdapter
-import com.pmarchenko.itdroid.pocketkotlin.utils.logd
 
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateProjectFile(
-    viewType: Int,
-    private val callback: EditorCallback
-) : HolderDelegate<HolderDelegateProjectFile.ProjectFileViewHolder, FileContentData>(viewType) {
+class HolderDelegateProjectFile(private val callback: EditorCallback) : HolderDelegate<HolderDelegateProjectFile.ProjectFileViewHolder, FileContentData>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): ProjectFileViewHolder {
         return ProjectFileViewHolder(inflater.inflate(R.layout.viewholder_project_file, parent, false), callback)
@@ -56,33 +52,21 @@ class HolderDelegateProjectFile(
         }
 
         fun bind(fileData: FileContentData) {
-            val file = fileData.file
+            this.fileData = fileData
 
-            if (pendingProgram.isNotEmpty() && pendingProgram != file.program) {
-                logd { "bindFile: reject" }
-                return
+            val file = fileData.file
+            val program = editor.getProgram()
+
+            if (program.isEmpty() && file.program != program) {
+                editor.setText(file.program)
             }
 
-            if (this.fileData != fileData) {
-                this.fileData = fileData
+            editor.setErrors(file, fileData.errors)
 
-                if (file.program != editor.getProgram()) {
-                    val selection = editor.selectionStart
-                    logd { "bindFile: selection=$selection" }
-                    editor.setText(file.program)
-                    if (selection >= 0 && selection < editor.text?.length ?: -1) {
-                        editor.setSelection(selection)
-                        logd { "bindFile: apply selection=$selection" }
-                    }
-                }
-
-                editor.setErrors(file, fileData.errors)
-
-                fileData.selection?.let {
-                    editor.setSelection(it)
-                    editor.requestFocus()
-                    fileData.selection = null
-                }
+            fileData.selection?.let {
+                editor.setSelection(it)
+                editor.requestFocus()
+                fileData.selection = null
             }
         }
     }

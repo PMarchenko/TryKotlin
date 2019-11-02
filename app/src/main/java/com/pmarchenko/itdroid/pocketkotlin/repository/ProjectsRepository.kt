@@ -1,39 +1,37 @@
 package com.pmarchenko.itdroid.pocketkotlin.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.pmarchenko.itdroid.pocketkotlin.db.ProjectDao
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectWithFiles
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.*
 import com.pmarchenko.itdroid.pocketkotlin.model.Error
-import com.pmarchenko.itdroid.pocketkotlin.model.Loading
 import com.pmarchenko.itdroid.pocketkotlin.model.Resource
 import com.pmarchenko.itdroid.pocketkotlin.model.Success
-import com.pmarchenko.itdroid.pocketkotlin.model.log.*
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.network.ProjectConverterFactory
 import com.pmarchenko.itdroid.pocketkotlin.network.ProjectExecutionService
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * @author Pavel Marchenko
  */
-class ProjectsRepository(private val projectDao: ProjectDao) {
+class ProjectsRepository(
+    private val projectDao: ProjectDao,
+    private val executionService: ProjectExecutionService
+) {
 
-    val myProjects: LiveData<List<Project>> = Transformations.map(projectDao.getMyProjects()) { projectsWithFiles ->
+    val userProjects: LiveData<List<Project>> = Transformations.map(projectDao.getUserProjects()) { projectsWithFiles ->
         projectsWithFiles.map { projectWithFiles: ProjectWithFiles ->
-            val project = projectWithFiles.project
-            project.files.addAll(projectWithFiles.files)
-            project
+            toProject(projectWithFiles)
+        }
+    }
+
+    val examples: LiveData<List<Example>> = Transformations.map(projectDao.getExamples()) { projectsWithFiles ->
+        projectsWithFiles.map { exampleWithProject: ExampleWithProjects ->
+            val example = exampleWithProject.example
+            example.exampleProject = toProject(exampleWithProject.exampleProjectWithFiles)
+            example.modifiedProject = toProject(exampleWithProject.modifiedProjectWithFiles)
+            example
         }
     }
 
@@ -43,7 +41,7 @@ class ProjectsRepository(private val projectDao: ProjectDao) {
         projectDao.deleteProject(project)
     }
 
-    fun loadProject(projectId: Long) = projectDao.getProject(projectId)
+    fun loadProject(projectId: Long) = Transformations.map(projectDao.getProject(projectId)) { toProject(it) }
 
     fun updateFile(project: Project, file: ProjectFile, updateTimestamp: Boolean = true) {
         val timestamp = System.currentTimeMillis()
@@ -71,81 +69,45 @@ class ProjectsRepository(private val projectDao: ProjectDao) {
         )
     }
 
-    fun execute(log: LogLiveData, project: Project): LiveData<Resource<ProjectExecutionResult>> {
-        val result = MutableLiveData<Resource<ProjectExecutionResult>>()
+    fun resetExampleProject(project: Project) {
+        val projectId = project.id
+        val initialFiles = projectDao.getExample(projectId).exampleProjectWithFiles.files
 
-        result.postValue(Loading())
-        log.postValue(RunLogRecord(project.name, project.args))
-        KOTLIN_SERVICE.execute(project = project).enqueue(object : Callback<ProjectExecutionResult> {
+        for (file in project.files) {
+            initialFiles
+                .filter { it.name == file.name }
+                .forEach { updateFile(project, file.copy(program = it.program)) }
+        }
+    }
 
-            override fun onFailure(call: Call<ProjectExecutionResult>, t: Throwable) {
-                onError(result, log, t.message)
-            }
-
-            override fun onResponse(call: Call<ProjectExecutionResult>, response: Response<ProjectExecutionResult>) {
+    fun execute(project: Project): Flow<Resource<ProjectExecutionResult>> {
+        return flow {
+            try {
+                val response = executionService.execute(project = project)
                 if (response.isSuccessful) {
-                    val executionResult = response.body()
-                    if (executionResult == null) {
-                        onError(result, log, null)
+                    val result = response.body()
+                    if (result == null) {
+                        //todo proper error message?
+                        emit(Error(""))
                     } else {
-                        onSuccess(result, log, executionResult)
+                        emit(Success(result))
                     }
                 } else {
-                    onError(result, log, response.errorBody()?.string())
+                    emit(Error(response.errorBody()?.string() ?: ""))
                 }
+            } catch (e: Throwable) {
+                emit(Error(e.message ?: ""))
             }
-        })
-        return result
-    }
-
-    private fun onSuccess(
-        out: MutableLiveData<Resource<ProjectExecutionResult>>,
-        log: LogLiveData,
-        result: ProjectExecutionResult
-    ) {
-        out.postValue(Success(result))
-        val hasException = result.exception != null
-        val hasError = result.hasErrors()
-        val hasOutput = !result.text.isNullOrEmpty() || !(hasException || hasError)
-
-        if (hasOutput) {
-            log.postValue(InfoLogRecord(result.text ?: ""))
         }
-
-        if (hasException) {
-            log.postValue(ExceptionLogRecord(result.exception!!))
-        }
-
-        if (hasError) {
-            log.postValue(ErrorLogRecord(ErrorLogRecord.ERROR_PROJECT, errors = result.errors))
-        }
-    }
-
-    private fun onError(
-        result: MutableLiveData<Resource<ProjectExecutionResult>>,
-        log: LogLiveData,
-        errorMessage: String?,
-        errorCode: Int = ErrorLogRecord.ERROR_MESSAGE
-    ) {
-        result.postValue(Error(errorMessage ?: ""))
-        log.postValue(ErrorLogRecord(errorCode, errorMessage))
     }
 
     companion object {
 
-        val KOTLIN_SERVICE: ProjectExecutionService = Retrofit.Builder()
-            .client(
-                OkHttpClient.Builder()
-                    .addNetworkInterceptor(StethoInterceptor())
-                    .connectTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(20, TimeUnit.SECONDS)
-                    .readTimeout(20, TimeUnit.SECONDS)
-                    .build()
-            )
-            .baseUrl("https://try.kotlinlang.org/")
-            .addConverterFactory(ProjectConverterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ProjectExecutionService::class.java)
+        @JvmStatic
+        private fun toProject(projectWithFiles: ProjectWithFiles): Project {
+            val project = projectWithFiles.project
+            project.files.addAll(projectWithFiles.files)
+            return project
+        }
     }
 }

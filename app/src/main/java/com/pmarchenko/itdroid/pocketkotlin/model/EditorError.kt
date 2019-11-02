@@ -9,20 +9,22 @@ import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
  * @author Pavel Marchenko
  */
 data class EditorError(
-        val message: String,
-        val severity: ErrorSeverity,
-        val startLine: Int,
-        val endLine: Int,
-        val start: Int,
-        val end: Int) : Parcelable {
+    val message: String,
+    val severity: ErrorSeverity,
+    val startLine: Int,
+    val endLine: Int,
+    val start: Int,
+    val end: Int
+) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-            parcel.readString()!!,
-            ErrorSeverity.valueOf(parcel.readString()!!),
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readInt())
+        parcel.readString() ?: "",
+        ErrorSeverity.valueOf(parcel.readString() ?: ErrorSeverity.ERROR.name),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(message)

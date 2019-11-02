@@ -13,10 +13,7 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateInfoLog(
-    viewType: Int,
-    private val callback: EditorCallback
-) : HolderDelegateLog<InfoLogRecord, HolderDelegateInfoLog.InfoLogViewHolder>(viewType) {
+class HolderDelegateInfoLog(private val callback: EditorCallback) : HolderDelegateLog<InfoLogRecord, HolderDelegateInfoLog.InfoLogViewHolder>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): InfoLogViewHolder {
         return InfoLogViewHolder(inflater.inflate(R.layout.viewholder_log, parent, false), callback)

@@ -1,13 +1,16 @@
 package com.pmarchenko.itdroid.pocketkotlin.utils
 
-import kotlin.concurrent.thread
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
 
 /**
  * @author Pavel Marchenko
  */
-inline fun async(crossinline operation: () -> Unit) {
-    //todo use coroutines
-    thread {
-        operation()
+fun ViewModel.doInBackground(block: () -> Unit) {
+    viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            block()
+        }
     }
 }

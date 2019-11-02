@@ -2,7 +2,7 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
 import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
 import com.pmarchenko.itdroid.pocketkotlin.model.ViewState
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Project
+import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
 
 /**
  * @author Pavel Marchenko
