@@ -6,10 +6,10 @@ import android.text.Spanned
 import android.text.style.ImageSpan
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.data.model.log.LogRecord
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ErrorSeverity
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogsContentData
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentAdapter
@@ -19,7 +19,10 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 /**
  * @author Pavel Marchenko
  */
-class ProjectAdapter(private val context: Context, private val callback: EditorCallback) : ContentAdapter() {
+class ProjectAdapter(
+    private val context: Context,
+    private val callback: EditorCallback
+) : ContentAdapter() {
 
     private var recyclerView: RecyclerView? = null
 
@@ -63,7 +66,8 @@ class ProjectAdapter(private val context: Context, private val callback: EditorC
                 if (hasErrors || hasWarnings) {
                     val out = SpannableStringBuilder(fileName)
                     out.append(" ")
-                    val icon = if (hasErrors) R.drawable.ic_error_12dp else R.drawable.ic_warning_12dp
+                    val icon =
+                        if (hasErrors) R.drawable.ic_error_12dp else R.drawable.ic_warning_12dp
                     out.setSpan(
                         ImageSpan(context, icon, ImageSpan.ALIGN_BASELINE),
                         out.length - 1,
@@ -81,7 +85,10 @@ class ProjectAdapter(private val context: Context, private val callback: EditorC
 
     fun getFilePosition(fileName: String): Int {
         for (position in 0 until itemCount) {
-            if (getItemViewType(position) == VIEW_TYPE_PROJECT_FILE && getItem<FileContentData>(position).file.name == fileName) {
+            if (getItemViewType(position) == VIEW_TYPE_PROJECT_FILE && getItem<FileContentData>(
+                    position
+                ).file.name == fileName
+            ) {
                 return position
             }
         }
@@ -132,7 +139,10 @@ class ProjectAdapter(private val context: Context, private val callback: EditorC
     }
 
     companion object {
+
         private const val VIEW_TYPE_LOGS = 0
+
         private const val VIEW_TYPE_PROJECT_FILE = 1
+
     }
 }

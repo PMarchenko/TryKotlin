@@ -9,9 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class HolderDelegateManager {
 
-    private val delegates: MutableMap<Int, HolderDelegate<RecyclerView.ViewHolder, ContentData>> = mutableMapOf()
+    private val delegates: MutableMap<Int, HolderDelegate<RecyclerView.ViewHolder, ContentData>> =
+        mutableMapOf()
 
-    fun <VH : RecyclerView.ViewHolder, C : ContentData> register(viewType: Int, delegate: HolderDelegate<VH, C>) {
+    fun <VH : RecyclerView.ViewHolder, C : ContentData> register(
+        viewType: Int,
+        delegate: HolderDelegate<VH, C>
+    ) {
         @Suppress("UNCHECKED_CAST")
         delegates[viewType] = delegate as HolderDelegate<RecyclerView.ViewHolder, ContentData>
     }
@@ -33,7 +37,8 @@ class HolderDelegateManager {
         delegate(holder.itemViewType).detach(holder)
     }
 
-    private fun delegate(viewType: Int) = delegates[viewType]
-        ?: error("Unsupported view type: $viewType, please register a delegate object using #register(HolderDelegate) method")
+    private fun delegate(viewType: Int) =
+        delegates[viewType]
+            ?: error("Unsupported view type: $viewType, please register a delegate object using #register(HolderDelegate) method")
 
 }

@@ -12,23 +12,20 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.utils.loge
-import kotlinx.coroutines.*
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var navigationView: NavigationView
+    private val navigationView by bindView<NavigationView>(R.id.nav_view)
+    private val drawerLayout by bindView<DrawerLayout>(R.id.drawer_layout)
+
     private lateinit var navController: NavController
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var appBarLayout: AppBarLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
         initUI()
     }
@@ -51,12 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        appBarLayout = findViewById(R.id.appBar)
-        navigationView = findViewById(R.id.nav_view)
-
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        drawerLayout = findViewById(R.id.drawer_layout)
 
         appBarConfiguration = AppBarConfiguration(setOf(R.id.menu_item_my_projects), drawerLayout)
 
@@ -65,7 +57,10 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navigationView.setupWithNavController(navController)
 
-        // As nav drawer menu grouped by categories, menu highlighted logic implemented in setupActionBarWithNavController is not working
-        navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ -> navigationView.setCheckedItem(navDestination.id) }
+        // As nav drawer menu grouped by categories,
+        // menu highlighted logic implemented in setupActionBarWithNavController is not working
+        navController.addOnDestinationChangedListener { _, navDestination: NavDestination, _ ->
+            navigationView.setCheckedItem(navDestination.id)
+        }
     }
 }

@@ -11,8 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.utils.TextWatcherAdapter
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.TextWatcherAdapter
 
 /**
  * @author Pavel Marchenko
@@ -25,8 +25,7 @@ class AddProjectDialog : DialogFragment(), DialogInterface.OnClickListener {
 
         fun show(fragment: Fragment) {
             val dialog = AddProjectDialog()
-            dialog.setTargetFragment(fragment, 0)
-            dialog.show(fragment.requireFragmentManager(), TAG)
+            dialog.show(fragment.childFragmentManager, TAG)
         }
     }
 
@@ -38,7 +37,7 @@ class AddProjectDialog : DialogFragment(), DialogInterface.OnClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callback = targetFragment as ProjectCallback
+        callback = parentFragment as ProjectCallback
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,13 +71,18 @@ class AddProjectDialog : DialogFragment(), DialogInterface.OnClickListener {
         outState.putBoolean("has_name", getProjectName().isNotEmpty())
     }
 
-    private fun positiveButton() = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+    private fun positiveButton() =
+        (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
         val projectName = getProjectName()
         if (which == DialogInterface.BUTTON_POSITIVE && projectName.isNotEmpty()) {
             val includeMain = isIncludeMain.isChecked
-            callback.onAddProject(if (includeMain) Project.withMainFun(projectName) else Project.empty(projectName))
+            callback.onAddProject(
+                if (includeMain) Project.withMainFun(projectName) else Project.empty(
+                    projectName
+                )
+            )
         }
     }
 

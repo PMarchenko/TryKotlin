@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.model.log.ExceptionLogRecord
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectException
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExceptionStackTrace
+import com.pmarchenko.itdroid.pocketkotlin.data.model.log.ExceptionLogRecord
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectExceptionStackTrace
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpanListener
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
-import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
 
 /**
  * @author Pavel Marchenko
@@ -18,11 +18,15 @@ class HolderDelegateExceptionLog(private val callback: EditorCallback) :
     HolderDelegateLog<ExceptionLogRecord, HolderDelegateExceptionLog.ExceptionLogViewHolder>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): ExceptionLogViewHolder {
-        return ExceptionLogViewHolder(inflater.inflate(R.layout.viewholder_log, parent, false), callback)
+        return ExceptionLogViewHolder(
+            inflater.inflate(R.layout.viewholder_log, parent, false),
+            callback
+        )
     }
 
     class ExceptionLogViewHolder(itemView: View, callback: EditorCallback) :
-        LogViewHolder<ExceptionLogRecord>(itemView, callback), ClickableSpanListener<ProjectExceptionStackTrace> {
+        LogViewHolder<ExceptionLogRecord>(itemView, callback),
+        ClickableSpanListener<ProjectExceptionStackTrace> {
 
         override fun prepareText(log: ExceptionLogRecord): CharSequence {
             val text = SpannableStringBuilder(super.prepareText(log))
@@ -31,7 +35,13 @@ class HolderDelegateExceptionLog(private val callback: EditorCallback) :
         }
 
         private fun appendException(text: SpannableStringBuilder, exception: ProjectException) {
-            text.append(resources.getString(R.string.logs__template__exception, exception.fullName, exception.message))
+            text.append(
+                resources.getString(
+                    R.string.logs__template__exception,
+                    exception.fullName,
+                    exception.message
+                )
+            )
 
             exception.stackTrace.fold(text) { text, stackTrace ->
                 appendStackTrace(text, stackTrace)
@@ -39,11 +49,16 @@ class HolderDelegateExceptionLog(private val callback: EditorCallback) :
             }
             if (exception.cause != null) {
                 text.append("\tcaused by:\n")
-                appendException(text, exception.cause)
+                exception.cause?.let {
+                    appendException(text, it)
+                }
             }
         }
 
-        private fun appendStackTrace(text: SpannableStringBuilder, stackTrace: ProjectExceptionStackTrace) {
+        private fun appendStackTrace(
+            text: SpannableStringBuilder,
+            stackTrace: ProjectExceptionStackTrace
+        ) {
             val linkText = "${stackTrace.fileName}${readableLineNumber(stackTrace.lineNumber)}"
             val link = asLink(linkText, stackTrace, this, linkUnderlineTextColor)
 
@@ -56,6 +71,7 @@ class HolderDelegateExceptionLog(private val callback: EditorCallback) :
             callback.openFile(data.fileName, data.lineNumber - 1, 0)
         }
 
-        private fun readableLineNumber(lineNumber: Int) = if (lineNumber < 0) "" else ":$lineNumber"
+        private fun readableLineNumber(lineNumber: Int) =
+            if (lineNumber < 0) "" else ":$lineNumber"
     }
 }

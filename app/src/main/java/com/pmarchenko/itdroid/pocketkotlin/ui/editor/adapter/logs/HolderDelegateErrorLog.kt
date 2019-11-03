@@ -5,18 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.model.log.ErrorLogRecord
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.data.model.log.ErrorLogRecord
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectError
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
-import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpanListener
 
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateErrorLog(private val callback: EditorCallback) : HolderDelegateLog<ErrorLogRecord, HolderDelegateErrorLog.ErrorLogViewHolder>() {
+class HolderDelegateErrorLog(private val callback: EditorCallback) :
+    HolderDelegateLog<ErrorLogRecord, HolderDelegateErrorLog.ErrorLogViewHolder>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): ErrorLogViewHolder {
-        return ErrorLogViewHolder(inflater.inflate(R.layout.viewholder_log, parent, false), callback)
+        return ErrorLogViewHolder(
+            inflater.inflate(R.layout.viewholder_log, parent, false),
+            callback
+        )
     }
 
     class ErrorLogViewHolder(itemView: View, callback: EditorCallback) :
@@ -31,8 +35,14 @@ class HolderDelegateErrorLog(private val callback: EditorCallback) : HolderDeleg
                     for (fileErrors in log.errors) {
                         val fileName = fileErrors.key
                         for (error in fileErrors.value) {
-                            val linkText = "$fileName:${error.interval.start.line + 1}:${error.interval.start.ch + 1}"
-                            val link = asLink(linkText, Pair(fileName, error), this, linkUnderlineTextColor)
+                            val linkText =
+                                "$fileName:${error.interval.start.line + 1}:${error.interval.start.ch + 1}"
+                            val link = asLink(
+                                linkText,
+                                Pair(fileName, error),
+                                this,
+                                linkUnderlineTextColor
+                            )
                             combinedErrors.append("${error.severity.name} ($link): ${error.message}\n")
                         }
                     }
@@ -48,7 +58,11 @@ class HolderDelegateErrorLog(private val callback: EditorCallback) : HolderDeleg
         }
 
         override fun onClick(data: Pair<String, ProjectError>, view: View) {
-            callback.openFile(data.first, data.second.interval.start.line, data.second.interval.start.ch)
+            callback.openFile(
+                data.first,
+                data.second.interval.start.line,
+                data.second.interval.start.ch
+            )
         }
     }
 }

@@ -13,7 +13,9 @@ abstract class DiffAdapter<T : RecyclerView.ViewHolder> : RecyclerView.Adapter<T
         result.dispatchUpdatesTo(this)
     }
 
-    private class DiffCallback(val oldItems: List<ContentData>, val newItems: List<ContentData>) : DiffUtil.Callback() {
+    private class DiffCallback(
+        val oldItems: List<ContentData>, val newItems: List<ContentData>
+    ) : DiffUtil.Callback() {
 
         override fun getOldListSize() = oldItems.size
 

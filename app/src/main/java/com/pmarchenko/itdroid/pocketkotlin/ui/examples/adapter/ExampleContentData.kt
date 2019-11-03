@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.examples.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Example
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
 
 /**
@@ -16,10 +16,11 @@ class ExampleContentData(
     override fun isItemTheSame(data: ContentData): Boolean {
         return if (data is ExampleContentData) {
             example.id == data.example.id
-        } else false
+        } else {
+            false
+        }
     }
 
-    override fun isContentTheSame(data: ContentData): Boolean {
-        return equals(data)
-    }
+    override fun isContentTheSame(data: ContentData) = equals(data)
+
 }

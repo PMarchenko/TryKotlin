@@ -2,9 +2,9 @@ package com.pmarchenko.itdroid.pocketkotlin.syntax
 
 import android.text.Editable
 import android.text.Spanned
-import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
-import com.pmarchenko.itdroid.pocketkotlin.utils.measureTimeAndLog
+import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ErrorSeverity
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.measureTimeAndLog
 
 /**
  * @author Pavel Marchenko

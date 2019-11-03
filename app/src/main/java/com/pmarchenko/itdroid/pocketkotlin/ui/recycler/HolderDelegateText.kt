@@ -17,9 +17,18 @@ class HolderDelegateText private constructor(
 ) :
     HolderDelegate<HolderDelegateText.TextViewHolder, TextContentData>() {
 
-    constructor(view: View, textViewProvider: (itemView: View) -> TextView) : this(view, NO_LAYOUT_RES, textViewProvider)
+    @Suppress("unused")
+    constructor(view: View, textViewProvider: (itemView: View) -> TextView) : this(
+        view,
+        NO_LAYOUT_RES,
+        textViewProvider
+    )
 
-    constructor(@LayoutRes layoutId: Int, textViewProvider: (itemView: View) -> TextView) : this(null, layoutId, textViewProvider)
+    constructor(@LayoutRes layoutId: Int, textViewProvider: (itemView: View) -> TextView) : this(
+        null,
+        layoutId,
+        textViewProvider
+    )
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): TextViewHolder {
         val view = when {

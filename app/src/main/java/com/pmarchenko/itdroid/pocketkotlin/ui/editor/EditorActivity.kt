@@ -5,17 +5,20 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.utils.toast
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.toast
 
 class EditorActivity : AppCompatActivity() {
 
     companion object {
 
-        fun asDeepLinkIntent(projectId: Long): Intent {
-            return Intent("pocketkotlin.VIEW_PROJECT", Uri.parse("app://pocketkotlin/project/$projectId"))
-        }
+        fun asDeepLinkIntent(projectId: Long) =
+            Intent(
+                "pocketkotlin.VIEW_PROJECT",
+                Uri.parse("app://pocketkotlin/project/$projectId")
+            )
 
-        const val INVALID_ID = -1L
+        private fun parseProjectId(intent: Intent?): Long =
+            intent?.data?.lastPathSegment?.toLongOrNull() ?: -1L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +38,4 @@ class EditorActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    private fun parseProjectId(intent: Intent?): Long {
-        return intent?.data?.lastPathSegment?.toLongOrNull() ?: INVALID_ID
-    }
-
 }

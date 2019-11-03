@@ -1,17 +1,18 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
 import androidx.lifecycle.*
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.model.Error
-import com.pmarchenko.itdroid.pocketkotlin.model.Loading
-import com.pmarchenko.itdroid.pocketkotlin.model.Resource
-import com.pmarchenko.itdroid.pocketkotlin.model.Success
-import com.pmarchenko.itdroid.pocketkotlin.model.log.*
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
-import com.pmarchenko.itdroid.pocketkotlin.repository.ProjectsRepository
-import com.pmarchenko.itdroid.pocketkotlin.utils.doInBackground
-import com.pmarchenko.itdroid.pocketkotlin.utils.executor.TaskExecutor
+import com.pmarchenko.itdroid.pocketkotlin.data.model.Error
+import com.pmarchenko.itdroid.pocketkotlin.data.model.Loading
+import com.pmarchenko.itdroid.pocketkotlin.data.model.Resource
+import com.pmarchenko.itdroid.pocketkotlin.data.model.Success
+import com.pmarchenko.itdroid.pocketkotlin.data.model.log.*
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectExecutionResult
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.domain.executor.TaskExecutor
+import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.doInBackground
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -30,8 +31,10 @@ class EditorViewModel(
     val log: LiveData<List<LogRecord>> = _log
 
     private val _projectId = MutableLiveData<Long>()
-    private val _project: LiveData<Project> = Transformations.switchMap(_projectId) { projectRepo.loadProject(it) }
+    private val _project: LiveData<Project> =
+        Transformations.switchMap(_projectId) { projectRepo.loadProject(it) }
 
+    @ExperimentalCoroutinesApi
     private val _viewState = MediatorLiveData<EditorViewState>().apply {
         addSource(
             Transformations.switchMap(projectExecutor) { project ->
@@ -54,6 +57,7 @@ class EditorViewModel(
             value = value?.copy(project = project) ?: EditorViewState(project)
         }
     }
+    @Suppress("EXPERIMENTAL_API_USAGE")
     val viewState: LiveData<EditorViewState> = _viewState
 
     fun loadProject(id: Long) {
@@ -121,7 +125,8 @@ class EditorViewModel(
         when (resource) {
             is Success -> {
                 val result = resource.data
-                val hasOutput = !result.text.isNullOrEmpty() || !(result.exception != null || result.hasErrors())
+                val hasOutput =
+                    !result.text.isNullOrEmpty() || !(result.exception != null || result.hasErrors())
 
                 if (hasOutput) {
                     _log.postValue(InfoLogRecord(result.text ?: ""))
@@ -132,7 +137,12 @@ class EditorViewModel(
                 }
 
                 if (result.hasErrors()) {
-                    _log.postValue(ErrorLogRecord(ErrorLogRecord.ERROR_PROJECT, errors = result.errors))
+                    _log.postValue(
+                        ErrorLogRecord(
+                            ErrorLogRecord.ERROR_PROJECT,
+                            errors = result.errors
+                        )
+                    )
                 }
 
                 result.testResults?.let {
@@ -140,7 +150,12 @@ class EditorViewModel(
                 }
             }
             is Error -> {
-                _log.postValue(ErrorLogRecord(ErrorLogRecord.ERROR_MESSAGE, resource.message))
+                _log.postValue(
+                    ErrorLogRecord(
+                        ErrorLogRecord.ERROR_MESSAGE,
+                        resource.message
+                    )
+                )
             }
         }
     }

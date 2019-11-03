@@ -1,8 +1,8 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectExecutionResult
-import com.pmarchenko.itdroid.pocketkotlin.model.ViewState
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.data.model.ViewState
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectExecutionResult
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 
 /**
  * @author Pavel Marchenko
@@ -12,7 +12,6 @@ data class EditorViewState(
     var progressVisibility: Boolean = false,
     var errorMessage: String? = null,
     var executionResult: ProjectExecutionResult? = null
-
 ) : ViewState {
     override fun consume() {
         errorMessage = null

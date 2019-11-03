@@ -2,7 +2,7 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.examples.adapter
 
 import android.widget.TextView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Example
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.*
 

@@ -24,7 +24,8 @@ abstract class ContentAdapter : DiffAdapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int) = content[position].viewType
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = holderManager.create(parent, viewType)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        holderManager.create(parent, viewType)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holderManager.bind(holder, position, content[position])

@@ -9,16 +9,16 @@ import android.util.SparseIntArray
 import android.view.MotionEvent
 import androidx.appcompat.R
 import androidx.appcompat.widget.AppCompatEditText
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.extentions.dp
-import com.pmarchenko.itdroid.pocketkotlin.extentions.findAnyKey
-import com.pmarchenko.itdroid.pocketkotlin.extentions.isRtl
-import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ErrorSeverity
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ErrorSeverity
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.dp
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.findKey
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.isRtl
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.TextWatcherAdapter
 import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxRepository
 import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxService
-import com.pmarchenko.itdroid.pocketkotlin.utils.TextWatcherAdapter
 import kotlin.math.max
 
 /**
@@ -64,7 +64,11 @@ class EditorView : AppCompatEditText {
 
     constructor(context: Context) : this(context, null, R.attr.editTextStyle)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, R.attr.editTextStyle)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
     init {
         setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
@@ -108,10 +112,11 @@ class EditorView : AppCompatEditText {
         if (callback != null && event != null) {
             val x = event.x + scrollX
             val y = event.y + scrollY
-            val touchedLine = errorAreas.findAnyKey(opt = NO_LINE) { it.contains(x, y) }
+            val touchedLine = errorAreas.findKey(opt = NO_LINE) { it.contains(x, y) }
             if (touchedLine != NO_LINE) {
                 if (event.action == MotionEvent.ACTION_UP) {
-                    val lineErrors = errors.filter { it.startLine == touchedLine } as ArrayList<EditorError>
+                    val lineErrors =
+                        errors.filter { it.startLine == touchedLine } as ArrayList<EditorError>
                     realToVirtualLines
                     callback.showErrorDetails(file, touchedLine, lineErrors)
                 }
@@ -206,7 +211,8 @@ class EditorView : AppCompatEditText {
             val endLine = realToVirtualLines.valueAt(error.interval.end.line)
             val end = layout.getLineStart(endLine) + error.interval.end.ch
             if (start >= 0 && end <= editableText.length) {
-                val editorError = EditorError(error.message, error.severity, startLine, endLine, start, end)
+                val editorError =
+                    EditorError(error.message, error.severity, startLine, endLine, start, end)
                 this.errors.add(editorError)
                 errorAreas[editorError.startLine] = RectF()
             }
@@ -225,14 +231,12 @@ class EditorView : AppCompatEditText {
 
     fun setSelection(selection: Pair<Int, Int>) {
         layout?.let { layout ->
-            val position = layout.getLineStart(realToVirtualLines.valueAt(selection.first)) + selection.second
+            val position =
+                layout.getLineStart(realToVirtualLines.valueAt(selection.first)) + selection.second
             setSelection(position)
         }
     }
 
     fun getProgram() = text.toString()
 
-    fun setProgram(program: String) {
-        setText(program)
-    }
 }

@@ -3,22 +3,22 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.repository.ProjectsRepository
-import com.pmarchenko.itdroid.pocketkotlin.utils.LiveDataHolder
-import com.pmarchenko.itdroid.pocketkotlin.utils.doInBackground
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ConsumableValue
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.doInBackground
 
 class MyProjectsViewModel(private val projectRepo: ProjectsRepository) : ViewModel() {
 
     val userProjects: LiveData<List<Project>> = projectRepo.userProjects
 
-    private val _newProjectCreated = MutableLiveData<LiveDataHolder<Long?>>()
-    val newProjectCreated: LiveData<LiveDataHolder<Long?>> = _newProjectCreated
+    private val _newProjectCreated = MutableLiveData<ConsumableValue<Long?>>()
+    val newProjectCreated: LiveData<ConsumableValue<Long?>> = _newProjectCreated
 
     fun addNewProject(project: Project) {
         doInBackground {
             val projectId = projectRepo.addProject(project)
-            _newProjectCreated.postValue(LiveDataHolder(projectId, -1L))
+            _newProjectCreated.postValue(ConsumableValue(projectId, -1L))
         }
     }
 

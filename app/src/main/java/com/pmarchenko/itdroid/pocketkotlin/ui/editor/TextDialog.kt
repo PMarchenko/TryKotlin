@@ -16,22 +16,24 @@ class TextDialog : DialogFragment() {
 
         private const val TAG = "TextDialog"
 
+        private const val KEY_TITLE = "$TAG.TITLE"
+        private const val KEY_TEXT = "$TAG.TEXT"
+
         fun show(fragment: Fragment, title: CharSequence? = null, message: CharSequence) {
             val dialog = TextDialog()
             dialog.arguments = Bundle(2).apply {
-                putCharSequence("title", title)
-                putCharSequence("message", message)
+                putCharSequence(KEY_TITLE, title)
+                putCharSequence(KEY_TEXT, message)
             }
-            dialog.setTargetFragment(fragment, 0)
-            dialog.show(fragment.requireFragmentManager(), TAG)
+            dialog.show(fragment.childFragmentManager, TAG)
         }
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireContext())
-            .setTitle(arguments?.getCharSequence("title"))
-            .setMessage(arguments?.getCharSequence("message"))
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        AlertDialog.Builder(requireContext())
+            .setTitle(arguments?.getCharSequence(KEY_TITLE))
+            .setMessage(arguments?.getCharSequence(KEY_TEXT))
             .setPositiveButton(R.string.dialog__text__positive_button, null)
             .create()
-    }
+
 }

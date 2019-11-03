@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ProjectItemsAnimator : DefaultItemAnimator() {
 
-    override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder, payloads: MutableList<Any>) = true
+    override fun canReuseUpdatedViewHolder(
+        viewHolder: RecyclerView.ViewHolder, payloads: MutableList<Any>
+    ) = true
 
     override fun canReuseUpdatedViewHolder(viewHolder: RecyclerView.ViewHolder) = true
 }

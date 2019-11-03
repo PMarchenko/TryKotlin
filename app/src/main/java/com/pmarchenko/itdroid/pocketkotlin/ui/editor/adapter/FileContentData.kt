@@ -1,8 +1,8 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
 
 data class FileContentData(
@@ -18,7 +18,9 @@ data class FileContentData(
     override fun isItemTheSame(data: ContentData): Boolean {
         return if (data is FileContentData) {
             file.id == data.file.id
-        } else false
+        } else {
+            false
+        }
     }
 
     override fun isContentTheSame(data: ContentData) = equals(data)

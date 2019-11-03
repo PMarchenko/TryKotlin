@@ -11,10 +11,11 @@ class TextContentData(override val viewType: Int, val text: CharSequence) : Cont
         return viewType == data.viewType &&
                 if (data is TextContentData) {
                     text == data.text
-                } else false
+                } else {
+                    false
+                }
     }
 
-    override fun isContentTheSame(data: ContentData): Boolean {
-        return equals(data)
-    }
+    override fun isContentTheSame(data: ContentData): Boolean = equals(data)
+
 }

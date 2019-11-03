@@ -10,8 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.utils.TextWatcherAdapter
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.TextWatcherAdapter
 
 /**
  * @author Pavel Marchenko
@@ -22,13 +22,15 @@ class ChangeProjectNameDialog : DialogFragment(), DialogInterface.OnClickListene
 
         private const val TAG = "AddProjectDialog"
 
+        private const val KEY_PROJECT = "$TAG.PROJECT"
+        private const val KEY_PROJECT_NAME = "$TAG.PROJECT_NAME"
+
         fun show(fragment: Fragment, project: Project) {
             val dialog = ChangeProjectNameDialog()
             dialog.arguments = Bundle(1).apply {
-                putParcelable("project", project)
+                putParcelable(KEY_PROJECT, project)
             }
-            dialog.setTargetFragment(fragment, 0)
-            dialog.show(fragment.requireFragmentManager(), TAG)
+            dialog.show(fragment.childFragmentManager, TAG)
         }
     }
 
@@ -40,23 +42,22 @@ class ChangeProjectNameDialog : DialogFragment(), DialogInterface.OnClickListene
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callback = targetFragment as ProjectNameCallback
+        callback = parentFragment as ProjectNameCallback
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        project = arguments?.getParcelable<Project>("project") ?: error("No project provided")
+        project = arguments?.getParcelable(KEY_PROJECT) ?: error("No project provided")
         //ATTENTION project files not restored
-        projectName = savedInstanceState?.getString("name") ?: project.name
+        projectName = savedInstanceState?.getString(KEY_PROJECT_NAME) ?: project.name
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireContext())
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        AlertDialog.Builder(requireContext())
             .setView(R.layout.dialog_change_project_name)
             .setNegativeButton(R.string.dialog__add_project__negative_button, null)
             .setPositiveButton(R.string.dialog__change_project_name__positive_button, this)
             .create()
-    }
 
     override fun onStart() {
         super.onStart()

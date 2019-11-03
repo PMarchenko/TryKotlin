@@ -12,12 +12,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.db.AppDatabase
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Example
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.extentions.setVisibility
-import com.pmarchenko.itdroid.pocketkotlin.network.DummyProjectExecutionService
-import com.pmarchenko.itdroid.pocketkotlin.repository.ProjectsRepository
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.setVisibility
+import com.pmarchenko.itdroid.pocketkotlin.domain.network.DummyProjectExecutionService
+import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorActivity
 import com.pmarchenko.itdroid.pocketkotlin.ui.examples.adapter.ExamplesAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.DividerDecoration
@@ -28,10 +28,12 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.DividerDecoration
 class ExamplesFragment : Fragment() {
 
     private lateinit var viewModel: ExamplesViewModel
+
     private val viewModelProvider = object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ExamplesViewModel::class.java)) {
-                val projectDao = AppDatabase.getDatabase(requireActivity().applicationContext).getProjectDao()
+                val projectDao = AppDatabase.getDatabase(requireActivity().applicationContext)
+                    .getProjectDao()
                 val executionService = DummyProjectExecutionService
                 val projectRepo = ProjectsRepository(projectDao, executionService)
                 @Suppress("UNCHECKED_CAST")
@@ -55,15 +57,22 @@ class ExamplesFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewModel = ViewModelProviders.of(this, viewModelProvider).get(ExamplesViewModel::class.java)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel =
+            ViewModelProviders.of(this, viewModelProvider).get(ExamplesViewModel::class.java)
         return inflater.inflate(R.layout.fragment_examples, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
-        viewModel.examples.observe(viewLifecycleOwner, Observer { examples -> onExamples(examples ?: emptyList()) })
+        viewModel.examples.observe(
+            viewLifecycleOwner,
+            Observer { examples -> onExamples(examples ?: emptyList()) })
     }
 
     private fun initUI() {

@@ -14,33 +14,38 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
+import com.pmarchenko.itdroid.pocketkotlin.data.model.log.LogRecord
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.formatTimestamp
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpan
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpanListener
 import com.pmarchenko.itdroid.pocketkotlin.syntax.ColorUnderlineSpan
-import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
-import com.pmarchenko.itdroid.pocketkotlin.extentions.formatTimestamp
-import com.pmarchenko.itdroid.pocketkotlin.model.log.LogRecord
-import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpan
-import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
+import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * @author Pavel Marchenko
  */
-open class LogViewHolder<T : LogRecord>(itemView: View, protected val callback: EditorCallback) : RecyclerView.ViewHolder(itemView) {
+open class LogViewHolder<T : LogRecord>(
+    itemView: View,
+    protected val callback: EditorCallback
+) :
+    RecyclerView.ViewHolder(itemView) {
 
     //todo color to resources
     protected val errorTextColor = Color.parseColor("#BBEC5424")
     protected val linkUnderlineTextColor = Color.parseColor("#2196F3")
 
-    private val logView by findView<TextView>(R.id.logMessage)
+    private val logView by bindView<TextView>(R.id.logMessage)
     private val dateFormat: SimpleDateFormat
 
     protected val resources: Resources
         get() = itemView.resources
 
     init {
-        dateFormat = SimpleDateFormat(resources.getString(R.string.logs__date_format), Locale.getDefault())
+        dateFormat =
+            SimpleDateFormat(resources.getString(R.string.logs__date_format), Locale.getDefault())
         logView.movementMethod = LinkMovementMethod.getInstance()
     }
 
@@ -51,20 +56,32 @@ open class LogViewHolder<T : LogRecord>(itemView: View, protected val callback: 
 
     open fun prepareText(log: T): CharSequence {
         val timestamp = SpannableStringBuilder(dateFormat.formatTimestamp(log.timestamp))
-        timestamp.setSpan(StyleSpan(Typeface.BOLD), 0, timestamp.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        timestamp.setSpan(
+            StyleSpan(Typeface.BOLD),
+            0,
+            timestamp.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         timestamp.append(':')
         return timestamp
     }
 
     protected fun asError(text: CharSequence) = asColoredText(text, errorTextColor)
 
-    protected fun <D> asLink(text: CharSequence,
-                             data: D,
-                             callback: ClickableSpanListener<D>,
-                             underlineColor: Int): CharSequence {
+    protected fun <D> asLink(
+        text: CharSequence,
+        data: D,
+        callback: ClickableSpanListener<D>,
+        underlineColor: Int
+    ): CharSequence {
         val out = if (text is Spannable) text else SpannableString(text)
         out.setSpan(ClickableSpan(data, callback), 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        out.setSpan(ColorUnderlineSpan(underlineColor), 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        out.setSpan(
+            ColorUnderlineSpan(underlineColor),
+            0,
+            text.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         return out
     }
 

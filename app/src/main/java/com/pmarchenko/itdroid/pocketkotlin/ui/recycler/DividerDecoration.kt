@@ -6,5 +6,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 /**
  * @author Pavel Marchenko
  */
-class DividerDecoration(context: Context, orientation: Int = VERTICAL) : DividerItemDecoration(context, orientation)
+class DividerDecoration(
+    context: Context,
+    orientation: Int = VERTICAL
+) : DividerItemDecoration(context, orientation)
 //TODO implement me

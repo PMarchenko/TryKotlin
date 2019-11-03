@@ -1,9 +1,9 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
-import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectException
+import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectNameCallback
 
 /**

@@ -6,18 +6,22 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Example
-import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 
 /**
  * @author Pavel Marchenko
  */
-class HolderDelegateExample(private val callback: ProjectCallback) : HolderDelegate<HolderDelegateExample.ExampleViewHolder, ExampleContentData>() {
+class HolderDelegateExample(private val callback: ProjectCallback) :
+    HolderDelegate<HolderDelegateExample.ExampleViewHolder, ExampleContentData>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): ExampleViewHolder {
-        return ExampleViewHolder(inflater.inflate(R.layout.viewholder_example, parent, false), callback)
+        return ExampleViewHolder(
+            inflater.inflate(R.layout.viewholder_example, parent, false),
+            callback
+        )
     }
 
     override fun bind(holder: ExampleViewHolder, position: Int, contentData: ExampleContentData) {
@@ -29,8 +33,9 @@ class HolderDelegateExample(private val callback: ProjectCallback) : HolderDeleg
         private val projectListCallback: ProjectCallback
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        private val nameView by findView<TextView>(R.id.name)
-        private val descriptionView by findView<TextView>(R.id.description)
+        private val nameView by bindView<TextView>(R.id.name)
+
+        private val descriptionView by bindView<TextView>(R.id.description)
 
         private var example: Example? = null
 
@@ -41,7 +46,8 @@ class HolderDelegateExample(private val callback: ProjectCallback) : HolderDeleg
         fun bind(example: Example) {
             this.example = example
 
-            nameView.text = example.modifiedProject?.name ?: error("Example ${example.id} is missing title")
+            nameView.text =
+                example.modifiedProject?.name ?: error("Example ${example.id} is missing title")
             descriptionView.text = example.description
         }
 

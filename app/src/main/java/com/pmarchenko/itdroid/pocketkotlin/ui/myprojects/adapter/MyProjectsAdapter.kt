@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
@@ -11,10 +11,7 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
 class MyProjectsAdapter(private val projectListCallback: ProjectCallback) : ContentAdapter() {
 
     fun setProjects(projects: List<Project>) {
-        val content = projects.map {
-            ProjectContentData(VIEW_TYPE_PROJECT, it)
-        }
-
+        val content = projects.map { project -> ProjectContentData(VIEW_TYPE_PROJECT, project) }
         setContent(content)
     }
 

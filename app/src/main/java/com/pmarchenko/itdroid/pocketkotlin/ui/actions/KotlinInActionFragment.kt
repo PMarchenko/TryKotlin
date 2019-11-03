@@ -10,9 +10,12 @@ import com.pmarchenko.itdroid.pocketkotlin.R
 /**
  * @author Pavel Marchenko
  */
-class KotlinInActionFragment: Fragment() {
+class KotlinInActionFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_kotlin_in_action, container, false)
     }
 }

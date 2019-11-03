@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.model.log.TestResultsLogRecord
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectException
-import com.pmarchenko.itdroid.pocketkotlin.model.project.Status
+import com.pmarchenko.itdroid.pocketkotlin.data.model.log.TestResultsLogRecord
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.Status
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
-import com.pmarchenko.itdroid.pocketkotlin.utils.ClickableSpanListener
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpanListener
 
 /**
  * @author Pavel Marchenko
@@ -19,11 +19,15 @@ class HolderDelegateTestResultsLog(private val callback: EditorCallback) :
     HolderDelegateLog<TestResultsLogRecord, HolderDelegateTestResultsLog.TestResultsViewHolder>() {
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): TestResultsViewHolder {
-        return TestResultsViewHolder(inflater.inflate(R.layout.viewholder_log, parent, false), callback)
+        return TestResultsViewHolder(
+            inflater.inflate(R.layout.viewholder_log, parent, false),
+            callback
+        )
     }
 
     class TestResultsViewHolder(itemView: View, callback: EditorCallback) :
-        LogViewHolder<TestResultsLogRecord>(itemView, callback), ClickableSpanListener<ProjectException> {
+        LogViewHolder<TestResultsLogRecord>(itemView, callback),
+        ClickableSpanListener<ProjectException> {
 
         //todo color to resources
         private val passedTestTextColor = Color.parseColor("#BB499C54")
@@ -43,14 +47,25 @@ class HolderDelegateTestResultsLog(private val callback: EditorCallback) :
                         executionTimeSeconds += result.executionTime / 1000f
                         out.append("\n- ${result.methodName}: ")
                         when (result.status) {
-                            Status.OK -> out.append(asColoredText(result.status.name, passedTestTextColor))
+                            Status.OK -> out.append(
+                                asColoredText(result.status.name, passedTestTextColor)
+                            )
                             Status.FAIL -> {
                                 failedTests++
                                 val failure = result.failure
                                 if (failure == null) {
                                     out.append(asError(result.status.name))
                                 } else {
-                                    out.append(asError(asLink(result.status.name, failure, this, linkUnderlineTextColor)))
+                                    out.append(
+                                        asError(
+                                            asLink(
+                                                result.status.name,
+                                                failure,
+                                                this,
+                                                linkUnderlineTextColor
+                                            )
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -58,9 +73,17 @@ class HolderDelegateTestResultsLog(private val callback: EditorCallback) :
                 }
 
                 val status = if (failedTests == 0) {
-                    resources.getString(R.string.logs__test_results__status_passed, executionTimeSeconds)
+                    resources.getString(
+                        R.string.logs__test_results__status_passed,
+                        executionTimeSeconds
+                    )
                 } else {
-                    resources.getString(R.string.logs__test_results__status_failed, failedTests, results?.size ?: failedTests, executionTimeSeconds)
+                    resources.getString(
+                        R.string.logs__test_results__status_failed,
+                        failedTests,
+                        results?.size ?: failedTests,
+                        executionTimeSeconds
+                    )
                 }
                 out.insert(testLabelEndPosition, "\n$status:")
             }

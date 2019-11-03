@@ -2,11 +2,11 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
 
 import android.os.Bundle
-import android.text.Html
 import android.view.*
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.text.parseAsHtml
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -17,23 +17,23 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.db.AppDatabase
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.db.entity.ProjectType
-import com.pmarchenko.itdroid.pocketkotlin.extentions.findView
-import com.pmarchenko.itdroid.pocketkotlin.extentions.isVisible
-import com.pmarchenko.itdroid.pocketkotlin.extentions.scale
-import com.pmarchenko.itdroid.pocketkotlin.extentions.setVisibility
-import com.pmarchenko.itdroid.pocketkotlin.model.EditorError
-import com.pmarchenko.itdroid.pocketkotlin.model.project.ProjectException
-import com.pmarchenko.itdroid.pocketkotlin.network.NetworkKotlinProjectExecutionService
-import com.pmarchenko.itdroid.pocketkotlin.repository.ProjectsRepository
+import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectType
+import com.pmarchenko.itdroid.pocketkotlin.domain.executor.ThrottleTaskExecutor
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.isVisible
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.scale
+import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.setVisibility
+import com.pmarchenko.itdroid.pocketkotlin.domain.network.NetworkKotlinProjectExecutionService
+import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
+import com.pmarchenko.itdroid.pocketkotlin.domain.utils.toast
+import com.pmarchenko.itdroid.pocketkotlin.ui.TabLayoutMediator
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.ProjectAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ChangeProjectNameDialog
-import com.pmarchenko.itdroid.pocketkotlin.utils.TabLayoutMediator
-import com.pmarchenko.itdroid.pocketkotlin.utils.executor.ThrottleTaskExecutor
-import com.pmarchenko.itdroid.pocketkotlin.utils.toast
 
 /**
  * @author Pavel Marchenko
@@ -44,8 +44,10 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
 
     private val viewModelProvider = object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            //todo introduce DI
             if (modelClass.isAssignableFrom(EditorViewModel::class.java)) {
-                val projectDao = AppDatabase.getDatabase(requireActivity().applicationContext).getProjectDao()
+                val projectDao =
+                    AppDatabase.getDatabase(requireActivity().applicationContext).getProjectDao()
                 val executionService = NetworkKotlinProjectExecutionService
                 val projectRepo = ProjectsRepository(projectDao, executionService)
                 val taskExecutor = ThrottleTaskExecutor()
@@ -57,11 +59,11 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
         }
     }
 
-    private val executeCodeFab by findView<FloatingActionButton>(R.id.fabEditor)
-    private val executeProgressView by findView<View>(R.id.executeProgress)
-    private val mainProgressView by findView<View>(R.id.progressMain)
-    private val tabs by findView<TabLayout>(R.id.editorTabs)
-    private val viewPager by findView<ViewPager2>(R.id.pages)
+    private val executeCodeFab by bindView<FloatingActionButton>(R.id.fabEditor)
+    private val executeProgressView by bindView<View>(R.id.executeProgress)
+    private val mainProgressView by bindView<View>(R.id.progressMain)
+    private val tabs by bindView<TabLayout>(R.id.editorTabs)
+    private val viewPager by bindView<ViewPager2>(R.id.pages)
 
     private lateinit var adapter: ProjectAdapter
 
@@ -75,10 +77,15 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
                 isEnabled = false
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
+            //else -> todo bug show info message
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewModel = ViewModelProviders.of(this, viewModelProvider).get(EditorViewModel::class.java)
         return inflater.inflate(R.layout.fragment_editor, container, false)
     }
@@ -115,8 +122,18 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
 
         if (project != null) {
             when (project.projectType) {
-                ProjectType.EXAMPLE -> menu.add(0, R.id.resetExample, 0, R.string.menu_item__reset_example)
-                ProjectType.USER_PROJECT -> if (project.dateModified <= 0) menu.add(0, R.id.changeName, 0, R.string.menu_item__change_name)
+                ProjectType.EXAMPLE -> menu.add(
+                    0,
+                    R.id.resetExample,
+                    0,
+                    R.string.menu_item__reset_example
+                )
+                ProjectType.USER_PROJECT -> if (project.dateModified <= 0) menu.add(
+                    0,
+                    R.id.changeName,
+                    0,
+                    R.string.menu_item__change_name
+                )
             }
 
             menu.findItem(R.id.projectArgs)?.setIcon(
@@ -161,7 +178,9 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
         viewPager.adapter = adapter
 
         TabLayoutMediator(tabs, viewPager, true,
-            TabLayoutMediator.OnConfigureTabCallback { tab, position -> tab.text = adapter.getTitle(position) }
+            TabLayoutMediator.OnConfigureTabCallback { tab, position ->
+                tab.text = adapter.getTitle(position)
+            }
         ).attach()
 
         executeCodeFab.setOnClickListener { viewModel.executeProject() }
@@ -178,19 +197,24 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
             executeProgressView.setVisibility(false)
             executeCodeFab.setVisibility(false)
         } else {
-            (requireActivity() as AppCompatActivity).supportActionBar?.let { it.title = project.name }
+            (requireActivity() as AppCompatActivity).supportActionBar?.let {
+                it.title = project.name
+            }
             mainProgressView.setVisibility(false)
             tabs.setVisibility(true)
             if (executeProgressView.isVisible() != state.progressVisibility) {
                 executeProgressView.setVisibility(state.progressVisibility)
-                executeProgressView.animate().scale(if (state.progressVisibility) 1f else 0f).setDuration(150).start()
+                executeProgressView.animate().scale(if (state.progressVisibility) 1f else 0f)
+                    .setDuration(150).start()
             }
 
             if (executeCodeFab.isEnabled != !state.progressVisibility) {
                 executeCodeFab.isEnabled = !state.progressVisibility
-                executeCodeFab.animate().scale(if (state.progressVisibility) 0f else 1f).setDuration(150).start()
+                executeCodeFab.animate().scale(if (state.progressVisibility) 0f else 1f)
+                    .setDuration(150).start()
             }
-            val currentItem = if (viewPager.adapter?.itemCount ?: -1 == 0) 1 else viewPager.currentItem
+            val currentItem =
+                if (viewPager.adapter?.itemCount ?: -1 == 0) 1 else viewPager.currentItem
             adapter.setProject(project, state.executionResult?.errors)
             viewPager.currentItem = currentItem
         }
@@ -208,7 +232,11 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
     }
 
     override fun showExceptionDetails(exception: ProjectException) {
-        TextDialog.show(this, exception.fullName, Html.fromHtml(Html.fromHtml(exception.message).toString()))
+        TextDialog.show(
+            this,
+            exception.fullName,
+            exception.message.parseAsHtml()
+        )
     }
 
     override fun onFileEdited(project: Project, file: ProjectFile, program: String) {

@@ -24,8 +24,7 @@ class CommandLineArgsDialog : DialogFragment(), DialogInterface.OnClickListener 
             dialog.arguments = Bundle(1).apply {
                 putString("args", args)
             }
-            dialog.setTargetFragment(fragment, 0)
-            dialog.show(fragment.requireFragmentManager(), TAG)
+            dialog.show(fragment.childFragmentManager, TAG)
         }
     }
 
@@ -35,7 +34,7 @@ class CommandLineArgsDialog : DialogFragment(), DialogInterface.OnClickListener 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        callback = targetFragment as CommandLineArgsDialogCallback
+        callback = parentFragment as CommandLineArgsDialogCallback
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,11 +46,11 @@ class CommandLineArgsDialog : DialogFragment(), DialogInterface.OnClickListener 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
-                .setTitle(R.string.dialog__command_line_args__title)
-                .setView(R.layout.dialog_command_line_args)
-                .setNegativeButton(R.string.dialog__command_line_args__negative_button, null)
-                .setPositiveButton(R.string.dialog__command_line_args__positive_button, this)
-                .create()
+            .setTitle(R.string.dialog__command_line_args__title)
+            .setView(R.layout.dialog_command_line_args)
+            .setNegativeButton(R.string.dialog__command_line_args__negative_button, null)
+            .setPositiveButton(R.string.dialog__command_line_args__positive_button, this)
+            .create()
     }
 
     override fun onStart() {

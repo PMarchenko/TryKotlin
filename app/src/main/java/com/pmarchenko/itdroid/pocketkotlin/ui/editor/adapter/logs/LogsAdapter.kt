@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs
 
-import com.pmarchenko.itdroid.pocketkotlin.model.log.*
+import com.pmarchenko.itdroid.pocketkotlin.data.model.log.*
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * @author Pavel Marchenko
  */
+@Suppress("unused")
 class HolderDelegateEmpty private constructor(
     private val view: View?,
     @LayoutRes private val layoutId: Int
@@ -29,7 +30,11 @@ class HolderDelegateEmpty private constructor(
         ) {}
     }
 
-    override fun bind(holder: RecyclerView.ViewHolder, position: Int, contentData: EmptyContentData) {
+    override fun bind(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        contentData: EmptyContentData
+    ) {
         //no-op
     }
 
