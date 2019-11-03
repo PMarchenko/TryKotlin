@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin
+package com.pmarchenko.itdroid.pocketkotlin.ore
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.pmarchenko.itdroid.pocketkotlin.test", appContext.packageName)
+        assertEquals("com.pmarchenko.itdroid.pocketkotlin.core.test", appContext.packageName)
     }
 }

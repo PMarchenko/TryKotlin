@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin
+package com.pmarchenko.itdroid.pocketkotlin.data
 
 import org.junit.Test
 

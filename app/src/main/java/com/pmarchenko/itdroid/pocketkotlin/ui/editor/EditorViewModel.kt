@@ -1,6 +1,7 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
 import androidx.lifecycle.*
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.doInBackground
 import com.pmarchenko.itdroid.pocketkotlin.data.model.Error
 import com.pmarchenko.itdroid.pocketkotlin.data.model.Loading
 import com.pmarchenko.itdroid.pocketkotlin.data.model.Resource
@@ -11,7 +12,6 @@ import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.domain.executor.TaskExecutor
 import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.doInBackground
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion

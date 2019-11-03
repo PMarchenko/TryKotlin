@@ -2,9 +2,9 @@ package com.pmarchenko.itdroid.pocketkotlin.syntax
 
 import android.text.Editable
 import android.text.Spanned
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.measureTimeAndLog
 import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ErrorSeverity
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.measureTimeAndLog
 
 /**
  * @author Pavel Marchenko
@@ -12,7 +12,7 @@ import com.pmarchenko.itdroid.pocketkotlin.domain.utils.measureTimeAndLog
 class KotlinSyntaxService {
 
     fun highlightSyntax(program: Editable, errors: MutableList<EditorError>) {
-        measureTimeAndLog("KProgramTokenizer2") {
+        measureTimeAndLog ("KProgramTokenizer2") {
             highlightSyntaxInternal(program, errors)
         }
     }

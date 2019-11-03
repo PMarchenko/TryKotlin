@@ -10,8 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.TextWatcherAdapter
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.TextWatcherAdapter
 
 /**
  * @author Pavel Marchenko

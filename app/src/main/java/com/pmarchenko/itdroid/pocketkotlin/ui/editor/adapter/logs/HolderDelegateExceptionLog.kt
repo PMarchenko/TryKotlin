@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.ClickableSpanListener
 import com.pmarchenko.itdroid.pocketkotlin.data.model.log.ExceptionLogRecord
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectExceptionStackTrace
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpanListener
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 
 /**

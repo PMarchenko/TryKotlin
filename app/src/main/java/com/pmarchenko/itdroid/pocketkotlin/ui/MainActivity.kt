@@ -14,7 +14,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.bindView
 
 class MainActivity : AppCompatActivity() {
 

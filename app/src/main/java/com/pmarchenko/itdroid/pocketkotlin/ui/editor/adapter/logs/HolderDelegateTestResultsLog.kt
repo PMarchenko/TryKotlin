@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.ClickableSpanListener
 import com.pmarchenko.itdroid.pocketkotlin.data.model.log.TestResultsLogRecord
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.Status
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpanListener
 
 /**
  * @author Pavel Marchenko

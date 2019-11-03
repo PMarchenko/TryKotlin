@@ -1,8 +1,8 @@
 package com.pmarchenko.itdroid.pocketkotlin.domain.network
 
-import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectExecutionResult
+import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.domain.stetho.StethoInjectorImpl
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -27,10 +27,10 @@ object NetworkKotlinProjectExecutionService : ProjectExecutionService {
     private val KOTLIN_HTTP_SERVICE: ProjectExecutionService = Retrofit.Builder()
         .client(
             OkHttpClient.Builder()
-                .addNetworkInterceptor(StethoInterceptor())
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
+                .also { builder -> StethoInjectorImpl.injectInto(builder) }
                 .build()
         )
         .baseUrl("https://try.kotlinlang.org/")

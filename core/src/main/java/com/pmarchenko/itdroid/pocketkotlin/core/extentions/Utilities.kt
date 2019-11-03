@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin.domain.extentions
+package com.pmarchenko.itdroid.pocketkotlin.core.extentions
 
 import android.content.res.Resources
 import android.view.ViewPropertyAnimator

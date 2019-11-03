@@ -3,7 +3,7 @@ package com.pmarchenko.itdroid.pocketkotlin.domain.executor
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Message
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.logd
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.logd
 
 
 /**

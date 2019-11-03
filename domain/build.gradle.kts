@@ -37,6 +37,17 @@ android {
                     "proguard-rules.pro"
             )
         }
+        getByName("debug")
+    }
+
+    sourceSets {
+        getByName("release").let {sourceSet ->
+            sourceSet.java.srcDirs("src/release/java")
+        }
+
+        getByName("debug").let {sourceSet ->
+            sourceSet.java.srcDirs("src/debug/java")
+        }
     }
 }
 

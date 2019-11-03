@@ -3,10 +3,10 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.ConsumableValue
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.doInBackground
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ConsumableValue
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.doInBackground
 
 class MyProjectsViewModel(private val projectRepo: ProjectsRepository) : ViewModel() {
 

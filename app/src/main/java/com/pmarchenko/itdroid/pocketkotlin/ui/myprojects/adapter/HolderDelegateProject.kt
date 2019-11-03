@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.bindView
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorView
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate

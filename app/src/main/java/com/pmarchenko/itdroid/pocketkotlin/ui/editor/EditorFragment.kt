@@ -17,6 +17,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.bindView
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.isVisible
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.scale
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.setVisibility
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.toast
 import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
@@ -24,13 +29,8 @@ import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectType
 import com.pmarchenko.itdroid.pocketkotlin.domain.executor.ThrottleTaskExecutor
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.isVisible
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.scale
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.setVisibility
 import com.pmarchenko.itdroid.pocketkotlin.domain.network.NetworkKotlinProjectExecutionService
 import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.toast
 import com.pmarchenko.itdroid.pocketkotlin.ui.TabLayoutMediator
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.ProjectAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ChangeProjectNameDialog

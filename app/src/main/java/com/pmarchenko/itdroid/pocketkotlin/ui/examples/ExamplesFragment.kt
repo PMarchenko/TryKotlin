@@ -12,10 +12,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.setVisibility
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.setVisibility
+
 import com.pmarchenko.itdroid.pocketkotlin.domain.network.DummyProjectExecutionService
 import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorActivity

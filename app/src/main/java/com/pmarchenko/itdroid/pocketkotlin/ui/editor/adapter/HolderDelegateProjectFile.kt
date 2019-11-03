@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.TextWatcherAdapter
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.TextWatcherAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorView
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate

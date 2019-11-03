@@ -3,7 +3,7 @@ package com.pmarchenko.itdroid.pocketkotlin.domain.db.content
 import android.content.Context
 import androidx.annotation.WorkerThread
 import com.google.gson.GsonBuilder
-import com.pmarchenko.itdroid.pocketkotlin.BuildConfig
+import com.pmarchenko.itdroid.pocketkotlin.domain.BuildConfig
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.ProjectDao
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example

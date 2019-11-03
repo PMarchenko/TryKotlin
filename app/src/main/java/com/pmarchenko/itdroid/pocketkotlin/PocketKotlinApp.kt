@@ -1,7 +1,7 @@
 package com.pmarchenko.itdroid.pocketkotlin
 
 import android.app.Application
-import com.pmarchenko.itdroid.pocketkotlin.domain.debug.injectStetho
+import com.pmarchenko.itdroid.pocketkotlin.domain.stetho.StethoInjectorImpl
 
 /**
  * @author Pavel Marchenko
@@ -11,8 +11,6 @@ class PocketKotlinApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
-            injectStetho(this)
-        }
+        StethoInjectorImpl.injectInto(this)
     }
 }

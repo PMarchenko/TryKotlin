@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.toast
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.toast
 
 class EditorActivity : AppCompatActivity() {
 

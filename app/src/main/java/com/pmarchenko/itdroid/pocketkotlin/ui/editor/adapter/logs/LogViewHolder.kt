@@ -14,11 +14,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.bindView
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.formatTimestamp
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.ClickableSpan
+import com.pmarchenko.itdroid.pocketkotlin.core.utils.ClickableSpanListener
 import com.pmarchenko.itdroid.pocketkotlin.data.model.log.LogRecord
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.bindView
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.formatTimestamp
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpan
-import com.pmarchenko.itdroid.pocketkotlin.domain.utils.ClickableSpanListener
 import com.pmarchenko.itdroid.pocketkotlin.syntax.ColorUnderlineSpan
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
 import java.text.SimpleDateFormat

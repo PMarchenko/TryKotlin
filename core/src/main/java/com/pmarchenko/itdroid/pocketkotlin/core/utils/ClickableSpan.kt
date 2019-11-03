@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin.domain.utils
+package com.pmarchenko.itdroid.pocketkotlin.core.utils
 
 import android.view.View
 

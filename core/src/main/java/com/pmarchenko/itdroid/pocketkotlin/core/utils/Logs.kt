@@ -1,7 +1,7 @@
-package com.pmarchenko.itdroid.pocketkotlin.domain.utils
+package com.pmarchenko.itdroid.pocketkotlin.core.utils
 
 import android.util.Log
-import com.pmarchenko.itdroid.pocketkotlin.domain.BuildConfig
+import com.pmarchenko.itdroid.pocketkotlin.core.BuildConfig
 import kotlin.system.measureNanoTime
 
 const val LOG_TAG: String = "PocketKotlin"

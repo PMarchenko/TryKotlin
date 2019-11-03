@@ -2,7 +2,7 @@ package com.pmarchenko.itdroid.pocketkotlin.syntax
 
 import android.text.TextPaint
 import android.text.style.UnderlineSpan
-import com.pmarchenko.itdroid.pocketkotlin.domain.extentions.dp
+import com.pmarchenko.itdroid.pocketkotlin.core.extentions.dp
 
 /**
  * @author Pavel Marchenko
