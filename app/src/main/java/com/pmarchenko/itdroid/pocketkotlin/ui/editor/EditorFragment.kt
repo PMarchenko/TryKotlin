@@ -28,12 +28,13 @@ import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectType
-import com.pmarchenko.itdroid.pocketkotlin.domain.executor.ThrottleTaskExecutor
+import com.pmarchenko.itdroid.pocketkotlin.domain.executor.ThrottleExecutor
 import com.pmarchenko.itdroid.pocketkotlin.domain.network.NetworkKotlinProjectExecutionService
 import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
 import com.pmarchenko.itdroid.pocketkotlin.ui.TabLayoutMediator
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.ProjectAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ChangeProjectNameDialog
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * @author Pavel Marchenko
@@ -50,10 +51,10 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
                     AppDatabase.getDatabase(requireActivity().applicationContext).getProjectDao()
                 val executionService = NetworkKotlinProjectExecutionService
                 val projectRepo = ProjectsRepository(projectDao, executionService)
-                val taskExecutor = ThrottleTaskExecutor()
+                val taskExecutorFactory = { scope: CoroutineScope -> ThrottleExecutor.create(scope) }
 
                 @Suppress("UNCHECKED_CAST")
-                return EditorViewModel(projectRepo, taskExecutor) as T
+                return EditorViewModel(projectRepo, taskExecutorFactory) as T
             }
             error("Cannot create viewModel for $modelClass")
         }

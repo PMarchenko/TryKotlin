@@ -33,7 +33,7 @@ abstract class ProjectDao {
     abstract fun getProject(projectId: Long): LiveData<ProjectWithFiles>
 
     @Transaction
-    open fun insert(project: Project): Long {
+    open suspend fun insert(project: Project): Long {
         val projectId = insertInternal(project)
         for (file in project.files) {
             file.projectId = projectId
@@ -63,7 +63,7 @@ abstract class ProjectDao {
     abstract fun getExample(modifiedProjectId: Long): ExampleWithProjects
 
     @Transaction
-    open fun insertExamples(examples: List<Example>) {
+    open suspend fun insertExamples(examples: List<Example>) {
         for (example in examples) {
             example.exampleProject?.let { example.exampleProjectId = insert(it) }
             example.modifiedProject?.let { example.modifiedProjectId = insert(it) }
@@ -73,21 +73,21 @@ abstract class ProjectDao {
     }
 
     @Insert
-    protected abstract fun insertInternal(project: Project): Long
+    protected abstract suspend fun insertInternal(project: Project): Long
 
     @Insert
-    protected abstract fun insertInternal(file: ProjectFile): Long
+    protected abstract suspend fun insertInternal(file: ProjectFile): Long
 
     @Insert
     protected abstract fun insertInternal(example: Example): Long
 
     @Delete
-    abstract fun deleteProject(project: Project)
+    abstract suspend fun deleteProject(project: Project)
 
     @Update
-    abstract fun updateFile(project: Project, file: ProjectFile)
+    abstract suspend fun updateFile(project: Project, file: ProjectFile)
 
     @Update
-    abstract fun updateProject(project: Project)
+    abstract suspend fun updateProject(project: Project)
 
 }

@@ -37,16 +37,16 @@ class ProjectsRepository(
             }
         }
 
-    fun addProject(project: Project) = projectDao.insert(project)
+    suspend fun addProject(project: Project) = projectDao.insert(project)
 
-    fun deleteProject(project: Project) {
+    suspend fun deleteProject(project: Project) {
         projectDao.deleteProject(project)
     }
 
     fun loadProject(projectId: Long): LiveData<Project> =
         Transformations.map(projectDao.getProject(projectId)) { toProject(it) }
 
-    fun updateFile(project: Project, file: ProjectFile, updateTimestamp: Boolean = true) {
+    suspend fun updateFile(project: Project, file: ProjectFile, updateTimestamp: Boolean = true) {
         val timestamp = System.currentTimeMillis()
         projectDao.updateFile(
             if (updateTimestamp) {
@@ -62,7 +62,7 @@ class ProjectsRepository(
         )
     }
 
-    fun updateProject(project: Project, updateTimestamp: Boolean = true) {
+    suspend fun updateProject(project: Project, updateTimestamp: Boolean = true) {
         projectDao.updateProject(
             if (updateTimestamp) {
                 project.copy(dateModified = System.currentTimeMillis())
@@ -72,7 +72,7 @@ class ProjectsRepository(
         )
     }
 
-    fun resetExampleProject(project: Project) {
+    suspend fun resetExampleProject(project: Project) {
         val projectId = project.id
         val initialFiles = projectDao.getExample(projectId).exampleProjectWithFiles.files
 

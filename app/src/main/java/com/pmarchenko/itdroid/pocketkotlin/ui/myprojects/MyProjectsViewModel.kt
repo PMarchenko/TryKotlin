@@ -3,10 +3,11 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pmarchenko.itdroid.pocketkotlin.core.utils.ConsumableValue
-import com.pmarchenko.itdroid.pocketkotlin.core.utils.doInBackground
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
+import kotlinx.coroutines.launch
 
 class MyProjectsViewModel(private val projectRepo: ProjectsRepository) : ViewModel() {
 
@@ -16,17 +17,17 @@ class MyProjectsViewModel(private val projectRepo: ProjectsRepository) : ViewMod
     val newProjectCreated: LiveData<ConsumableValue<Long?>> = _newProjectCreated
 
     fun addNewProject(project: Project) {
-        doInBackground {
+        viewModelScope.launch {
             val projectId = projectRepo.addProject(project)
             _newProjectCreated.postValue(ConsumableValue(projectId, -1L))
         }
     }
 
     fun deleteProject(project: Project) {
-        doInBackground { projectRepo.deleteProject(project) }
+        viewModelScope.launch { projectRepo.deleteProject(project) }
     }
 
     fun updateProjectName(project: Project, name: String) {
-        doInBackground { projectRepo.updateProject(project.copy(name = name)) }
+        viewModelScope.launch { projectRepo.updateProject(project.copy(name = name)) }
     }
 }

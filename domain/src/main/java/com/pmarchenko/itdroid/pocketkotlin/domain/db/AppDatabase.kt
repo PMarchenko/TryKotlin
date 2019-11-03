@@ -9,7 +9,6 @@ import com.pmarchenko.itdroid.pocketkotlin.domain.db.content.DatabaseContentMana
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -38,7 +37,8 @@ abstract class AppDatabase : RoomDatabase() {
                     .fallbackToDestructiveMigration()
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
-                            GlobalScope.launch(Dispatchers.IO) {
+                            //todo remove global scope
+                            GlobalScope.launch {
                                 DatabaseContentManager(context).fillDatabase(getDatabase(context))
                             }
                         }

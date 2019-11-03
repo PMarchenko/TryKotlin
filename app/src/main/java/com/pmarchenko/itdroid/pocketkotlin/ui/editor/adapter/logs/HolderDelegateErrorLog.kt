@@ -43,7 +43,12 @@ class HolderDelegateErrorLog(private val callback: EditorCallback) :
                                 this,
                                 linkUnderlineTextColor
                             )
-                            combinedErrors.append("${error.severity.name} ($link): ${error.message}\n")
+                            combinedErrors.append(error.severity.name)
+                                .append(' ')
+                                .append(link)
+                                .append(' ')
+                                .append(error.message)
+                                .append('\n')
                         }
                     }
 

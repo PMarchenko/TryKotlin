@@ -1,7 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
 import androidx.lifecycle.*
-import com.pmarchenko.itdroid.pocketkotlin.core.utils.doInBackground
 import com.pmarchenko.itdroid.pocketkotlin.data.model.Error
 import com.pmarchenko.itdroid.pocketkotlin.data.model.Loading
 import com.pmarchenko.itdroid.pocketkotlin.data.model.Resource
@@ -10,20 +9,24 @@ import com.pmarchenko.itdroid.pocketkotlin.data.model.log.*
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectExecutionResult
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.domain.executor.TaskExecutor
+import com.pmarchenko.itdroid.pocketkotlin.domain.executor.ThrottleExecutor
 import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 
 /**
  * @author Pavel Marchenko
  */
 class EditorViewModel(
     private val projectRepo: ProjectsRepository,
-    private val saveExecutor: TaskExecutor
+    saveExecutorFactory: (CoroutineScope) -> ThrottleExecutor
 ) : ViewModel() {
+
+    private val saveExecutor: ThrottleExecutor = saveExecutorFactory(viewModelScope)
 
     private val projectExecutor = MutableLiveData<Project>()
 
@@ -84,7 +87,7 @@ class EditorViewModel(
 
     fun setCommandLineArgs(args: String) {
         _project.value?.let { project ->
-            doInBackground {
+            viewModelScope.launch {
                 projectRepo.updateProject(project.copy(args = args))
             }
         }
@@ -101,13 +104,13 @@ class EditorViewModel(
     }
 
     fun updateProjectName(project: Project, name: String) {
-        doInBackground {
+        viewModelScope.launch {
             projectRepo.updateProject(project.copy(name = name))
         }
     }
 
     fun resetExample(project: Project) {
-        doInBackground {
+        viewModelScope.launch {
             projectRepo.resetExampleProject(project)
         }
     }
@@ -158,10 +161,5 @@ class EditorViewModel(
                 )
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        saveExecutor.release()
     }
 }

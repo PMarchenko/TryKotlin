@@ -10,6 +10,7 @@ import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectType
 import com.pmarchenko.itdroid.pocketkotlin.data.model.project.Language
+import kotlinx.coroutines.runBlocking
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
 
@@ -36,7 +37,9 @@ class DatabaseContentManager(private val context: Context) {
                 }
             """.trimIndent()
 
-        dao.insert(project)
+        runBlocking {
+            dao.insert(project)
+        }
     }
 
     private fun fillExamples(dao: ProjectDao) {
@@ -61,12 +64,14 @@ class DatabaseContentManager(private val context: Context) {
                 example.modifiedProject = project.copy()
             }
         }
-        dao.insertExamples(examples)
+        runBlocking {
+            dao.insertExamples(examples)
+        }
     }
 
     private fun readExamples(): List<Example> {
         try {
-            val stream = context.assets.open("db/kotlin_examples.json1")
+            val stream = context.assets.open("db/kotlin_examples.json")
             return stream.use {
                 val reader = InputStreamReader(it)
                 val examplesWrapper = GsonBuilder()
