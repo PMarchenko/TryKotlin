@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.pmarchenko.itdroid.pocketkotlin" />
+<manifest package="com.pmarchenko.itdroid.pocketkotlin" />
