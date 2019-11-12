@@ -1,45 +1,36 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.recycler
 
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 /**
  * @author Pavel Marchenko
  */
-abstract class DiffAdapter<T : RecyclerView.ViewHolder> : RecyclerView.Adapter<T>() {
+abstract class DiffAdapter :
+    ListAdapter<ContentData, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
-    protected fun dispatchUpdates(oldItems: List<ContentData>, newItems: List<ContentData>) {
-        val result = DiffUtil.calculateDiff(DiffCallback(oldItems, newItems))
-        result.dispatchUpdatesTo(this)
+    protected fun dispatchUpdates(newItems: List<ContentData>) {
+        submitList(newItems)
     }
 
-    private class DiffCallback(
-        val oldItems: List<ContentData>, val newItems: List<ContentData>
-    ) : DiffUtil.Callback() {
+    companion object {
 
-        override fun getOldListSize() = oldItems.size
-
-        override fun getNewListSize() = newItems.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldItems[oldItemPosition]
-            val newItem = newItems[newItemPosition]
-
-            return if (oldItem::class == newItem::class) {
-                oldItem.isItemTheSame(newItem)
-            } else {
-                false
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ContentData>() {
+            override fun areItemsTheSame(oldItem: ContentData, newItem: ContentData): Boolean {
+                return if (oldItem::class == newItem::class) {
+                    oldItem.isItemTheSame(newItem)
+                } else {
+                    false
+                }
             }
-        }
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldItems[oldItemPosition]
-            val newItem = newItems[newItemPosition]
-
-            return if (oldItem::class == newItem::class) {
-                oldItem.isContentTheSame(newItem)
-            } else {
-                false
+            override fun areContentsTheSame(oldItem: ContentData, newItem: ContentData): Boolean {
+                return if (oldItem::class == newItem::class) {
+                    oldItem.isContentTheSame(newItem)
+                } else {
+                    false
+                }
             }
         }
     }

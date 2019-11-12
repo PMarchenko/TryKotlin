@@ -83,9 +83,10 @@ fun logWtf(tag: String = LOG_TAG, msg: String, e: Throwable? = null) {
 }
 
 
-inline fun <T> T.measureTimeAndLog(tag: String = "$LOG_TAG:Measure", block: T.() -> Unit) {
+inline fun <T> T.measureTimeAndLog(tag: String = "$LOG_TAG:Measure", block: T.() -> Unit): Long {
     val time = measureNanoTime {
         block()
     }
     logd(tag) { "block execution took ${time / 1e6} ms" }
+    return time
 }

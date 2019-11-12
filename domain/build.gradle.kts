@@ -41,13 +41,9 @@ android {
     }
 
     sourceSets {
-        getByName("release").let {sourceSet ->
-            sourceSet.java.srcDirs("src/release/java")
-        }
+        getByName("release").java.srcDirs("src/release/java")
 
-        getByName("debug").let {sourceSet ->
-            sourceSet.java.srcDirs("src/debug/java")
-        }
+        getByName("debug").java.srcDirs("src/debug/java")
     }
 }
 

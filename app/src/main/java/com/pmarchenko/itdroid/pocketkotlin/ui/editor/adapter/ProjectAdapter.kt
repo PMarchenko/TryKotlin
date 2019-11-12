@@ -58,7 +58,7 @@ class ProjectAdapter(
                 }
             }
             VIEW_TYPE_PROJECT_FILE -> {
-                val fileData = getItem<FileContentData>(position)
+                val fileData = getItem(position) as FileContentData
                 val fileName = fileData.file.name
                 val errors = fileData.errors
                 val hasErrors = errors.any { it.severity == ErrorSeverity.ERROR }
@@ -85,9 +85,8 @@ class ProjectAdapter(
 
     fun getFilePosition(fileName: String): Int {
         for (position in 0 until itemCount) {
-            if (getItemViewType(position) == VIEW_TYPE_PROJECT_FILE && getItem<FileContentData>(
-                    position
-                ).file.name == fileName
+            if (getItemViewType(position) == VIEW_TYPE_PROJECT_FILE &&
+                (getItem(position) as FileContentData).file.name == fileName
             ) {
                 return position
             }

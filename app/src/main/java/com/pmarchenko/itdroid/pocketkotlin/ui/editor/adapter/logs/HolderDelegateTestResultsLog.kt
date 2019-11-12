@@ -46,20 +46,20 @@ class HolderDelegateTestResultsLog(private val callback: EditorCallback) :
                     for (result in it) {
                         executionTimeSeconds += result.executionTime / 1000f
                         out.append("\n- ${result.methodName}: ")
-                        when (result.status) {
+                        when (val status = result.status) {
                             Status.OK -> out.append(
-                                asColoredText(result.status.name, passedTestTextColor)
+                                asColoredText(status.name, passedTestTextColor)
                             )
                             Status.FAIL -> {
                                 failedTests++
                                 val failure = result.failure
                                 if (failure == null) {
-                                    out.append(asError(result.status.name))
+                                    out.append(asError(status.name))
                                 } else {
                                     out.append(
                                         asError(
                                             asLink(
-                                                result.status.name,
+                                                status.name,
                                                 failure,
                                                 this,
                                                 linkUnderlineTextColor

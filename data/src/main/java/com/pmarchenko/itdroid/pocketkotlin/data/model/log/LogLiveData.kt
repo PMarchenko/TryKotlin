@@ -30,4 +30,8 @@ class LogLiveData : MutableLiveData<List<LogRecord>>() {
         out.add(log)
         return out.takeLast(MAX_LOG_SIZE)
     }
+
+    fun clearLogs() {
+        super.setValue(emptyList())
+    }
 }

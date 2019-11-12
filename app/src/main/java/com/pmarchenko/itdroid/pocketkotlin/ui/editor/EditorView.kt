@@ -168,10 +168,12 @@ class EditorView : AppCompatEditText {
     private fun mapRealToVirtualLines(map: SparseIntArray) {
         map.clear()
         layout?.let { layout ->
-            var realLine = 0
-            map.append(realLine++, 0)
+            val saveLine = { index: Int -> map.append(map.size(), index) }
+
+            saveLine(0)
+
             text?.forEachIndexed { index, c ->
-                if (c == '\n') map.append(realLine++, layout.getLineForOffset(index + 1))
+                if (c == '\n') saveLine(layout.getLineForOffset(index + 1))
             }
         }
     }
@@ -184,15 +186,17 @@ class EditorView : AppCompatEditText {
 
     @Suppress("REDUNDANT_ELSE_IN_WHEN")
     private fun getErrorPaint(errors: List<EditorError>, error: EditorError): Paint =
-        when (error.severity) {
+        when (val severity = error.severity) {
             ErrorSeverity.ERROR -> errorMarkerPaint
             ErrorSeverity.WARNING ->
-                if (errors.any { it.startLine == error.startLine && it.severity == ErrorSeverity.ERROR }) {
+                if (errors.any {
+                        it.startLine == error.startLine && it.severity == ErrorSeverity.ERROR
+                    }) {
                     errorMarkerPaint
                 } else {
                     warningMarkerPaint
                 }
-            else -> error("Unsupported error severity: ${error.severity}")
+            else -> error("Unsupported error severity: $severity")
         }
 
     fun setErrors(file: ProjectFile, errors: List<ProjectError>) {

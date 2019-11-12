@@ -37,9 +37,8 @@ class ThrottleExecutor private constructor(
         }
     }
 
-    companion object {
+    companion object Factory {
 
-        fun create(scope: CoroutineScope, throttleDelay: Long = 500L) =
-            ThrottleExecutor(scope, throttleDelay)
+        fun forScope(scope: CoroutineScope): ThrottleExecutor = ThrottleExecutor(scope)
     }
 }

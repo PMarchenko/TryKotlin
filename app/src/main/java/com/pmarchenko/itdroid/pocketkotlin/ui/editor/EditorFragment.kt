@@ -34,7 +34,6 @@ import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
 import com.pmarchenko.itdroid.pocketkotlin.ui.TabLayoutMediator
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.ProjectAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ChangeProjectNameDialog
-import kotlinx.coroutines.CoroutineScope
 
 /**
  * @author Pavel Marchenko
@@ -51,10 +50,10 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
                     AppDatabase.getDatabase(requireActivity().applicationContext).getProjectDao()
                 val executionService = NetworkKotlinProjectExecutionService
                 val projectRepo = ProjectsRepository(projectDao, executionService)
-                val taskExecutorFactory = { scope: CoroutineScope -> ThrottleExecutor.create(scope) }
+                val throttleExecutorFactory = ThrottleExecutor.Factory::forScope
 
                 @Suppress("UNCHECKED_CAST")
-                return EditorViewModel(projectRepo, taskExecutorFactory) as T
+                return EditorViewModel(projectRepo, throttleExecutorFactory) as T
             }
             error("Cannot create viewModel for $modelClass")
         }
@@ -96,15 +95,10 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
         initUI()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("tabPosition", viewPager.currentItem)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val projectId = arguments?.getLong("projectId") ?: -1L
+        val projectId = arguments?.getLong(KEY_PROJECT_ID) ?: -1L
 
         if (projectId > 0) {
             viewModel.loadProject(projectId)
@@ -149,7 +143,7 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.projectArgs -> {
-            if (viewModel.hasProject()) {
+            if (viewModel.hasProject) {
                 CommandLineArgsDialog.show(this, viewModel.getProjectArgs())
             }
             true
@@ -214,10 +208,7 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
                 executeCodeFab.animate().scale(if (state.progressVisibility) 0f else 1f)
                     .setDuration(150).start()
             }
-            val currentItem =
-                if (viewPager.adapter?.itemCount ?: -1 == 0) 1 else viewPager.currentItem
             adapter.setProject(project, state.executionResult?.errors)
-            viewPager.currentItem = currentItem
         }
         requireActivity().invalidateOptionsMenu()
 
@@ -260,10 +251,12 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
 
         const val TAG = "EditorFragment"
 
+        const val KEY_PROJECT_ID = "$TAG.PROJECT_ID"
+
         fun newInstance(projectId: Long): Fragment =
             EditorFragment().apply {
                 arguments = Bundle(1).apply {
-                    putLong("projectId", projectId)
+                    putLong(KEY_PROJECT_ID, projectId)
                 }
             }
     }

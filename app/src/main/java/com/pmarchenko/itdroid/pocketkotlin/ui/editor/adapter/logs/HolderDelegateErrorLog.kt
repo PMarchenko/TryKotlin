@@ -28,7 +28,7 @@ class HolderDelegateErrorLog(private val callback: EditorCallback) :
         ClickableSpanListener<Pair<String, ProjectError>> {
 
         override fun prepareText(log: ErrorLogRecord): CharSequence {
-            val message = when (log.errorCode) {
+            val message = when (val errorCode = log.errorCode) {
                 ErrorLogRecord.ERROR_MESSAGE -> log.message
                 ErrorLogRecord.ERROR_PROJECT -> {
                     val combinedErrors = SpannableStringBuilder("\n")
@@ -54,7 +54,7 @@ class HolderDelegateErrorLog(private val callback: EditorCallback) :
 
                     combinedErrors
                 }
-                else -> error("Unsupported error type ${log.errorCode}")
+                else -> error("Unsupported error type $errorCode")
             } as CharSequence
 
             val out = SpannableStringBuilder(super.prepareText(log)).append(message)

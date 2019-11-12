@@ -1,5 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.domain.repository
 
+import android.text.SpannableStringBuilder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.pmarchenko.itdroid.pocketkotlin.domain.db.ProjectDao
@@ -21,21 +22,10 @@ class ProjectsRepository(
 ) {
 
     val userProjects: LiveData<List<Project>> =
-        Transformations.map(projectDao.getUserProjects()) { projectsWithFiles ->
-            projectsWithFiles.map { projectWithFiles: ProjectWithFiles ->
-                toProject(projectWithFiles)
-            }
-        }
+        Transformations.map(projectDao.getUserProjects()) { it.map(Companion::toProject) }
 
     val examples: LiveData<List<Example>> =
-        Transformations.map(projectDao.getExamples()) { projectsWithFiles ->
-            projectsWithFiles.map { exampleWithProject: ExampleWithProjects ->
-                val example = exampleWithProject.example
-                example.exampleProject = toProject(exampleWithProject.exampleProjectWithFiles)
-                example.modifiedProject = toProject(exampleWithProject.modifiedProjectWithFiles)
-                example
-            }
-        }
+        Transformations.map(projectDao.getExamples()) { it.map(Companion::toExample) }
 
     suspend fun addProject(project: Project) = projectDao.insert(project)
 
@@ -44,7 +34,7 @@ class ProjectsRepository(
     }
 
     fun loadProject(projectId: Long): LiveData<Project> =
-        Transformations.map(projectDao.getProject(projectId)) { toProject(it) }
+        Transformations.map(projectDao.getProject(projectId), Companion::toProject)
 
     suspend fun updateFile(project: Project, file: ProjectFile, updateTimestamp: Boolean = true) {
         val timestamp = System.currentTimeMillis()
@@ -111,6 +101,14 @@ class ProjectsRepository(
             val project = projectWithFiles.project
             project.files.addAll(projectWithFiles.files)
             return project
+        }
+
+        @JvmStatic
+        private fun toExample(exampleWithProject: ExampleWithProjects): Example {
+            val example = exampleWithProject.example
+            example.exampleProject = toProject(exampleWithProject.exampleProjectWithFiles)
+            example.modifiedProject = toProject(exampleWithProject.modifiedProjectWithFiles)
+            return example
         }
     }
 }

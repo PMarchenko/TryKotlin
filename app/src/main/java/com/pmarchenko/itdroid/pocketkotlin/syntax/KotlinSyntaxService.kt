@@ -42,10 +42,10 @@ class KotlinSyntaxService {
 
         errors.mapTo(out) { error ->
             @Suppress("REDUNDANT_ELSE_IN_WHEN")
-            when (error.severity) {
+            when (val severity = error.severity) {
                 ErrorSeverity.ERROR -> ErrorSpan(error.start, error.end)
                 ErrorSeverity.WARNING -> WarningSpan(error.start, error.end)
-                else -> error("Unsupported error severity: ${error.severity}")
+                else -> error("Unsupported error severity: $severity")
             }
         }
 
