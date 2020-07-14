@@ -4,23 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.setVisibility
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
-
-import com.pmarchenko.itdroid.pocketkotlin.domain.network.DummyProjectExecutionService
-import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
+import com.pmarchenko.itdroid.pocketkotlin.databinding.FragmentExamplesBinding
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorActivity
 import com.pmarchenko.itdroid.pocketkotlin.ui.examples.adapter.ExamplesAdapter
+import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.projectClickCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.DividerDecoration
 
 /**
@@ -28,68 +21,40 @@ import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.DividerDecoration
  */
 class ExamplesFragment : Fragment() {
 
-    private lateinit var viewModel: ExamplesViewModel
-
-    private val viewModelProvider = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ExamplesViewModel::class.java)) {
-                val projectDao = AppDatabase.getDatabase(requireActivity().applicationContext)
-                    .getProjectDao()
-                val executionService = DummyProjectExecutionService
-                val projectRepo = ProjectsRepository(projectDao, executionService)
-                @Suppress("UNCHECKED_CAST")
-                return ExamplesViewModel(projectRepo) as T
-            }
-            error("Cannot create viewModel for $modelClass")
-        }
-    }
-
-    private lateinit var progressView: View
-    private lateinit var examplesList: RecyclerView
-
+    private lateinit var binding: FragmentExamplesBinding
     private lateinit var adapter: ExamplesAdapter
-
-    private val projectCallback = object : ProjectCallbackAdapter() {
-
-        override fun onProjectClick(project: Project) {
-            val intent = EditorActivity.asDeepLinkIntent(project.id)
-            intent.setPackage(requireContext().packageName)
-            startActivity(intent)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel =
-            ViewModelProviders.of(this, viewModelProvider).get(ExamplesViewModel::class.java)
         return inflater.inflate(R.layout.fragment_examples, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initUI()
-        viewModel.examples.observe(
-            viewLifecycleOwner,
-            Observer { examples -> onExamples(examples ?: emptyList()) })
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentExamplesBinding.bind(view)
+        initUi()
+
+        ViewModelProviders.of(this).get(ExamplesViewModel::class.java)
+            .viewState.observe(viewLifecycleOwner, Observer { updateUI(it) })
     }
 
-    private fun initUI() {
-        progressView = view?.findViewById(R.id.progress) ?: error("Cannot find progress view")
-        examplesList = view?.findViewById(R.id.examplesList) ?: error("Cannot find projects list")
-
-        examplesList.layoutManager = LinearLayoutManager(context)
-        adapter = ExamplesAdapter(projectCallback)
-        examplesList.adapter = adapter
-        examplesList.addItemDecoration(DividerDecoration(requireContext()))
-
-        progressView.setVisibility(true)
+    private fun initUi() {
+        binding.examplesList.layoutManager = LinearLayoutManager(context)
+        binding.examplesList.addItemDecoration(DividerDecoration(requireContext()))
+        adapter = ExamplesAdapter(
+            projectClickCallback { project ->
+                val intent = EditorActivity.asDeepLinkIntent(project.id)
+                intent.setPackage(requireContext().packageName)
+                startActivity(intent)
+            }
+        ).also { binding.examplesList.adapter = it }
     }
 
-    private fun onExamples(examples: List<Example>) {
-        progressView.setVisibility(false)
-        adapter.setExamples(examples)
+    private fun updateUI(state: ExamplesViewState) {
+        binding.progress.isVisible = state.isLoading
+        adapter.setExamples(state.examples)
     }
 }

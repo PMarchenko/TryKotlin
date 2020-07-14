@@ -3,13 +3,13 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.examples.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.bindView
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
+import com.pmarchenko.itdroid.pocketkotlin.databinding.ViewholderExampleBinding
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.Example
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
+import kotlinx.android.extensions.LayoutContainer
 
 /**
  * @author Pavel Marchenko
@@ -24,31 +24,27 @@ class HolderDelegateExample(private val callback: ProjectCallback) :
         )
     }
 
-    override fun bind(holder: ExampleViewHolder, position: Int, contentData: ExampleContentData) {
-        holder.bind(contentData.example)
+    override fun bind(holder: ExampleViewHolder, position: Int, data: ExampleContentData) {
+        holder.bind(data.example)
     }
 
     class ExampleViewHolder(
-        itemView: View,
+        override val containerView: View,
         private val projectListCallback: ProjectCallback
-    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    ) : RecyclerView.ViewHolder(containerView), View.OnClickListener, LayoutContainer {
 
-        private val nameView by bindView<TextView>(R.id.name)
-
-        private val descriptionView by bindView<TextView>(R.id.description)
-
+        private val binding = ViewholderExampleBinding.bind(containerView)
         private var example: Example? = null
 
         init {
-            itemView.setOnClickListener(this)
+            binding.root.setOnClickListener(this)
         }
 
         fun bind(example: Example) {
             this.example = example
 
-            nameView.text =
-                example.modifiedProject?.name ?: error("Example ${example.id} is missing title")
-            descriptionView.text = example.description
+            binding.name.text = example.modifiedProject.name
+            binding.description.text = example.description
         }
 
         override fun onClick(v: View?) {

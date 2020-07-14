@@ -1,5 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.recycler
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
@@ -8,38 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class ContentAdapter : DiffAdapter() {
 
-    private val holderManager by lazy {
-        val instance = HolderDelegateManager()
-        for (delegate in delegates()) {
-            instance.register(delegate.key, delegate.value)
-        }
-        instance
-    }
+    protected abstract val delegates: Map<Int, HolderDelegate<out RecyclerView.ViewHolder, out ContentData>>
 
     override fun getItemId(position: Int): Long = getItem(position).itemId
 
-    override fun getItemViewType(position: Int): Int = getItem(position).viewType
+    override fun getItemViewType(position: Int) = getItem(position).viewType
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        holderManager.create(parent, viewType)
+        delegateFor(viewType).create(LayoutInflater.from(parent.context), parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holderManager.bind(holder, position, getItem(position))
+        delegateFor(holder.itemViewType).bind(holder, position, getItem(position))
     }
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        holderManager.attach(holder)
-    }
+    @Suppress("UNCHECKED_CAST")
+    private fun delegateFor(viewType: Int): HolderDelegate<RecyclerView.ViewHolder, ContentData> =
+        delegates[viewType] as? HolderDelegate<RecyclerView.ViewHolder, ContentData>
+            ?: error("Unsupported view type: $viewType")
 
-    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        holderManager.detach(holder)
-    }
-
-    protected fun setContent(content: List<ContentData>) {
-        dispatchUpdates(content)
-    }
-
-    protected abstract fun delegates(): Map<Int, HolderDelegate<*, *>>
 }

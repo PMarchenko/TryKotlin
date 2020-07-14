@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.data.model.log.LogRecord
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
+import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogRecord
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogsAdapter
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.logs.LogsContentData
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
@@ -25,8 +25,8 @@ class HolderDelegateLogs(private val callback: EditorCallback) :
         )
     }
 
-    override fun bind(holder: LogsViewHolder, position: Int, contentData: LogsContentData) {
-        holder.bindView(contentData.logs)
+    override fun bind(holder: LogsViewHolder, position: Int, data: LogsContentData) {
+        holder.bindView(data.logs)
     }
 
     class LogsViewHolder(itemView: View, callback: EditorCallback) :

@@ -1,6 +1,6 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.Project
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
 
 /**

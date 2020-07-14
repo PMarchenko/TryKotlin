@@ -1,90 +1,78 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.myprojects
 
 import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
-import android.widget.CheckBox
-import android.widget.EditText
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProviders
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.core.utils.TextWatcherAdapter
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
+import com.pmarchenko.itdroid.pocketkotlin.databinding.DialogAddProjectBinding
+import com.pmarchenko.itdroid.pocketkotlin.projects.newProject
+import com.pmarchenko.itdroid.pocketkotlin.setTextAndSelection
 
 /**
  * @author Pavel Marchenko
  */
-class AddProjectDialog : DialogFragment(), DialogInterface.OnClickListener {
+class AddProjectDialog : DialogFragment() {
+
+    private lateinit var binding: DialogAddProjectBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.dialog_add_project, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (dialog as AlertDialog).setView(view)
+
+        binding = DialogAddProjectBinding.bind(view)
+
+        if (savedInstanceState == null) {
+            binding.dialogContent.projectNameView.setTextAndSelection(R.string.dialog__add_project__default_name)
+        }
+
+        binding.dialogContent.projectNameView.doAfterTextChanged {
+            positiveButton?.isEnabled = it?.isNotEmpty() ?: false
+        }
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.dialog__add_project__title)
+            .setNegativeButton(R.string.dialog__add_project__negative_button, null)
+            .setPositiveButton(R.string.dialog__add_project__positive_button) { _, _ ->
+                ViewModelProviders.of(requireParentFragment())
+                    .get(MyProjectsViewModel::class.java)
+                    .addNewProject(newProject(name, withMain))
+            }
+            .create()
+
+    private val positiveButton: Button?
+        get() = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+
+    private val name
+        get() = binding.dialogContent.projectNameView.text.toString().trim()
+
+    private val withMain
+        get() = binding.includeMain.isChecked
 
     companion object {
 
         private const val TAG = "AddProjectDialog"
 
-        fun show(fragment: Fragment) {
-            val dialog = AddProjectDialog()
-            dialog.show(fragment.childFragmentManager, TAG)
+        fun show(fm: FragmentManager) {
+            AddProjectDialog().show(fm, TAG)
         }
     }
-
-    private lateinit var nameView: EditText
-    private lateinit var isIncludeMain: CheckBox
-    private lateinit var callback: ProjectCallback
-
-    private var hasName = false
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = parentFragment as ProjectCallback
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        savedInstanceState?.let { hasName = it.getBoolean("has_name") }
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireContext())
-            .setTitle(R.string.dialog__add_project__title)
-            .setView(R.layout.dialog_add_project)
-            .setNegativeButton(R.string.dialog__add_project__negative_button, null)
-            .setPositiveButton(R.string.dialog__add_project__positive_button, this)
-            .create()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        nameView = dialog?.findViewById(R.id.projectName) ?: error("Cannot find name view")
-        nameView.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(s: Editable?) {
-                positiveButton().isEnabled = s?.isNotEmpty() ?: false
-            }
-        })
-        isIncludeMain = dialog?.findViewById(R.id.includeMain) ?: error("Cannot find is main view")
-        positiveButton().isEnabled = hasName
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean("has_name", getProjectName().isNotEmpty())
-    }
-
-    private fun positiveButton() =
-        (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
-
-    override fun onClick(dialog: DialogInterface?, which: Int) {
-        val projectName = getProjectName()
-        if (which == DialogInterface.BUTTON_POSITIVE && projectName.isNotEmpty()) {
-            val includeMain = isIncludeMain.isChecked
-            callback.onAddProject(
-                if (includeMain) Project.withMainFun(projectName) else Project.empty(
-                    projectName
-                )
-            )
-        }
-    }
-
-    private fun getProjectName() = nameView.text.toString().trim()
 }
+

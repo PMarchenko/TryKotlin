@@ -11,11 +11,5 @@ abstract class HolderDelegate<VH : RecyclerView.ViewHolder, CD : ContentData> {
 
     abstract fun create(inflater: LayoutInflater, parent: ViewGroup): VH
 
-    abstract fun bind(holder: VH, position: Int, contentData: CD)
-
-    open fun attach(holder: VH) {
-    }
-
-    open fun detach(holder: VH) {
-    }
+    abstract fun bind(holder: VH, position: Int, data: CD)
 }

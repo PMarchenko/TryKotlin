@@ -16,7 +16,7 @@
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
-                android:name=".ui.MainActivity"
+                android:name=".MainActivity"
                 android:theme="@style/AppTheme.NoActionBar"
                 android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>

@@ -10,35 +10,30 @@ import androidx.recyclerview.widget.RecyclerView
  * @author Pavel Marchenko
  */
 @Suppress("unused")
-class HolderDelegateEmpty private constructor(
-    private val view: View?,
-    @LayoutRes private val layoutId: Int
-) :
+class HolderDelegateEmpty private constructor(private val viewProvider: EmptyViewProvider) :
     HolderDelegate<RecyclerView.ViewHolder, EmptyContentData>() {
 
-    constructor(view: View) : this(view, NO_LAYOUT_RES)
+    constructor(view: View) : this(ViewEmptyViewProvider(view))
 
-    constructor(@LayoutRes layoutId: Int) : this(null, layoutId)
+    constructor(@LayoutRes layoutId: Int) : this(LayoutIdEmptyViewProvider(layoutId))
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): RecyclerView.ViewHolder {
-        return object : RecyclerView.ViewHolder(
-            when {
-                view != null -> view
-                layoutId != NO_LAYOUT_RES -> inflater.inflate(layoutId, parent, false)
-                else -> error("No empty view provided")
-            }
-        ) {}
+        return object : RecyclerView.ViewHolder(viewProvider.get(inflater, parent)) {}
     }
 
-    override fun bind(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-        contentData: EmptyContentData
-    ) {
-        //no-op
+    override fun bind(holder: RecyclerView.ViewHolder, position: Int, data: EmptyContentData) {
     }
+}
 
-    companion object {
-        const val NO_LAYOUT_RES = -1
-    }
+private sealed class EmptyViewProvider {
+    abstract fun get(inflater: LayoutInflater, parent: ViewGroup): View
+}
+
+private class ViewEmptyViewProvider(val view: View) : EmptyViewProvider() {
+    override fun get(inflater: LayoutInflater, parent: ViewGroup) = view
+}
+
+private class LayoutIdEmptyViewProvider(@LayoutRes val id: Int) : EmptyViewProvider() {
+    override fun get(inflater: LayoutInflater, parent: ViewGroup): View =
+        inflater.inflate(id, parent, false)
 }

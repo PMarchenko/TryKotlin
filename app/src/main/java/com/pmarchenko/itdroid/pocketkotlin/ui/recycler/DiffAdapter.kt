@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * @author Pavel Marchenko
  */
-abstract class DiffAdapter :
-    ListAdapter<ContentData, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+abstract class DiffAdapter : ListAdapter<ContentData, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
-    protected fun dispatchUpdates(newItems: List<ContentData>) {
+    protected fun setContent(newItems: List<ContentData>) {
         submitList(newItems)
     }
 

@@ -23,28 +23,23 @@
         <com.google.android.material.tabs.TabLayout
                 android:id="@+id/editorTabs"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="@dimen/tabs.height"
                 app:tabMode="scrollable" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pages"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBar" />
+    <include layout="@layout/fragment_editor_content" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabEditor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab.horizontal_margin"
-            android:layout_marginBottom="@dimen/fab.vertical_margin"
             android:src="@drawable/ic_build_black_24dp"
             android:tint="@android:color/white"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal" />
 
     <ProgressBar
             android:id="@+id/executeProgress"
@@ -68,5 +63,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineVertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/fab.guideline_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/fab.guideline_margin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

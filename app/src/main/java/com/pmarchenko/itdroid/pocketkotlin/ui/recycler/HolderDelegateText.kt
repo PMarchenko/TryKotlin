@@ -10,51 +10,58 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * @author Pavel Marchenko
  */
+
+typealias TextViewLookup = (View) -> TextView
+
 class HolderDelegateText private constructor(
-    private val view: View?,
-    @LayoutRes private val layoutId: Int,
-    private val textViewProvider: (itemView: View) -> TextView
-) :
-    HolderDelegate<HolderDelegateText.TextViewHolder, TextContentData>() {
+    private val viewProvider: TextItemViewProvider,
+    private val textViewLookup: TextViewLookup
+) : HolderDelegate<TextViewHolder, TextContentData>() {
 
     @Suppress("unused")
-    constructor(view: View, textViewProvider: (itemView: View) -> TextView) : this(
-        view,
-        NO_LAYOUT_RES,
-        textViewProvider
-    )
+    constructor(
+        view: View,
+        textViewLookup: TextViewLookup = { it as TextView }
+    ) : this(ViewTextItemViewProvider(view), textViewLookup)
 
-    constructor(@LayoutRes layoutId: Int, textViewProvider: (itemView: View) -> TextView) : this(
-        null,
-        layoutId,
-        textViewProvider
-    )
+    constructor(
+        @LayoutRes layoutId: Int,
+        textViewLookup: TextViewLookup = { it as TextView }
+    ) : this(LayoutIdTextItemViewProvider(layoutId), textViewLookup)
 
     override fun create(inflater: LayoutInflater, parent: ViewGroup): TextViewHolder {
-        val view = when {
-            view != null -> view
-            layoutId != NO_LAYOUT_RES -> inflater.inflate(layoutId, parent, false)
-            else -> error("No empty view provided")
-        }
-        val textView = textViewProvider(view)
-        return TextViewHolder(view, textView)
+        val itemView = viewProvider.get(inflater, parent)
+        val textView = textViewLookup(itemView)
+        return TextViewHolder(itemView, textView)
     }
 
-    override fun bind(holder: TextViewHolder, position: Int, contentData: TextContentData) {
-        holder.bind(contentData.text)
+    override fun bind(holder: TextViewHolder, position: Int, data: TextContentData) {
+        holder.bind(data.text)
     }
+}
 
-    companion object {
-        const val NO_LAYOUT_RES = -1
+class TextViewHolder(itemView: View, private val textView: TextView) :
+    RecyclerView.ViewHolder(itemView) {
+
+    fun bind(text: CharSequence) {
+        textView.text = text
     }
+}
 
-    class TextViewHolder(
-        itemView: View,
-        private val textView: TextView
-    ) : RecyclerView.ViewHolder(itemView) {
+private sealed class TextItemViewProvider {
+    abstract fun get(inflater: LayoutInflater, parent: ViewGroup): View
+}
 
-        fun bind(text: CharSequence) {
-            textView.text = text
-        }
-    }
+private class ViewTextItemViewProvider(private val view: View) : TextItemViewProvider() {
+
+    override fun get(inflater: LayoutInflater, parent: ViewGroup) = view
+
+}
+
+private class LayoutIdTextItemViewProvider(@LayoutRes private val layoutId: Int) :
+    TextItemViewProvider() {
+
+    override fun get(inflater: LayoutInflater, parent: ViewGroup): View =
+        inflater.inflate(layoutId, parent, false)
+
 }

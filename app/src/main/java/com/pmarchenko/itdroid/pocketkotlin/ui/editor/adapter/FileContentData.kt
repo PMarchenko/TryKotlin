@@ -1,8 +1,8 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter
 
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.Project
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.ContentData
 
 data class FileContentData(

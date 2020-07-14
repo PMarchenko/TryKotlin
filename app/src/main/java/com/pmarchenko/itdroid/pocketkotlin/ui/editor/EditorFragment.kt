@@ -3,82 +3,55 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 
 import android.os.Bundle
 import android.view.*
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.text.parseAsHtml
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.bindView
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.isVisible
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.scale
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.setVisibility
-import com.pmarchenko.itdroid.pocketkotlin.core.utils.toast
-import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
-import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectException
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.AppDatabase
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectType
-import com.pmarchenko.itdroid.pocketkotlin.domain.executor.ThrottleExecutor
-import com.pmarchenko.itdroid.pocketkotlin.domain.network.NetworkKotlinProjectExecutionService
-import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
-import com.pmarchenko.itdroid.pocketkotlin.ui.TabLayoutMediator
+import com.pmarchenko.itdroid.pocketkotlin.checkAllMatched
+import com.pmarchenko.itdroid.pocketkotlin.databinding.FragmentEditorBinding
+import com.pmarchenko.itdroid.pocketkotlin.databinding.FragmentEditorContentBinding
+import com.pmarchenko.itdroid.pocketkotlin.databinding.ViewToolsPanelContentBinding
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.Project
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ProjectException
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ProjectFile
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ProjectType
+import com.pmarchenko.itdroid.pocketkotlin.scale
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter.ProjectAdapter
+import com.pmarchenko.itdroid.pocketkotlin.ui.editor.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.ui.fromArgs
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ChangeProjectNameDialog
+import com.pmarchenko.itdroid.pocketkotlin.ui.toast
+import com.pmarchenko.itdroid.pocketkotlin.ui.withArgs
 
 /**
  * @author Pavel Marchenko
  */
-class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback {
+class EditorFragment : Fragment() {
+
+    private var _binding: FragmentEditorBinding? = null
+    private val binding: FragmentEditorBinding
+        get() = _binding!!
+
+    private var _contentBinding: FragmentEditorContentBinding? = null
+    private val contentBinding: FragmentEditorContentBinding
+        get() = _contentBinding!!
+
+    private var _editorToolsBinding: ViewToolsPanelContentBinding? = null
+    private val editorToolsBinding: ViewToolsPanelContentBinding
+        get() = _editorToolsBinding!!
 
     private lateinit var viewModel: EditorViewModel
 
-    private val viewModelProvider = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            //todo introduce DI
-            if (modelClass.isAssignableFrom(EditorViewModel::class.java)) {
-                val projectDao =
-                    AppDatabase.getDatabase(requireActivity().applicationContext).getProjectDao()
-                val executionService = NetworkKotlinProjectExecutionService
-                val projectRepo = ProjectsRepository(projectDao, executionService)
-                val throttleExecutorFactory = ThrottleExecutor.Factory::forScope
-
-                @Suppress("UNCHECKED_CAST")
-                return EditorViewModel(projectRepo, throttleExecutorFactory) as T
-            }
-            error("Cannot create viewModel for $modelClass")
-        }
-    }
-
-    private val executeCodeFab by bindView<FloatingActionButton>(R.id.fabEditor)
-    private val executeProgressView by bindView<View>(R.id.executeProgress)
-    private val mainProgressView by bindView<View>(R.id.progressMain)
-    private val tabs by bindView<TabLayout>(R.id.editorTabs)
-    private val viewPager by bindView<ViewPager2>(R.id.pages)
-
     private lateinit var adapter: ProjectAdapter
-
-    private val backButtonResolver = BackButtonResolver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (backButtonResolver.allowBackPressed()) {
-                isEnabled = false
-                requireActivity().onBackPressedDispatcher.onBackPressed()
-            }
-            //else -> todo bug show info message
-        }
     }
 
     override fun onCreateView(
@@ -86,65 +59,52 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(this, viewModelProvider).get(EditorViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_editor, container, false)
+        viewModel = ViewModelProviders.of(this).get(EditorViewModel::class.java)
+
+        _binding = FragmentEditorBinding.inflate(inflater, container, false)
+        _contentBinding = FragmentEditorContentBinding.bind(binding.root)
+        _editorToolsBinding = ViewToolsPanelContentBinding.bind(contentBinding.toolsPanel)
+
+        return binding.root
     }
 
-    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(root, savedInstanceState)
-        initUI()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initUi()
+
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { updateUi(it) })
+        viewModel.loadProject(fromArgs(ARG_PROJECT_ID))
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val projectId = arguments?.getLong(KEY_PROJECT_ID) ?: -1L
-
-        if (projectId > 0) {
-            viewModel.loadProject(projectId)
-        } else {
-            toast(R.string.error_message__invalid_project_id)
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val project = viewModel.getProject()
+        inflater.inflate(R.menu.editor, menu)
 
-        menu.add(0, R.id.projectArgs, 0, R.string.menu_item__command_line_args)
-            .setIcon(R.drawable.ic_command_line_args_empty_24dp)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        menu.add(0, R.id.clearLogs, 0, R.string.menu_item__clear_logs)
-
-        if (project != null) {
-            when (project.projectType) {
-                ProjectType.EXAMPLE -> menu.add(
-                    0,
-                    R.id.resetExample,
-                    0,
-                    R.string.menu_item__reset_example
-                )
-                ProjectType.USER_PROJECT -> if (project.dateModified <= 0) menu.add(
-                    0,
-                    R.id.changeName,
-                    0,
-                    R.string.menu_item__change_name
-                )
+        menu.findItem(R.id.projectArgs)?.setIcon(
+            if (viewModel.getProjectArgs().isEmpty()) {
+                R.drawable.ic_command_line_args_empty_24dp
+            } else {
+                R.drawable.ic_command_line_args_24dp
             }
-
-            menu.findItem(R.id.projectArgs)?.setIcon(
-                if (viewModel.getProjectArgs().isEmpty()) {
-                    R.drawable.ic_command_line_args_empty_24dp
-                } else {
-                    R.drawable.ic_command_line_args_24dp
+        )
+        viewModel.getProject()?.projectType?.let {
+            when (it) {
+                ProjectType.EXAMPLE -> menu.findItem(R.id.changeName)?.isVisible = false
+                ProjectType.USER_PROJECT -> {
                 }
-            )
+            }.checkAllMatched
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.projectArgs -> {
             if (viewModel.hasProject) {
-                CommandLineArgsDialog.show(this, viewModel.getProjectArgs())
+                CommandLineArgsDialog.show(childFragmentManager, viewModel.getProjectArgs())
             }
             true
         }
@@ -153,111 +113,114 @@ class EditorFragment : Fragment(), CommandLineArgsDialogCallback, EditorCallback
             true
         }
         R.id.changeName -> {
-            viewModel.getProject()?.let { ChangeProjectNameDialog.show(this, it) }
-            true
-        }
-        R.id.resetExample -> {
-            adapter.resetProject()
-            viewModel.getProject()?.let { viewModel.resetExample(it) }
+            viewModel.getProject()?.let { ChangeProjectNameDialog.show(childFragmentManager, it) }
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun initUI() {
-        view?.findViewById<Toolbar>(R.id.toolbar)?.let {
-            (requireActivity() as AppCompatActivity).setSupportActionBar(it)
-        }
-        adapter = ProjectAdapter(requireContext(), this)
-        viewPager.isUserInputEnabled = false
-        viewPager.adapter = adapter
+    private fun initUi() {
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
-        TabLayoutMediator(tabs, viewPager, true,
-            TabLayoutMediator.OnConfigureTabCallback { tab, position ->
-                tab.text = adapter.getTitle(position)
-            }
-        ).attach()
+        binding.fabEditor.isEnabled = false
+        binding.fabEditor.setOnClickListener { viewModel.executeProject() }
 
-        executeCodeFab.setOnClickListener { viewModel.executeProject() }
+        contentBinding.pages.isUserInputEnabled = false
+        adapter = ProjectAdapter(requireContext(), editorCallback)
+        contentBinding.pages.adapter = adapter
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { onNewViewState(it) })
-        viewModel.log.observe(viewLifecycleOwner, Observer { adapter.setLog(it) })
+        editorToolsBinding.logs.setOnClickListener(toolsCallback)
+        editorToolsBinding.lt.setOnClickListener(toolsCallback)
+        editorToolsBinding.gt.setOnClickListener(toolsCallback)
+
+        TabLayoutMediator(binding.editorTabs, contentBinding.pages, true) { tab, position ->
+            tab.text = adapter.getTitle(position)
+        }.attach()
     }
 
-    private fun onNewViewState(state: EditorViewState) {
+    private fun updateUi(state: EditorViewState) {
+        //todo rethink EditorViewState
         val project = state.project
         if (project == null) {
-            mainProgressView.setVisibility(true)
-            tabs.setVisibility(false)
-            executeProgressView.setVisibility(false)
-            executeCodeFab.setVisibility(false)
+            binding.progressMain.isVisible = state.progressVisibility
+            contentBinding.pages.isVisible = false
+            binding.executeProgress.isVisible = false
+            binding.fabEditor.isVisible = false
         } else {
             (requireActivity() as AppCompatActivity).supportActionBar?.let {
                 it.title = project.name
             }
-            mainProgressView.setVisibility(false)
-            tabs.setVisibility(true)
-            if (executeProgressView.isVisible() != state.progressVisibility) {
-                executeProgressView.setVisibility(state.progressVisibility)
-                executeProgressView.animate().scale(if (state.progressVisibility) 1f else 0f)
+            binding.progressMain.isVisible = false
+            contentBinding.pages.isVisible = true
+            binding.fabEditor.isVisible = true
+            if (binding.executeProgress.isVisible != state.progressVisibility) {
+                binding.executeProgress.isVisible = state.progressVisibility
+                binding.executeProgress.animate().scale(if (state.progressVisibility) 1f else 0f)
                     .setDuration(150).start()
             }
 
-            if (executeCodeFab.isEnabled != !state.progressVisibility) {
-                executeCodeFab.isEnabled = !state.progressVisibility
-                executeCodeFab.animate().scale(if (state.progressVisibility) 0f else 1f)
+            if (binding.fabEditor.isEnabled != !state.progressVisibility) {
+                binding.fabEditor.isEnabled = !state.progressVisibility
+                binding.fabEditor.animate().scale(if (state.progressVisibility) 0f else 1f)
                     .setDuration(150).start()
             }
             adapter.setProject(project, state.executionResult?.errors)
         }
         requireActivity().invalidateOptionsMenu()
-
-        state.consume()
     }
 
-    override fun onCommandLineArgsUpdate(args: String) {
-        viewModel.setCommandLineArgs(args)
-    }
+    private val editorCallback = object : EditorCallback {
 
-    override fun showErrorDetails(file: ProjectFile, line: Int, errors: ArrayList<EditorError>) {
-        LineErrorsDialog.show(this, file, line, errors)
-    }
+        override fun showErrorDetails(
+            file: ProjectFile,
+            line: Int,
+            errors: ArrayList<EditorError>
+        ) {
+            LineErrorsDialog.show(childFragmentManager, file, line, errors)
+        }
 
-    override fun showExceptionDetails(exception: ProjectException) {
-        TextDialog.show(
-            this,
-            exception.fullName,
-            exception.message.parseAsHtml()
-        )
-    }
+        override fun showExceptionDetails(exception: ProjectException) {
+            TextDialog.show(
+                childFragmentManager,
+                exception.fullName,
+                exception.message.parseAsHtml()
+            )
+        }
 
-    override fun onFileEdited(project: Project, file: ProjectFile, program: String) {
-        viewModel.editProjectFile(project, file, program)
-    }
+        override fun onFileEdited(project: Project, file: ProjectFile, program: String) {
+            viewModel.editProjectFile(project, file, program)
+        }
 
-    override fun openFile(fileName: String, line: Int, linePosition: Int) {
-        val position = adapter.getFilePosition(fileName)
-        if (position != RecyclerView.NO_POSITION) {
-            viewPager.setCurrentItem(position, false)
-            if (line >= 0) adapter.applySelection(fileName, line, linePosition)
+        override fun openFile(fileName: String, line: Int, linePosition: Int) {
+            val position = adapter.getFilePosition(fileName)
+            if (position != RecyclerView.NO_POSITION) {
+                contentBinding.pages.setCurrentItem(position, false)
+                if (line >= 0) adapter.applySelection(fileName, line, linePosition)
+            }
+        }
+
+        override fun onProjectName(project: Project, name: String) {
+            viewModel.updateProjectName(project, name)
         }
     }
 
-    override fun onProjectName(project: Project, name: String) {
-        viewModel.updateProjectName(project, name)
+    private val toolsCallback = View.OnClickListener {
+        when (it) {
+            editorToolsBinding.logs -> toast("logs")
+            editorToolsBinding.lt -> toast("lt")
+            editorToolsBinding.gt -> toast("gt")
+        }
     }
 
     companion object {
 
         const val TAG = "EditorFragment"
-
-        const val KEY_PROJECT_ID = "$TAG.PROJECT_ID"
+        private const val ARG_PROJECT_ID = "$TAG.PROJECT_ID"
 
         fun newInstance(projectId: Long): Fragment =
-            EditorFragment().apply {
-                arguments = Bundle(1).apply {
-                    putLong(KEY_PROJECT_ID, projectId)
+            EditorFragment()
+                .withArgs {
+                    putLong(ARG_PROJECT_ID, projectId)
                 }
-            }
     }
 }

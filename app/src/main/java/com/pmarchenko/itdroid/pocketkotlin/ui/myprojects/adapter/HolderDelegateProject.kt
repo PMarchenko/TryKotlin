@@ -4,14 +4,13 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.bindView
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Project
-import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorView
+import com.pmarchenko.itdroid.pocketkotlin.databinding.ViewholderProjectBinding
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.Project
 import com.pmarchenko.itdroid.pocketkotlin.ui.myprojects.ProjectCallback
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
+import kotlinx.android.extensions.LayoutContainer
 
 /**
  * @author Pavel Marchenko
@@ -26,35 +25,32 @@ class HolderDelegateProject(private val callback: ProjectCallback) :
         )
     }
 
-    override fun bind(holder: ProjectViewHolder, position: Int, contentData: ProjectContentData) {
-        holder.bind(contentData.project)
+    override fun bind(holder: ProjectViewHolder, position: Int, data: ProjectContentData) {
+        holder.bind(data.project)
     }
 
-    class ProjectViewHolder(itemView: View, private val projectListCallback: ProjectCallback) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    class ProjectViewHolder(
+        override val containerView: View,
+        private val projectListCallback: ProjectCallback
+    ) : RecyclerView.ViewHolder(containerView), View.OnClickListener, LayoutContainer {
 
-        private val editorView by bindView<EditorView>(R.id.editor)
-        private val nameView by bindView<TextView>(R.id.name)
-        private val dateView by bindView<TextView>(R.id.date)
-        private val menuView by bindView<View>(R.id.menu)
-
+        private val binding = ViewholderProjectBinding.bind(containerView)
         private var project: Project? = null
 
         init {
-            itemView.setOnClickListener(this)
-            menuView.setOnClickListener(this)
+            binding.root.setOnClickListener(this)
+            binding.menu.setOnClickListener(this)
         }
 
         fun bind(project: Project) {
             this.project = project
-            editorView.setText(project.mainFile().program)
-            editorView.handleTouchEvents = false
-            nameView.text = project.name
+            binding.editor.setText(project.demoProgram())
+            binding.editor.handleTouchEvents = false
+            binding.name.text = project.name
 
-            val date = if (project.dateModified > 0) project.dateModified else project.dateCreated
-            dateView.text = DateUtils.formatDateTime(
-                dateView.context,
-                date,
+            binding.date.text = DateUtils.formatDateTime(
+                binding.date.context,
+                if (project.dateModified > 0) project.dateModified else project.dateCreated,
                 DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_TIME
             )
         }
@@ -63,9 +59,13 @@ class HolderDelegateProject(private val callback: ProjectCallback) :
             project?.let {
                 when (v) {
                     itemView -> projectListCallback.onProjectClick(it)
-                    menuView -> projectListCallback.onProjectMenuClick(v, it)
+                    binding.menu -> projectListCallback.onProjectMenuClick(binding.menu, it)
                 }
             }
         }
     }
 }
+
+private fun Project.demoProgram() =
+    files.firstOrNull { it.name == mainFile }
+        ?.program ?: ""

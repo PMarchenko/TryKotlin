@@ -3,9 +3,11 @@ package com.pmarchenko.itdroid.pocketkotlin.ui.editor
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.core.utils.toast
+import com.pmarchenko.itdroid.pocketkotlin.ui.toast
 
 class EditorActivity : AppCompatActivity() {
 
@@ -26,16 +28,37 @@ class EditorActivity : AppCompatActivity() {
         val projectId = parseProjectId(intent)
 
         if (projectId > 0) {
-            var editor = supportFragmentManager.findFragmentByTag(EditorFragment.TAG)
+            val editor = supportFragmentManager.findFragmentByTag(EditorFragment.TAG)
             if (editor == null) {
-                editor = EditorFragment.newInstance(projectId)
-                supportFragmentManager.beginTransaction()
-                    .add(android.R.id.content, editor, EditorFragment.TAG)
-                    .commit()
+                supportFragmentManager.commit {
+                    add(
+                        android.R.id.content,
+                        EditorFragment.newInstance(projectId),
+                        EditorFragment.TAG
+                    )
+                }
             }
+
+            onBackPressedDispatcher.addCallback(this, backButtonCallback)
         } else {
             toast(R.string.error_message__invalid_project_id)
             finish()
+        }
+    }
+
+    private val backButtonCallback = object :
+        OnBackPressedCallback(true) {
+
+        private val backButtonResolver = BackButtonResolver()
+
+        override fun handleOnBackPressed() {
+            if (backButtonResolver.allowBackPressed()) {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+            } else {
+                //todo snackbar
+                toast(R.string.error_message__editor_exit)
+            }
         }
     }
 }

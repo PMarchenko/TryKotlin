@@ -5,6 +5,10 @@
     <dimen name="nav_header.vertical_spacing">8dp</dimen>
     <dimen name="nav_header.height">176dp</dimen>
 
-    <dimen name="fab.vertical_margin">16dp</dimen>
-    <dimen name="fab.horizontal_margin">16dp</dimen>
+    <dimen name="tabs.height">32dp</dimen>
+
+    <dimen name="fab.guideline_margin">72dp</dimen>
+
+    <dimen name="tools_panel.edge_size">8dp</dimen>
+
 </resources>

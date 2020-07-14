@@ -9,16 +9,14 @@ import android.util.SparseIntArray
 import android.view.MotionEvent
 import androidx.appcompat.R
 import androidx.appcompat.widget.AppCompatEditText
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.dp
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.findKey
-import com.pmarchenko.itdroid.pocketkotlin.core.extentions.isRtl
-import com.pmarchenko.itdroid.pocketkotlin.core.utils.TextWatcherAdapter
-import com.pmarchenko.itdroid.pocketkotlin.data.model.EditorError
-import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ErrorSeverity
-import com.pmarchenko.itdroid.pocketkotlin.data.model.project.ProjectError
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.ProjectFile
+import androidx.core.view.updatePaddingRelative
+import androidx.core.widget.doAfterTextChanged
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ErrorSeverity
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ProjectError
+import com.pmarchenko.itdroid.pocketkotlin.projects.model.ProjectFile
 import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxRepository
-import com.pmarchenko.itdroid.pocketkotlin.syntax.KotlinSyntaxService
+import com.pmarchenko.itdroid.pocketkotlin.ui.editor.model.EditorError
+import com.pmarchenko.itdroid.pocketkotlin.utils.dp
 import kotlin.math.max
 
 /**
@@ -26,13 +24,7 @@ import kotlin.math.max
  */
 class EditorView : AppCompatEditText {
 
-    companion object {
-        private const val NO_LINE = -1
-    }
-
-    private val syntaxRepository = KotlinSyntaxRepository(KotlinSyntaxService())
-
-    private var initialized: Boolean = false
+    private val syntaxRepository = KotlinSyntaxRepository()
 
     private var projectCallback: EditorCallback? = null
     private lateinit var file: ProjectFile
@@ -42,6 +34,9 @@ class EditorView : AppCompatEditText {
     private var pendingErrors: Pair<ProjectFile, List<ProjectError>>? = null
 
     var handleTouchEvents = true
+
+    val program
+        get() = text.toString()
 
     private var lineBarWidth = 32f.dp
     private var lineBarBgPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -64,25 +59,20 @@ class EditorView : AppCompatEditText {
 
     constructor(context: Context) : this(context, null, R.attr.editTextStyle)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, R.attr.editTextStyle)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     init {
-        setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-        addTextChangedListener(object : TextWatcherAdapter() {
-
-            override fun afterTextChanged(s: Editable?) {
-                mapRealToVirtualLines(realToVirtualLines)
-                if (initialized && !s.isNullOrEmpty()) {
-                    errors.clear()
-                    analyzeSyntax(s)
-                }
+        updatePaddingRelative(
+            start = paddingStart + lineBarWidth.toInt()
+        )
+        doAfterTextChanged {
+            mapRealToVirtualLines(realToVirtualLines)
+            if (!it.isNullOrEmpty()) {
+                errors.clear()
+                analyzeSyntax(it)
             }
-        })
-        initialized = true
+        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
@@ -93,37 +83,23 @@ class EditorView : AppCompatEditText {
         projectCallback = callback
     }
 
-    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        setPaddingRelative(
-            if (isRtl()) right else left,
-            top,
-            if (isRtl()) left else right,
-            bottom
-        )
-    }
-
-    override fun setPaddingRelative(start: Int, top: Int, end: Int, bottom: Int) {
-        super.setPaddingRelative(start + lineBarWidth.toInt(), top, end, bottom)
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val callback = projectCallback
-        if (callback != null && event != null) {
+        if (callback != null && event != null && event.action == MotionEvent.ACTION_UP) {
             val x = event.x + scrollX
             val y = event.y + scrollY
-            val touchedLine = errorAreas.findKey(opt = NO_LINE) { it.contains(x, y) }
-            if (touchedLine != NO_LINE) {
-                if (event.action == MotionEvent.ACTION_UP) {
-                    val lineErrors =
-                        errors.filter { it.startLine == touchedLine } as ArrayList<EditorError>
-                    realToVirtualLines
-                    callback.showErrorDetails(file, touchedLine, lineErrors)
-                }
-                return true
-            }
-        }
 
+            errorAreas.filterValues { it.contains(x, y) }
+                .map { it.key }
+                .firstOrNull()
+                ?.let { touchedLine ->
+                    val lineErrors =
+                        this.errors.filterTo(ArrayList()) { it.startLine == touchedLine }
+                    callback.showErrorDetails(file, touchedLine, lineErrors)
+                    return true
+                }
+        }
         return super.onTouchEvent(event)
     }
 
@@ -171,9 +147,10 @@ class EditorView : AppCompatEditText {
             val saveLine = { index: Int -> map.append(map.size(), index) }
 
             saveLine(0)
-
             text?.forEachIndexed { index, c ->
-                if (c == '\n') saveLine(layout.getLineForOffset(index + 1))
+                if (c == '\n') {
+                    saveLine(layout.getLineForOffset(index + 1))
+                }
             }
         }
     }
@@ -184,19 +161,19 @@ class EditorView : AppCompatEditText {
         canvas.drawLine(lineBarWidth, 0f, lineBarWidth, bottom, lineNumberPaint)
     }
 
-    @Suppress("REDUNDANT_ELSE_IN_WHEN")
     private fun getErrorPaint(errors: List<EditorError>, error: EditorError): Paint =
-        when (val severity = error.severity) {
+        when (error.severity) {
             ErrorSeverity.ERROR -> errorMarkerPaint
             ErrorSeverity.WARNING ->
-                if (errors.any {
+                if (
+                    errors.any {
                         it.startLine == error.startLine && it.severity == ErrorSeverity.ERROR
-                    }) {
+                    }
+                ) {
                     errorMarkerPaint
                 } else {
                     warningMarkerPaint
                 }
-            else -> error("Unsupported error severity: $severity")
         }
 
     fun setErrors(file: ProjectFile, errors: List<ProjectError>) {
@@ -216,7 +193,14 @@ class EditorView : AppCompatEditText {
             val end = layout.getLineStart(endLine) + error.interval.end.ch
             if (start >= 0 && end <= editableText.length) {
                 val editorError =
-                    EditorError(error.message, error.severity, startLine, endLine, start, end)
+                    EditorError(
+                        error.message,
+                        error.severity,
+                        startLine,
+                        endLine,
+                        start,
+                        end
+                    )
                 this.errors.add(editorError)
                 errorAreas[editorError.startLine] = RectF()
             }
@@ -229,7 +213,7 @@ class EditorView : AppCompatEditText {
     private fun analyzeSyntax(text: Editable?) {
         val layout = layout
         if (layout !== null && text != null) {
-            syntaxRepository.highlightSyntax(text, errors)
+            syntaxRepository.highlightSyntax(text)
         }
     }
 
@@ -240,7 +224,4 @@ class EditorView : AppCompatEditText {
             setSelection(position)
         }
     }
-
-    fun getProgram() = text.toString()
-
 }

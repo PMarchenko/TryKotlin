@@ -1,15 +1,15 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.editor.adapter
 
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.pmarchenko.itdroid.pocketkotlin.R
-import com.pmarchenko.itdroid.pocketkotlin.core.utils.TextWatcherAdapter
+import com.pmarchenko.itdroid.pocketkotlin.databinding.ViewholderProjectFileBinding
 import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorCallback
-import com.pmarchenko.itdroid.pocketkotlin.ui.editor.EditorView
 import com.pmarchenko.itdroid.pocketkotlin.ui.recycler.HolderDelegate
+import kotlinx.android.extensions.LayoutContainer
 
 /**
  * @author Pavel Marchenko
@@ -24,53 +24,46 @@ class HolderDelegateProjectFile(private val callback: EditorCallback) :
         )
     }
 
-    override fun bind(holder: ProjectFileViewHolder, position: Int, contentData: FileContentData) {
-        holder.bind(contentData)
+    override fun bind(holder: ProjectFileViewHolder, position: Int, data: FileContentData) {
+        holder.bind(data)
     }
 
-    class ProjectFileViewHolder(itemView: View, private val callback: EditorCallback) :
-        RecyclerView.ViewHolder(itemView) {
+    class ProjectFileViewHolder(
+        override val containerView: View,
+        private val callback: EditorCallback
+    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        private val editor = itemView.findViewById<EditorView>(R.id.editor)
-
+        private val binding = ViewholderProjectFileBinding.bind(containerView)
         private var fileData: FileContentData? = null
 
-        private var pendingProgram: String = ""
-
-        private val textWatcher = object : TextWatcherAdapter() {
-
-            override fun afterTextChanged(s: Editable?) {
-                val file = fileData?.file ?: return
-                val project = fileData?.project ?: return
-                val program = s.toString()
+        init {
+            binding.editor.doAfterTextChanged {
+                val file = fileData?.file ?: return@doAfterTextChanged
+                val program = it.toString()
 
                 if (file.program != program) {
-                    pendingProgram = program
+                    val project = fileData?.project ?: return@doAfterTextChanged
                     callback.onFileEdited(project, file, program)
                 }
             }
-        }
-
-        init {
-            editor.addTextChangedListener(textWatcher)
-            editor.setProjectCallback(callback)
+            binding.editor.setProjectCallback(callback)
         }
 
         fun bind(fileData: FileContentData) {
             this.fileData = fileData
 
             val file = fileData.file
-            val program = editor.getProgram()
+            val program = binding.editor.program
 
             if (program.isEmpty() && file.program != program) {
-                editor.setText(file.program)
+                binding.editor.setText(file.program)
             }
 
-            editor.setErrors(file, fileData.errors)
+            binding.editor.setErrors(file, fileData.errors)
 
             fileData.selection?.let {
-                editor.setSelection(it)
-                editor.requestFocus()
+                binding.editor.setSelection(it)
+                binding.editor.requestFocus()
                 fileData.selection = null
             }
         }

@@ -1,14 +1,23 @@
 package com.pmarchenko.itdroid.pocketkotlin.ui.examples
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import com.pmarchenko.itdroid.pocketkotlin.domain.db.entity.Example
-import com.pmarchenko.itdroid.pocketkotlin.domain.repository.ProjectsRepository
+import android.app.Application
+import androidx.lifecycle.*
+import com.pmarchenko.itdroid.pocketkotlin.projects.ProjectsRepository
 
 /**
  * @author Pavel Marchenko
  */
-class ExamplesViewModel(projectRepo: ProjectsRepository) : ViewModel() {
+class ExamplesViewModel(val app: Application) : AndroidViewModel(app) {
 
-    val examples: LiveData<List<Example>> = projectRepo.examples
+    private val projectRepo = ProjectsRepository.newInstance(app)
+
+    private val _viewState = projectRepo.examples
+        .map {
+            ExamplesViewState(examples = it)
+        } as MutableLiveData<ExamplesViewState>
+
+    val viewState: LiveData<ExamplesViewState> by lazy {
+        _viewState.value = ExamplesViewState(isLoading = true)
+        _viewState
+    }
 }

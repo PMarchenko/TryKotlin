@@ -15,7 +15,6 @@
     <string name="menu_item__settings">Settings</string>
     <string name="menu_item__command_line_args">Command line args</string>
     <string name="menu_item__clear_logs">Clear logs</string>
-    <string name="menu_item__reset_example">Reset example</string>
     <string name="menu_item__delete">Delete</string>
     <string name="menu_item__change_name">Change Name</string>
     <string name="menu_item__my_projects">My Projects</string>
@@ -38,6 +37,7 @@
     <string name="dialog__add_project__include_main">Include \'fun main(args: Array&lt;String&gt;)\'</string>
     <string name="dialog__add_project__positive_button">Add</string>
     <string name="dialog__add_project__negative_button">Cancel</string>
+    <string name="dialog__add_project__default_name">HelloWorld</string>
 
     <string name="dialog__change_project_name__positive_button">Save</string>
 
@@ -53,5 +53,10 @@
     <string name="error_message__editor_exit">One more time</string>
 
     <string name="my_projects__empty_message">No projects yet</string>
+
+    <string name="editor__tools__lt">&lt;</string>
+    <string name="editor__tools__gt">&gt;</string>
+    <string name="editor__tools__logs">Logs</string>
+    <string name="editor__tools__stub">Stub</string>
 
 </resources>
