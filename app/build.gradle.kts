@@ -1,43 +1,39 @@
-import com.pmarchenko.itdroid.pocketkotlin.kotlinStdLib
-import com.pmarchenko.itdroid.pocketkotlin.Versions
+import com.pmarchenko.itdroid.pocketkotlin.AppComponents
+import com.pmarchenko.itdroid.pocketkotlin.AppVersion
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.AndroidX
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.DebugTools
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Google
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.GooglePlay
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.KotlinX
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Module
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Tests
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.pmarchenko.itdroid.pocketkotlin.Dependencies.kotlinStdLib
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions")
     kotlin("kapt")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
 
-    compileSdkVersion(Versions.compileSdk)
-    buildToolsVersion(Versions.buildTools)
+    compileSdkVersion(AppComponents.AndroidSdk.compileSdk)
+    buildToolsVersion(AppComponents.AndroidSdk.buildTools)
 
     defaultConfig {
         applicationId = "com.pmarchenko.itdroid.pocketkotlin"
 
-        minSdkVersion(Versions.minSdk)
-        targetSdkVersion(Versions.targetSdk)
+        versionCode = AppVersion.code
+        versionName = AppVersion.name
 
-        versionCode = Versions.versionCode
-        versionName = Versions.versionName
+        minSdkVersion(AppComponents.AndroidSdk.minSdk)
+        targetSdkVersion(AppComponents.AndroidSdk.targetSdk)
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                argument("room.schemaLocation", "$projectDir/schemas")
-            }
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
+        testInstrumentationRunner = Tests.testRunner
     }
 
     buildTypes {
@@ -49,36 +45,58 @@ android {
             )
         }
     }
+
+    compileOptions {
+        sourceCompatibility = AppComponents.CompileOptions.sourceCompatibility
+        targetCompatibility = AppComponents.CompileOptions.targetCompatibility
+    }
+
+    kotlinOptions {
+        jvmTarget = AppComponents.KotlinOptions.jvmTarget
+        useIR = true
+    }
+
+    buildFeatures {
+        viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Dependencies.kotlinVersion
+        kotlinCompilerExtensionVersion = AndroidX.Compose.version
+    }
 }
 
 dependencies {
-    implementation(project(":domain"))
-
-    implementation(fileTree(mapOf("dir" to "libs", "include" to "*.jar")))
+    implementation(jarLibs)
     implementation(kotlinStdLib)
 
-    testImplementation("junit:junit:${Versions.junit}")
-    androidTestImplementation("androidx.test.ext:junit:${Versions.androidxJunit}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espressoCore}")
+    implementation(project(Module.projects))
+    implementation(project(Module.syntax))
+    implementation(project(Module.utils))
+    implementation(project(Module.preferences))
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.0-alpha-2")
+    testImplementation(Tests.junit)
+    androidTestImplementation(Tests.androidxJunit)
+    androidTestImplementation(Tests.espressoCore)
 
-    implementation("androidx.appcompat:appcompat:1.1.0")
+    debugImplementation(DebugTools.leakCanary)
 
-    implementation("androidx.fragment:fragment-ktx:1.2.0-rc01")
+    implementation(KotlinX.coroutines)
 
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
+    implementation(AndroidX.appCompat)
+    implementation(AndroidX.activityKtx)
+    implementation(AndroidX.coreKtx)
 
-    implementation("androidx.core:core-ktx:1.1.0")
+    implementation(AndroidX.liveData)
+    implementation(AndroidX.viewModelSaveState)
 
-    implementation("androidx.navigation:navigation-fragment:2.1.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.1.0")
-    implementation("androidx.navigation:navigation-ui:2.1.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.1.0")
+    implementation(Google.material)
+    implementation(GooglePlay.ossLicenses)
 
-    implementation("androidx.lifecycle:lifecycle-extensions:2.1.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc01")
+    implementation(AndroidX.Compose.runtime)
+    implementation(AndroidX.Compose.uiTooling)
+    implementation(AndroidX.Compose.material)
+    implementation(AndroidX.Compose.liveData)
 
-    implementation("com.google.android.material:material:1.0.0")
-    implementation("androidx.viewpager2:viewpager2:1.0.0-rc01")
 }

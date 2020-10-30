@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
+
+    <string name="settings__section__app_theme">App theme</string>
+    <string name="settings__value__app_theme_light">Light</string>
+    <string name="settings__value__app_theme_dark">Dark</string>
+    <string name="settings__value__app_theme_auto">Auto</string>
+
+</resources>

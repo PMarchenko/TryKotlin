@@ -2,7 +2,11 @@ rootProject.buildFileName = "build.gradle.kts"
 
 include(
     ":app",
-    ":domain",
-    ":data",
-    ":core"
+    ":projects",
+    ":syntax",
+    ":utils",
+    ":database",
+    ":network",
+    ":preferences",
+    ":parser:kotlinLang"
 )

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="editor__with_drawer">false</bool>
+
+    <!-- 0=Vertical, 1=Horizontal -->
+    <integer name="editor__orientation">1</integer>
+</resources>

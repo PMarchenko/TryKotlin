@@ -1,0 +1,708 @@
+{
+  "examples": [
+    {
+      "category": "Hello, World!",
+      "description": "We declare a package-level function main which returns Unit and takes an Array of strings as a parameter. Note that semicolons are optional.",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Simplest version.kt",
+            "text": "/**\n * We declare a package-level function main which returns Unit and takes\n * an Array of strings as a parameter. Note that semicolons are optional.\n */\n\nfun main(args: Array<String>) {\n    println(\"Hello, world!\")\n}",
+            "publicId": "/Examples/Hello, world!/Simplest version/Simplest version.kt"
+          }
+        ],
+        "name": "Simplest version",
+        "originUrl": "/Examples/Hello, world!/Simplest version",
+        "id": "/Examples/Hello, world!/Simplest version",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Hello, World!",
+      "description": "Example demonstrates string templates and array access.",
+      "project": {
+        "args": "guest",
+        "files": [
+          {
+            "name": "Reading a name from the command line.kt",
+            "text": "/**\n * Line 13 demonstrates string templates and array access.\n * See this pages for details:\n * http://kotlinlang.org/docs/reference/basic-types.html#strings\n * http://kotlinlang.org/docs/reference/basic-types.html#arrays\n */\n\nfun main(args: Array<String>) {\n    if (args.size == 0) {\n        println(\"Please provide a name as a command-line argument\")\n        return\n    }\n    println(\"Hello, ${args[0]}!\")\n}",
+            "publicId": "/Examples/Hello, world!/Reading a name from the command line/Reading a name from the command line.kt"
+          }
+        ],
+        "name": "Reading a name from the command line",
+        "originUrl": "/Examples/Hello, world!/Reading a name from the command line",
+        "id": "/Examples/Hello, world!/Reading a name from the command line",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Hello, World!",
+      "description": "Example demonstrates the for-loop, that would have been called \"enhanced\" if there were any other for-loop in Kotlin.",
+      "project": {
+        "args": "guest1 guest2 guest3",
+        "files": [
+          {
+            "name": "Reading many names from the command line.kt",
+            "text": "/**\n * Line 2 demonstrates the for-loop, that would have been called \"enhanced\"\n * if there were any other for-loop in Kotlin.\n * See http://kotlinlang.org/docs/reference/basic-syntax.html#using-a-for-loop\n */\n\nfun main(args: Array<String>) {\n    for (name in args)\n        println(\"Hello, $name!\")\n}",
+            "publicId": "/Examples/Hello, world!/Reading many names from the command line/Reading many names from the command line.kt"
+          }
+        ],
+        "name": "Reading many names from the command line",
+        "originUrl": "/Examples/Hello, world!/Reading many names from the command line",
+        "id": "/Examples/Hello, world!/Reading many names from the command line",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Hello, World!",
+      "description": "In this example, `val` denotes a declaration of a read-only local variable, that is assigned an pattern matching expression.",
+      "project": {
+        "args": "FR",
+        "files": [
+          {
+            "name": "A multi-language Hello.kt",
+            "text": "/**\n * In this example, `val` denotes a declaration of a read-only local variable,\n * that is assigned an pattern matching expression.\n * See http://kotlinlang.org/docs/reference/control-flow.html#when-expression\n */\n\nfun main(args: Array<String>) {\n    val language = if (args.size == 0) \"EN\" else args[0]\n    println(when (language) {\n        \"EN\" -> \"Hello!\"\n        \"FR\" -> \"Salut!\"\n        \"IT\" -> \"Ciao!\"\n        else -> \"Sorry, I can't greet you in $language yet\"\n    })\n}",
+            "publicId": "/Examples/Hello, world!/A multi-language Hello/A multi-language Hello.kt"
+          }
+        ],
+        "name": "A multi-language Hello",
+        "originUrl": "/Examples/Hello, world!/A multi-language Hello",
+        "id": "/Examples/Hello, world!/A multi-language Hello",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Hello, World!",
+      "description": "Here we have a class with a primary constructor and a member function. Note that there's no `new` keyword used to create an object.",
+      "project": {
+        "args": "guest1",
+        "files": [
+          {
+            "name": "An object-oriented Hello.kt",
+            "text": "/**\n * Here we have a class with a primary constructor and a member function.\n * Note that there's no `new` keyword used to create an object.\n * See http://kotlinlang.org/docs/reference/classes.html#classes\n */\n\nclass Greeter(val name: String) {\n    fun greet() {\n        println(\"Hello, ${name}\");\n    }\n}\n\nfun main(args: Array<String>) {\n    Greeter(args[0]).greet()\n}",
+            "publicId": "/Examples/Hello, world!/An object-oriented Hello/An object-oriented Hello.kt"
+          }
+        ],
+        "name": "An object-oriented Hello",
+        "originUrl": "/Examples/Hello, world!/An object-oriented Hello",
+        "id": "/Examples/Hello, world!/An object-oriented Hello",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Basic syntax walk-through",
+      "description": "`if` is an expression, i.e. it returns a value. Therefore there is no ternary operator (condition ? then : else), because ordinary `if` works fine in this role.",
+      "project": {
+        "args": "10 20",
+        "files": [
+          {
+            "name": "Use a conditional expression.kt",
+            "text": "/**\n * `if` is an expression, i.e. it returns a value.\n * Therefore there is no ternary operator (condition ? then : else),\n * because ordinary `if` works fine in this role.\n * See http://kotlinlang.org/docs/reference/control-flow.html#if-expression\n */\nfun main(args: Array<String>) {\n    println(max(args[0].toInt(), args[1].toInt()))\n}\n\nfun max(a: Int, b: Int) = if (a > b) a else b",
+            "publicId": "/Examples/Basic syntax walk-through/Use a conditional expression/Use a conditional expression.kt"
+          }
+        ],
+        "name": "Use a conditional expression",
+        "originUrl": "/Examples/Basic syntax walk-through/Use a conditional expression",
+        "id": "/Examples/Basic syntax walk-through/Use a conditional expression",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Basic syntax walk-through",
+      "description": "A reference must be explicitly marked as nullable to be able hold a null.",
+      "project": {
+        "args": "2 3",
+        "files": [
+          {
+            "name": "Null-checks.kt",
+            "text": "/**\n * A reference must be explicitly marked as nullable to be able hold a null.\n * See http://kotlinlang.org/docs/reference/null-safety.html#null-safety\n */\npackage multiplier\n\n// Return null if str does not hold a number\nfun parseInt(str: String): Int? {\n    try {\n        return str.toInt()\n    } catch (e: NumberFormatException) {\n        println(\"One of the arguments isn't Int\")\n    }\n    return null\n}\n\nfun main(args: Array<String>) {\n    if (args.size < 2) {\n        println(\"No number supplied\");\n    } else {\n        val x = parseInt(args[0])\n        val y = parseInt(args[1])\n\n        // We cannot say 'x * y' now because they may hold nulls\n        if (x != null && y != null) {\n            print(x * y) // Now we can\n        } else {\n            println(\"One of the arguments is null\")\n    }\n    }\n}",
+            "publicId": "/Examples/Basic syntax walk-through/Null-checks/Null-checks.kt"
+          }
+        ],
+        "name": "Null-checks",
+        "originUrl": "/Examples/Basic syntax walk-through/Null-checks",
+        "id": "/Examples/Basic syntax walk-through/Null-checks",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Basic syntax walk-through",
+      "description": "The `is` operator checks if an expression is an instance of a type and more. If we is-checked an immutable local variable or property, there's no need to cast it explicitly to the is-checked type.",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "is-checks and smart casts.kt",
+            "text": "/**\n  * The `is` operator checks if an expression is an instance of a type and more.\n  * If we is-checked an immutable local variable or property, there's no need\n  * to cast it explicitly to the is-checked type.\n  * See this pages for details:\n  * http://kotlinlang.org/docs/reference/classes.html#classes-and-inheritance\n  * http://kotlinlang.org/docs/reference/typecasts.html#smart-casts\n */\nfun main(args: Array<String>) {\n    println(getStringLength(\"aaa\"))\n    println(getStringLength(1))\n}\n\nfun getStringLength(obj: Any): Int? {\n    if (obj is String)\n        return obj.length // no cast to String is needed\n    return null\n}",
+            "publicId": "/Examples/Basic syntax walk-through/is-checks and smart casts/is-checks and smart casts.kt"
+          }
+        ],
+        "name": "is-checks and smart casts",
+        "originUrl": "/Examples/Basic syntax walk-through/is-checks and smart casts",
+        "id": "/Examples/Basic syntax walk-through/is-checks and smart casts",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Basic syntax walk-through",
+      "description": "`while` and `do..while` work as usual.",
+      "project": {
+        "args": "guest1 guest2 guest3 guest4",
+        "files": [
+          {
+            "name": "Use a while-loop.kt",
+            "text": "/**\n * `while` and `do..while` work as usual.\n * See http://kotlinlang.org/docs/reference/control-flow.html#while-loops\n */\nfun main(args: Array<String>) {\n    var i = 0\n    while (i < args.size)\n        println(args[i++])\n}",
+            "publicId": "/Examples/Basic syntax walk-through/Use a while-loop/Use a while-loop.kt"
+          }
+        ],
+        "name": "Use a while-loop",
+        "originUrl": "/Examples/Basic syntax walk-through/Use a while-loop",
+        "id": "/Examples/Basic syntax walk-through/Use a while-loop",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Basic syntax walk-through",
+      "description": "For loop iterates through anything that provides an iterator.",
+      "project": {
+        "args": "guest1 guest2 guest3",
+        "files": [
+          {
+            "name": "Use a for-loop.kt",
+            "text": "/**\n * For loop iterates through anything that provides an iterator.\n * See http://kotlinlang.org/docs/reference/control-flow.html#for-loops\n */\nfun main(args: Array<String>) {\n    for (arg in args)\n        println(arg)\n\n    // or\n    println()\n    for (i in args.indices)\n        println(args[i])\n}",
+            "publicId": "/Examples/Basic syntax walk-through/Use a for-loop/Use a for-loop.kt"
+          }
+        ],
+        "name": "Use a for-loop",
+        "originUrl": "/Examples/Basic syntax walk-through/Use a for-loop",
+        "id": "/Examples/Basic syntax walk-through/Use a for-loop",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Basic syntax walk-through",
+      "description": "Check if a number lies within a range.\nCheck if a number is out of range.\nCheck if a collection contains an object.",
+      "project": {
+        "args": "4",
+        "files": [
+          {
+            "name": "Use ranges and in.kt",
+            "text": "/**\n * Check if a number lies within a range.\n * Check if a number is out of range.\n * Check if a collection contains an object.\n * See http://kotlinlang.org/docs/reference/ranges.html#ranges\n */\n\nfun main(args: Array<String>) {\n    val x = args[0].toInt()\n    //Check if a number lies within a range:\n    val y = 10\n    if (x in 1..y - 1)\n        println(\"OK\")\n\n    //Iterate over a range:\n    for (a in 1..5)\n        print(\"${a} \")\n\n    //Check if a number is out of range:\n    println()\n    val array = arrayListOf<String>()\n    array.add(\"aaa\")\n    array.add(\"bbb\")\n    array.add(\"ccc\")\n\n    if (x !in 0..array.size - 1)\n        println(\"Out: array has only ${array.size} elements. x = ${x}\")\n\n    //Check if a collection contains an object:\n    if (\"aaa\" in array) // collection.contains(obj) is called\n        println(\"Yes: array contains aaa\")\n\n    if (\"ddd\" in array) // collection.contains(obj) is called\n        println(\"Yes: array contains ddd\")\n    else\n        println(\"No: array doesn't contains ddd\")\n}\n",
+            "publicId": "/Examples/Basic syntax walk-through/Use ranges and in/Use ranges and in.kt"
+          }
+        ],
+        "name": "Use ranges and in",
+        "originUrl": "/Examples/Basic syntax walk-through/Use ranges and in",
+        "id": "/Examples/Basic syntax walk-through/Use ranges and in",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Basic syntax walk-through",
+      "description": "When Expression\nWhen replaces the switch operator of C-like languages",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Use when.kt",
+            "text": "/**\n * See http://kotlinlang.org/docs/reference/control-flow.html#when-expression\n */\n\nfun main(args: Array<String>) {\n    cases(\"Hello\")\n    cases(1)\n    cases(0L)\n    cases(MyClass())\n    cases(\"hello\")\n}\n\nfun cases(obj: Any) {\n    when (obj) {\n        1 -> println(\"One\")\n        \"Hello\" -> println(\"Greeting\")\n        is Long -> println(\"Long\")\n        !is String -> println(\"Not a string\")\n        else -> println(\"Unknown\")\n    }\n}\n\nclass MyClass() {\n}\n",
+            "publicId": "/Examples/Basic syntax walk-through/Use when/Use when.kt"
+          }
+        ],
+        "name": "Use when",
+        "originUrl": "/Examples/Basic syntax walk-through/Use when",
+        "id": "/Examples/Basic syntax walk-through/Use when",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Destructuring declarations and Data classes",
+      "description": "This example introduces a concept that we call destructuring declarations. It creates multiple variable at once. Anything can be on the right-hand side of a destructuring declaration, as long as the required number of component functions can be called on it.",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Destructuring declarations.kt",
+            "text": "/**\n * This example introduces a concept that we call destructuring declarations.\n * It creates multiple variable at once. Anything can be on the right-hand\n * side of a destructuring declaration, as long as the required number of component\n * functions can be called on it.\n * See http://kotlinlang.org/docs/reference/multi-declarations.html#multi-declarations\n */\n\nfun main(args: Array<String>) {\n    val pair = Pair(1, \"one\")\n\n    val (num, name) = pair\n\n    println(\"num = $num, name = $name\")\n}\n\nclass Pair<K, V>(val first: K, val second: V) {\n    operator fun component1(): K {\n        return first\n    }\n\n    operator fun component2(): V {\n        return second\n    }\n}\n\n\n",
+            "publicId": "/Examples/Destructuring declarations and Data classes/Destructuring declarations/Destructuring declarations.kt"
+          }
+        ],
+        "name": "Destructuring declarations",
+        "originUrl": "/Examples/Destructuring declarations and Data classes/Destructuring declarations",
+        "id": "/Examples/Destructuring declarations and Data classes/Destructuring declarations",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Destructuring declarations and Data classes",
+      "description": "Data class gets component functions, one for each property declared in the primary constructor, generated automatically, same for all the other goodies common for data.",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Data classes.kt",
+            "text": "/**\n *  Data class gets component functions, one for each property declared\n *  in the primary constructor, generated automatically, same for all the\n *  other goodies common for data: toString(), equals(), hashCode() and copy().\n *  See http://kotlinlang.org/docs/reference/data-classes.html#data-classes\n */\n\ndata class User(val name: String, val id: Int)\n\nfun getUser(): User {\n    return User(\"Alex\", 1)\n}\n\nfun main(args: Array<String>) {\n    val user = getUser()\n    println(\"name = ${user.name}, id = ${user.id}\")\n\n    // or\n\n    val (name, id) = getUser()\n    println(\"name = $name, id = $id\")\n\n    // or\n\n    println(\"name = ${getUser().component1()}, id = ${getUser().component2()}\")\n}\n",
+            "publicId": "/Examples/Destructuring declarations and Data classes/Data classes/Data classes.kt"
+          }
+        ],
+        "name": "Data classes",
+        "originUrl": "/Examples/Destructuring declarations and Data classes/Data classes",
+        "id": "/Examples/Destructuring declarations and Data classes/Data classes",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Destructuring declarations and Data classes",
+      "description": "Kotlin Standard Library provide component functions for Map.Entry.",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Traversing a map.kt",
+            "text": "/**\n *  Kotlin Standard Library provide component functions for Map.Entry\n */\n\nfun main(args: Array<String>) {\n    val map = hashMapOf<String, Int>()\n    map.put(\"one\", 1)\n    map.put(\"two\", 2)\n\n    for ((key, value) in map) {\n        println(\"key = $key, value = $value\")\n    }\n}",
+            "publicId": "/Examples/Destructuring declarations and Data classes/Traversing a map/Traversing a map.kt"
+          }
+        ],
+        "name": "Traversing a map",
+        "originUrl": "/Examples/Destructuring declarations and Data classes/Traversing a map",
+        "id": "/Examples/Destructuring declarations and Data classes/Traversing a map",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Destructuring declarations and Data classes",
+      "description": "Data class examples.",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Autogenerated functions.kt",
+            "text": "/**\n * Data class gets next functions, generated automatically:\n * component functions, toString(), equals(), hashCode() and copy().\n * See http://kotlinlang.org/docs/reference/data-classes.html#data-classes\n */\n\ndata class User(val name: String, val id: Int)\n\nfun main(args: Array<String>) {\n    val user = User(\"Alex\", 1)\n    println(user) // toString()\n\n    val secondUser = User(\"Alex\", 1)\n    val thirdUser = User(\"Max\", 2)\n\n    println(\"user == secondUser: ${user == secondUser}\")\n    println(\"user == thirdUser: ${user == thirdUser}\")\n\n    // copy() function\n    println(user.copy())\n    println(user.copy(\"Max\"))\n    println(user.copy(id = 2))\n    println(user.copy(\"Max\", 2))\n}\n",
+            "publicId": "/Examples/Destructuring declarations and Data classes/Autogenerated functions/Autogenerated functions.kt"
+          }
+        ],
+        "name": "Autogenerated functions",
+        "originUrl": "/Examples/Destructuring declarations and Data classes/Autogenerated functions",
+        "id": "/Examples/Destructuring declarations and Data classes/Autogenerated functions",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Delegated properties",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Custom delegate.kt",
+            "text": "/**\n * There's some new syntax: you can say `val 'property name': 'Type' by 'expression'`.\n * The expression after by is the delegate, because get() and set() methods\n * corresponding to the property will be delegated to it.\n * Property delegates don't have to implement any interface, but they have\n * to provide methods named getValue() and setValue() to be called.</p>\n */\n\nimport kotlin.reflect.KProperty\n\nclass Example {\n    var p: String by Delegate()\n\n    override fun toString() = \"Example Class\"\n}\n\nclass Delegate() {\n    operator fun getValue(thisRef: Any?, prop: KProperty<*>): String {\n        return \"$thisRef, thank you for delegating '${prop.name}' to me!\"\n    }\n\n    operator fun setValue(thisRef: Any?, prop: KProperty<*>, value: String) {\n        println(\"$value has been assigned to ${prop.name} in $thisRef\")\n    }\n}\n\nfun main(args: Array<String>) {\n    val e = Example()\n    println(e.p)\n    e.p = \"NEW\"\n}\n",
+            "publicId": "/Examples/Delegated properties/Custom delegate/Custom delegate.kt"
+          }
+        ],
+        "name": "Custom delegate",
+        "originUrl": "/Examples/Delegated properties/Custom delegate",
+        "id": "/Examples/Delegated properties/Custom delegate",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Delegated properties",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Lazy property.kt",
+            "text": "/**\n * Delegates.lazy() is a function that returns a delegate that implements a lazy property:\n * the first call to get() executes the lambda expression passed to lazy() as an argument\n * and remembers the result, subsequent calls to get() simply return the remembered result.\n * If you want thread safety, use blockingLazy() instead: it guarantees that the values will\n * be computed only in one thread, and that all threads will see the same value.\n */\n\nclass LazySample {\n    val lazy: String by lazy {\n        println(\"computed!\")\n        \"my lazy\"\n    }\n}\n\nfun main(args: Array<String>) {\n    val sample = LazySample()\n    println(\"lazy = ${sample.lazy}\")\n    println(\"lazy = ${sample.lazy}\")\n}",
+            "publicId": "/Examples/Delegated properties/Lazy property/Lazy property.kt"
+          }
+        ],
+        "name": "Lazy property",
+        "originUrl": "/Examples/Delegated properties/Lazy property",
+        "id": "/Examples/Delegated properties/Lazy property",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Delegated properties",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Observable property.kt",
+            "text": "/**\n * The observable() function takes two arguments: initial value and a handler for modifications.\n * The handler gets called every time we assign to `name`, it has three parameters:\n * a property being assigned to, the old value and the new one. If you want to be able to veto\n * the assignment, use vetoable() instead of observable().\n */\nimport kotlin.properties.Delegates\n\nclass User {\n    var name: String by Delegates.observable(\"no name\") {\n        d, old, new ->\n        println(\"$old - $new\")\n    }\n}\n\nfun main(args: Array<String>) {\n    val user = User()\n    user.name = \"Carl\"\n}",
+            "publicId": "/Examples/Delegated properties/Observable property/Observable property.kt"
+          }
+        ],
+        "name": "Observable property",
+        "originUrl": "/Examples/Delegated properties/Observable property",
+        "id": "/Examples/Delegated properties/Observable property",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Delegated properties",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "NotNull property.kt",
+            "text": "/**\n * Users frequently ask what to do when you have a non-null var, but you don't have an\n * appropriate value to assign to it in constructor (i.e. it must be assigned later)?\n * You can't have an uninitialized non-abstract property in Kotlin. You could initialize it\n * with null, but then you'd have to check every time you access it. Now you have a delegate\n * to handle this. If you read from this property before writing to it, it throws an exception,\n * after the first assignment it works as expected.\n */\n\nimport kotlin.properties.Delegates\n\nclass User {\n    var name: String by Delegates.notNull()\n\n    fun init(name: String) {\n        this.name = name\n    }\n}\n\nfun main(args: Array<String>) {\n    val user = User()\n    // user.name -> IllegalStateException\n    user.init(\"Carl\")\n    println(user.name)\n}\n",
+            "publicId": "/Examples/Delegated properties/NotNull property/NotNull property.kt"
+          }
+        ],
+        "name": "NotNull property",
+        "originUrl": "/Examples/Delegated properties/NotNull property",
+        "id": "/Examples/Delegated properties/NotNull property",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Delegated properties",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Properties in map.kt",
+            "text": "/**\n * Properties stored in a map. This comes up a lot in applications like parsing JSON\n * or doing other \"dynamic\" stuff. Delegates take values from this map (by the string keys -\n * names of properties). Of course, you can have var's as well,\n * that will modify the map upon assignment (note that you'd need MutableMap instead of read-only Map).\n */\n\nclass User(val map: Map<String, Any?>) {\n    val name: String by map\n    val age: Int     by map\n}\n\nfun main(args: Array<String>) {\n    val user = User(mapOf(\n            \"name\" to \"John Doe\",\n            \"age\"  to 25\n    ))\n\n    println(\"name = ${user.name}, age = ${user.age}\")\n}",
+            "publicId": "/Examples/Delegated properties/Properties in map/Properties in map.kt"
+          }
+        ],
+        "name": "Properties in map",
+        "originUrl": "/Examples/Delegated properties/Properties in map",
+        "id": "/Examples/Delegated properties/Properties in map",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Callable references",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Reference to a function.kt",
+            "text": "/**\n * \"Callable References\" or \"Feature Literals\", i.e. an ability to pass\n * named functions or properties as values. Users often ask\n * \"I have a foo() function, how do I pass it as an argument?\".\n * The answer is: \"you prefix it with a `::`\".\n */\n\nfun main(args: Array<String>) {\n    val numbers = listOf(1, 2, 3)\n    println(numbers.filter(::isOdd))\n}\n\nfun isOdd(x: Int) = x % 2 != 0\n",
+            "publicId": "/Examples/Callable references/Reference to a function/Reference to a function.kt"
+          }
+        ],
+        "name": "Reference to a function",
+        "originUrl": "/Examples/Callable references/Reference to a function",
+        "id": "/Examples/Callable references/Reference to a function",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Callable references",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Composition of functions.kt",
+            "text": "/**\n * The composition function return a composition of two functions passed to it:\n * compose(f, g) = f(g(*)).\n * Now, you can apply it to callable references.\n */\n\nfun main(args: Array<String>) {\n    val oddLength = compose(::isOdd, ::length)\n    val strings = listOf(\"a\", \"ab\", \"abc\")\n    println(strings.filter(oddLength))\n}\n\nfun isOdd(x: Int) = x % 2 != 0\nfun length(s: String) = s.length\n\nfun <A, B, C> compose(f: (B) -> C, g: (A) -> B): (A) -> C {\n    return { x -> f(g(x)) }\n}\n",
+            "publicId": "/Examples/Callable references/Composition of functions/Composition of functions.kt"
+          }
+        ],
+        "name": "Composition of functions",
+        "originUrl": "/Examples/Callable references/Composition of functions",
+        "id": "/Examples/Callable references/Composition of functions",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Longer examples",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "99 Bottles of Beer.kt",
+            "text": "/**\n * This example implements the famous \"99 Bottles of Beer\" program\n * See http://99-bottles-of-beer.net/\n *\n * The point is to print out a song with the following lyrics:\n *\n *     The \"99 bottles of beer\" song\n *\n *     99 bottles of beer on the wall, 99 bottles of beer.\n *     Take one down, pass it around, 98 bottles of beer on the wall.\n *\n *     98 bottles of beer on the wall, 98 bottles of beer.\n *     Take one down, pass it around, 97 bottles of beer on the wall.\n *\n *       ...\n *\n *     2 bottles of beer on the wall, 2 bottles of beer.\n *     Take one down, pass it around, 1 bottle of beer on the wall.\n *\n *     1 bottle of beer on the wall, 1 bottle of beer.\n *     Take one down, pass it around, no more bottles of beer on the wall.\n *\n *     No more bottles of beer on the wall, no more bottles of beer.\n *     Go to the store and buy some more, 99 bottles of beer on the wall.\n *\n * Additionally, you can pass the desired initial number of bottles to use (rather than 99)\n * as a command-line argument\n */\npackage bottles\n\nfun main(args: Array<String>) {\n    if (args.isEmpty) {\n        printBottles(99)\n    } else {\n        try {\n            printBottles(args[0].toInt())\n        } catch (e: NumberFormatException) {\n            println(\"You have passed '${args[0]}' as a number of bottles, \" +\n                    \"but it is not a valid integer number\")\n        }\n    }\n}\n\nfun printBottles(bottleCount: Int) {\n    if (bottleCount <= 0) {\n        println(\"No bottles - no song\")\n        return\n    }\n\n    println(\"The \\\"${bottlesOfBeer(bottleCount)}\\\" song\\n\")\n\n    var bottles = bottleCount\n    while (bottles > 0) {\n        val bottlesOfBeer = bottlesOfBeer(bottles)\n        print(\"$bottlesOfBeer on the wall, $bottlesOfBeer.\\nTake one down, pass it around, \")\n        bottles--\n        println(\"${bottlesOfBeer(bottles)} on the wall.\\n\")\n    }\n    println(\"No more bottles of beer on the wall, no more bottles of beer.\\n\" +\n            \"Go to the store and buy some more, ${bottlesOfBeer(bottleCount)} on the wall.\")\n}\n\nfun bottlesOfBeer(count: Int): String =\n        when (count) {\n            0 -> \"no more bottles\"\n            1 -> \"1 bottle\"\n            else -> \"$count bottles\"\n        } + \" of beer\"\n\n/*\n * An excerpt from the Standard Library\n */\n\n\n// This is an extension property, i.e. a property that is defined for the\n// type Array<T>, but does not sit inside the class Array\nval <T> Array<T>.isEmpty: Boolean get() = size == 0\n",
+            "publicId": "/Examples/Longer examples/99 Bottles of Beer/99 Bottles of Beer.kt"
+          }
+        ],
+        "name": "99 Bottles of Beer",
+        "originUrl": "/Examples/Longer examples/99 Bottles of Beer",
+        "id": "/Examples/Longer examples/99 Bottles of Beer",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Longer examples",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "HTML Builder.kt",
+            "text": "/**\n * This is an example of a Type-Safe Groovy-style Builder\n *\n * Builders are good for declaratively describing data in your code.\n * In this example we show how to describe an HTML page in Kotlin.\n *\n * See this page for details:\n * http://kotlinlang.org/docs/reference/type-safe-builders.html\n */\npackage html\n\nfun main(args: Array<String>) {\n    val result =\n            html {\n                head {\n                    title { +\"HTML encoding with Kotlin\" }\n                }\n                body {\n                    h1 { +\"HTML encoding with Kotlin\" }\n                    p { +\"this format can be used as an alternative markup to HTML\" }\n\n                    // an element with attributes and text content\n                    a(href = \"http://jetbrains.com/kotlin\") { +\"Kotlin\" }\n\n                    // mixed content\n                    p {\n                        +\"This is some\"\n                        b { +\"mixed\" }\n                        +\"text. For more see the\"\n                        a(href = \"http://jetbrains.com/kotlin\") { +\"Kotlin\" }\n                        +\"project\"\n                    }\n                    p { +\"some text\" }\n\n                    // content generated from command-line arguments\n                    p {\n                        +\"Command line arguments were:\"\n                        ul {\n                            for (arg in args)\n                                li { +arg }\n            }\n                    }\n                }\n            }\n    println(result)\n}\n\ninterface Element {\n    fun render(builder: StringBuilder, indent: String)\n}\n\nclass TextElement(val text: String) : Element {\n    override fun render(builder: StringBuilder, indent: String) {\n        builder.append(\"$indent$text\\n\")\n    }\n}\n\nabstract class Tag(val name: String) : Element {\n    val children = arrayListOf<Element>()\n    val attributes = hashMapOf<String, String>()\n\n    protected fun <T : Element> initTag(tag: T, init: T.() -> Unit): T {\n        tag.init()\n        children.add(tag)\n        return tag\n    }\n\n    override fun render(builder: StringBuilder, indent: String) {\n        builder.append(\"$indent<$name${renderAttributes()}>\\n\")\n        for (c in children) {\n            c.render(builder, indent + \"  \")\n        }\n        builder.append(\"$indent</$name>\\n\")\n    }\n\n    private fun renderAttributes(): String? {\n        val builder = StringBuilder()\n        for (a in attributes.keys) {\n            builder.append(\" $a=\\\"${attributes[a]}\\\"\")\n    }\n        return builder.toString()\n    }\n\n\n    override fun toString(): String {\n        val builder = StringBuilder()\n        render(builder, \"\")\n        return builder.toString()\n    }\n}\n\nabstract class TagWithText(name: String) : Tag(name) {\n    operator fun String.unaryPlus() {\n        children.add(TextElement(this))\n    }\n}\n\nclass HTML() : TagWithText(\"html\") {\n    fun head(init: Head.() -> Unit) = initTag(Head(), init)\n\n    fun body(init: Body.() -> Unit) = initTag(Body(), init)\n}\n\nclass Head() : TagWithText(\"head\") {\n    fun title(init: Title.() -> Unit) = initTag(Title(), init)\n}\n\nclass Title() : TagWithText(\"title\")\n\nabstract class BodyTag(name: String) : TagWithText(name) {\n    fun b(init: B.() -> Unit) = initTag(B(), init)\n    fun p(init: P.() -> Unit) = initTag(P(), init)\n    fun h1(init: H1.() -> Unit) = initTag(H1(), init)\n    fun ul(init: UL.() -> Unit) = initTag(UL(), init)\n    fun a(href: String, init: A.() -> Unit) {\n        val a = initTag(A(), init)\n        a.href = href\n    }\n}\n\nclass Body() : BodyTag(\"body\")\nclass UL() : BodyTag(\"ul\") {\n    fun li(init: LI.() -> Unit) = initTag(LI(), init)\n}\n\nclass B() : BodyTag(\"b\")\nclass LI() : BodyTag(\"li\")\nclass P() : BodyTag(\"p\")\nclass H1() : BodyTag(\"h1\")\n\nclass A() : BodyTag(\"a\") {\n    public var href: String\n        get() = attributes[\"href\"]!!\n        set(value) {\n            attributes[\"href\"] = value\n        }\n}\n\nfun html(init: HTML.() -> Unit): HTML {\n    val html = HTML()\n    html.init()\n    return html\n}\n",
+            "publicId": "/Examples/Longer examples/HTML Builder/HTML Builder.kt"
+          }
+        ],
+        "name": "HTML Builder",
+        "originUrl": "/Examples/Longer examples/HTML Builder",
+        "id": "/Examples/Longer examples/HTML Builder",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Longer examples",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Life.kt",
+            "text": "/**\n * This is a straightforward implementation of The Game of Life\n * See http://en.wikipedia.org/wiki/Conway's_Game_of_Life\n */\npackage life\n\n/*\n * A field where cells live. Effectively immutable\n */\nclass Field(\n        val width: Int,\n        val height: Int,\n        // This function tells the constructor which cells are alive\n        // if init(i, j) is true, the cell (i, j) is alive\n        init: (Int, Int) -> Boolean\n) {\n    private val live: Array<Array<Boolean>> = Array(height) { i -> Array(width) { j -> init(i, j) } }\n\n    private fun liveCount(i: Int, j: Int)\n            = if (i in 0..height - 1 &&\n            j in 0..width - 1 &&\n            live[i][j]) 1 else 0\n\n    // How many neighbors of (i, j) are alive?\n    fun liveNeighbors(i: Int, j: Int) =\n            liveCount(i - 1, j - 1) +\n                    liveCount(i - 1, j) +\n                    liveCount(i - 1, j + 1) +\n                    liveCount(i, j - 1) +\n                    liveCount(i, j + 1) +\n                    liveCount(i + 1, j - 1) +\n                    liveCount(i + 1, j) +\n                    liveCount(i + 1, j + 1)\n\n    // You can say field[i, j], and this function gets called\n    operator fun get(i: Int, j: Int) = live[i][j]\n}\n\n/**\n * This function takes the present state of the field\n * and returns a new field representing the next moment of time\n */\nfun next(field: Field): Field {\n    return Field(field.width, field.height) { i, j ->\n        val n = field.liveNeighbors(i, j)\n        if (field[i, j])\n        // (i, j) is alive\n            n in 2..3 // It remains alive iff it has 2 or 3 neighbors\n        else\n        // (i, j) is dead\n            n == 3 // A new cell is born if there are 3 neighbors alive\n    }\n}\n\n/** A few colony examples here */\nfun main(args: Array<String>) {\n    // Simplistic demo\n    runGameOfLife(\"***\", 3)\n    // \"Star burst\"\n    runGameOfLife(\"\"\"\n        _______\n        ___*___\n        __***__\n        ___*___\n        _______\n    \"\"\", 10)\n    // Stable colony\n    runGameOfLife(\"\"\"\n        _____\n        __*__\n        _*_*_\n        __*__\n        _____\n    \"\"\", 3)\n    // Stable from the step 2\n    runGameOfLife(\"\"\"\n        __**__\n        __**__\n        __**__\n    \"\"\", 3)\n    // Oscillating colony\n    runGameOfLife(\"\"\"\n        __**____\n        __**____\n        ____**__\n        ____**__\n    \"\"\", 6)\n    // A fancier oscillating colony\n    runGameOfLife(\"\"\"\n        -------------------\n        -------***---***---\n        -------------------\n        -----*----*-*----*-\n        -----*----*-*----*-\n        -----*----*-*----*-\n        -------***---***---\n        -------------------\n        -------***---***---\n        -----*----*-*----*-\n        -----*----*-*----*-\n        -----*----*-*----*-\n        -------------------\n        -------***---***---\n        -------------------\n    \"\"\", 10)\n}\n\n// UTILITIES\n\nfun runGameOfLife(fieldText: String, steps: Int) {\n    var field = makeField(fieldText)\n    for (step in 1..steps) {\n        println(\"Step: $step\")\n        for (i in 0..field.height - 1) {\n            for (j in 0..field.width - 1) {\n                print(if (field[i, j]) \"*\" else \" \")\n            }\n            println(\"\")\n        }\n        field = next(field)\n    }\n}\n\nfun makeField(s: String): Field {\n    val lines = s.replace(\" \", \"\").split('\\n').filter({ it.isNotEmpty() })\n    val longestLine = lines.toList().maxBy { it.length } ?: \"\"\n\n    return Field(longestLine.length, lines.size) { i, j -> lines[i][j] == '*' }\n}\n",
+            "publicId": "/Examples/Longer examples/Life/Life.kt"
+          }
+        ],
+        "name": "Life",
+        "originUrl": "/Examples/Longer examples/Life",
+        "id": "/Examples/Longer examples/Life",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Longer examples",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Maze.kt",
+            "text": "/**\n * Let's Walk Through a Maze.\n *\n * Imagine there is a maze whose walls are the big 'O' letters.\n * Now, I stand where a big 'I' stands and some cool prize lies\n * somewhere marked with a '$' sign. Like this:\n *\n *    OOOOOOOOOOOOOOOOO\n *    O               O\n *    O$  O           O\n *    OOOOO           O\n *    O               O\n *    O  OOOOOOOOOOOOOO\n *    O           O I O\n *    O               O\n *    OOOOOOOOOOOOOOOOO\n *\n * I want to get the prize, and this program helps me do so as soon\n * as I possibly can by finding a shortest path through the maze.\n */\npackage maze\n\n\n/**\n * Declare a point class.\n */\ndata class Point(val row: Int, val col: Int)\n\n/**\n * This function looks for a path from maze.start to maze.end through\n * free space (a path does not go through walls). One can move only\n * straight up, down, left or right, no diagonal moves allowed.\n */\nfun findPath(maze: Maze): List<Point>? {\n    val previous = hashMapOf<Point, Point>()\n\n    val queue = java.util.ArrayDeque<Point>()\n    val visited = hashSetOf<Point>()\n\n    queue.offer(maze.start)\n    visited.add(maze.start)\n    while (!queue.isEmpty()) {\n        val cell = queue.poll()\n        if (cell == maze.end) break\n\n        for (newCell in maze.neighbors(cell)) {\n            if (newCell in visited) continue\n            previous[newCell] = cell\n            queue.offer(newCell)\n            visited.add(newCell)\n        }\n    }\n\n    val pathToStart =\n            generateSequence(previous[maze.end]) { cell -> previous[cell] }\n                    .takeWhile { cell -> cell != maze.start }\n                    .toList()\n                    .ifEmpty { return null }\n    return pathToStart.reversed()\n}\n\nfun Maze.neighbors(cell: Point): List<Point> = neighbors(cell.row, cell.col)\n/**\n * Find neighbors of the ([row], [col]) cell that are not walls and not outside the maze\n */\nfun Maze.neighbors(row: Int, col: Int): List<Point> = listOfNotNull(\n        cellIfFree(row - 1, col),\n        cellIfFree(row, col - 1),\n        cellIfFree(row + 1, col),\n        cellIfFree(row, col + 1)\n)\n\nfun Maze.cellIfFree(row: Int, col: Int): Point? {\n    if (row !in 0 until height) return null\n    if (col !in 0 until width) return null\n    if (walls[row][col]) return null\n\n    return Point(row, col)\n}\n\nfun Maze.hasWallAt(point: Point) = walls[point.row][point.col]\n\n/**\n * A data class that represents a maze\n */\nclass Maze(\n        // Number or columns\n        val width: Int,\n        // Number of rows\n        val height: Int,\n        // true for a wall, false for free space\n        val walls: Array<BooleanArray>,\n        // The starting point (must not be a wall)\n        val start: Point,\n        // The target point (must not be a wall)\n        val end: Point\n)\n\n/** A few maze examples here */\nfun main(args: Array<String>) {\n    walkThroughMaze(\"I  $\")\n    walkThroughMaze(\"I O $\")\n    walkThroughMaze(\"\"\"\n    O  $\n    O\n    O\n    O\n    O           I\n  \"\"\")\n    walkThroughMaze(\"\"\"\n    OOOOOOOOOOO\n    O $       O\n    OOOOOOO OOO\n    O         O\n    OOOOO OOOOO\n    O         O\n    O OOOOOOOOO\n    O        OO\n    OOOOOO   IO\n  \"\"\")\n    walkThroughMaze(\"\"\"\n    OOOOOOOOOOOOOOOOO\n    O               O\n    O$  O           O\n    OOOOO           O\n    O               O\n    O  OOOOOOOOOOOOOO\n    O           O I O\n    O               O\n    OOOOOOOOOOOOOOOOO\n  \"\"\")\n}\n\n// UTILITIES\n\nfun walkThroughMaze(input: String) {\n    val maze = makeMaze(input)\n\n    println(\"Maze:\")\n    val path = findPath(maze)\n    for (row in 0 until maze.height) {\n        for (col in 0 until maze.width) {\n            val cell = Point(row, col)\n            print(when {\n                maze.hasWallAt(cell) -> \"O\"\n                cell == maze.start -> \"I\"\n                cell == maze.end -> \"$\"\n                path != null && cell in path -> \"*\"\n                else -> \" \"\n            })\n        }\n        println(\"\")\n    }\n    println(\"Result: \" + if (path == null) \"No path\" else \"Path found\")\n    println(\"\")\n}\n\n\n/**\n * A maze is encoded in the string s: the big 'O' letters are walls.\n * I stand where a big 'I' stands and the prize is marked with\n * a '$' sign.\n *\n * Example:\n *\n *    OOOOOOOOOOOOOOOOO\n *    O               O\n *    O$  O           O\n *    OOOOO           O\n *    O               O\n *    O  OOOOOOOOOOOOOO\n *    O           O I O\n *    O               O\n *    OOOOOOOOOOOOOOOOO\n */\nfun makeMaze(input: String): Maze {\n    val lines = input.split('\\n')\n    val longestLine = lines.maxBy { it.length }!!\n    val data = Array(lines.size) { BooleanArray(longestLine.length) }\n\n    var start: Point? = null\n    var end: Point? = null\n\n    for (row in lines.indices) {\n        for (col in lines[row].indices) {\n            when (\n                val cell = lines[row][col]) {\n                'O' -> data[row][col] = true\n                'I' -> start = Point(row, col)\n                '$' -> end = Point(row, col)\n            }\n        }\n    }\n\n    return Maze(longestLine.length, lines.size, data,\n            start ?: throw IllegalArgumentException(\"No starting point in the maze (should be indicated with 'I')\"),\n            end ?: throw IllegalArgumentException(\"No goal point in the maze (should be indicated with a '$' sign)\"))\n}\n",
+            "publicId": "/Examples/Longer examples/Maze/Maze.kt"
+          }
+        ],
+        "name": "Maze",
+        "originUrl": "/Examples/Longer examples/Maze",
+        "id": "/Examples/Longer examples/Maze",
+        "readOnlyFileNames": [
+          ""
+        ],
+        "confType": "java",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Problems",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Sum.kt",
+            "text": "/*\n * Your task is to implement the sum() function so that it computes the sum of\n * all elements in the given array a.\n */\npackage sum\n\nfun sum(a: IntArray): Int {\n    // Write your solution here\n    return 0\n}\n",
+            "publicId": "/Examples/Problems/Sum/Sum.kt"
+          }
+        ],
+        "name": "Sum",
+        "originUrl": "/Examples/Problems/Sum",
+        "id": "/Examples/Problems/Sum",
+        "readOnlyFileNames": [
+          "Tests.kt"
+        ],
+        "confType": "junit",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Problems",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Index of Maximum.kt",
+            "text": "/*\n * Your task is to implement the indexOfMax() function so that it returns\n * the index of the largest element in the array, or null if the array is empty.\n */\npackage maxindex\n\nfun indexOfMax(a: IntArray): Int? {\n    return 0\n}\n",
+            "publicId": "/Examples/Problems/Index of Maximum/Index of Maximum.kt"
+          }
+        ],
+        "name": "Index of Maximum",
+        "originUrl": "/Examples/Problems/Index of Maximum",
+        "id": "/Examples/Problems/Index of Maximum",
+        "readOnlyFileNames": [
+          "Tests.kt"
+        ],
+        "confType": "junit",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Problems",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Runs.kt",
+            "text": "/*\n * Any array may be viewed as a number of \"runs\" of equal numbers.\n * For example, the following array has two runs:\n *   1, 1, 1, 2, 2\n * Three 1's in a row form the first run, and two 2's form the second.\n * This array has two runs of length one:\n *   3, 4\n * And this one has five runs:\n *   1, 0, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0\n * Your task is to implement the runs() function so that it returns the number\n * of runs in the given array.\n */\npackage runs\n\nfun runs(a: IntArray): Int {\n    // Write your solution here\n    return 0\n}",
+            "publicId": "/Examples/Problems/Runs/Runs.kt"
+          }
+        ],
+        "name": "Runs",
+        "originUrl": "/Examples/Problems/Runs",
+        "id": "/Examples/Problems/Runs",
+        "readOnlyFileNames": [
+          "Tests.kt"
+        ],
+        "confType": "junit",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Problems",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Palindrome.kt",
+            "text": "/*\n * Your task is to implement a palindrome test.\n *\n * A string is called a palindrome when it reads the same way left-to-right\n * and right-to-left.\n *\n * See http://en.wikipedia.org/wiki/Palindrome\n */\npackage palindrome\n\nfun isPalindrome(s: String): Boolean {\n    // Write your solution here\n    return false\n}\n\n",
+            "publicId": "/Examples/Problems/Palindrome/Palindrome.kt"
+          }
+        ],
+        "name": "Palindrome",
+        "originUrl": "/Examples/Problems/Palindrome",
+        "id": "/Examples/Problems/Palindrome",
+        "readOnlyFileNames": [
+          "Tests.kt"
+        ],
+        "confType": "junit",
+        "searchForMain": true
+      }
+    },
+    {
+      "category": "Problems",
+      "description": "111111",
+      "project": {
+        "args": "",
+        "files": [
+          {
+            "name": "Pairless.kt",
+            "text": "/*\n * Think of a perfect world where everybody has a soulmate.\n * Now, the real world is imperfect: there is exactly one number in the array\n * that does not have a pair. A pair is an element with the same value.\n * For example in this array:\n *   1, 2, 1, 2\n * every number has a pair, but in this one:\n *   1, 1, 1\n * one of the ones is lonely.\n *\n * Your task is to implement the findPairless() function so that it finds the\n * lonely number and returns it.\n *\n * A hint: there's a solution that looks at each element only once and uses no\n * data structures like collections or trees.\n */\npackage pairless\n\nfun findPairless(a: IntArray): Int {\n    // Write your solution here\n    return 0\n}\n\n",
+            "publicId": "/Examples/Problems/Pairless/Pairless.kt"
+          }
+        ],
+        "name": "Pairless",
+        "originUrl": "/Examples/Problems/Pairless",
+        "id": "/Examples/Problems/Pairless",
+        "readOnlyFileNames": [
+          "Tests.kt"
+        ],
+        "confType": "junit",
+        "searchForMain": true
+      }
+    }
+  ]
+}

@@ -1,57 +1,190 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
-    <!-- TODO: investigate ExtraTranslation and MissingDefaultResource -->
+
     <string name="app_name">PocketKotlin</string>
 
-    <string name="activity_title_editor">Editor</string>
 
-    <string name="logs__date_format">MM/dd/YY hh:mm:ss:SSS</string>
-    <string name="logs__template__run">Run project \'%1$s\'</string>
-    <string name="logs__template__run_with_args">Run project \'%1$s\', args \'%2$s\'</string>
-    <string name="logs__template__exception">\nException in thread \"main\" %1$s: %2$s</string>
-    <string name="logs__template__exception_cause">\tcaused by:\n</string>
-    <string name="logs__test_results__status_passed">All tests passed in %1$.3fs</string>
-    <string name="logs__test_results__status_failed">Failed: %1$d of %2$d tests in %3$.3fs</string>
+    <!-- <Screens>  -->
+    <!-- My Projects -->
+    <string name="screen__my_projects">My Projects</string>
+    <string name="screen__my_projects__popup_menu__my_projects__config">Configuration</string>
+    <string name="screen__my_projects__popup_menu__my_projects__change_name">Change Name</string>
+    <string name="screen__my_projects__popup_menu__my_projects__delete">Delete</string>
+    <string name="screen__my_projects__label__empty">No projects yet</string>
+    <string name="screen__my_projects__label__empty_program">empty</string>
+    <string name="screen__my_projects__label__no_files">no files</string>
 
-    <string name="menu_item__settings">Settings</string>
-    <string name="menu_item__command_line_args">Command line args</string>
-    <string name="menu_item__clear_logs">Clear logs</string>
-    <string name="menu_item__reset_example">Reset example</string>
-    <string name="menu_item__delete">Delete</string>
-    <string name="menu_item__change_name">Change Name</string>
-    <string name="menu_item__my_projects">My Projects</string>
-    <string name="menu_item__examples">Examples</string>
-    <string name="menu_item__koans">Kotlin Koans</string>
-    <string name="menu_item__kotlin_in_action">Kotlin in Action</string>
 
-    <string name="menu_category__test">Test</string>
+    <!-- Examples -->
+    <string name="screen__examples">Examples</string>
+    <string name="screen__examples__empty">No examples\nThis should not happen, please reinstall the app</string>
 
+
+    <!-- Koans -->
+    <string name="screen__koans">Kotlin Koans</string>
+
+
+    <!-- In Action -->
+    <string name="screen__in_action">Kotlin in Action</string>
+
+
+    <!-- Trash Bin -->
+    <string name="screen__trash_bin">Trash bin</string>
+    <string name="screen__trash_bin__date_deleted_fmt">Deleted: %1$s</string>
+    <string name="screen__trash_bin__empty">No deleted projects</string>
+    <string name="screen__trash_bin__popup_menu__trash__restore">Restore</string>
+    <string name="screen__trash_bin__popup_menu__trash__delete_forever">Delete forever</string>
+
+
+    <!-- Settings -->
+    <string name="screen__settings">Settings</string>
+    <string name="screen__settings__section__app_theme">App theme</string>
+    <string name="screen__settings__value__trash">Trash bin</string>
+    <plurals name="screen__settings__desc__trash">
+        <item quantity="zero">empty</item>
+        <item quantity="one">1 projects</item>
+        <item quantity="other">%1$d projects</item>
+    </plurals>
+    <string name="screen__settings__section__about">About</string>
+    <string name="screen__settings__value__open_source_licenses">Open source licenses</string>
+    <string name="screen__settings__desc__open_source_licenses">Licenses details for open source software</string>
+    <string name="screen__settings__value__app_version">PocketKotlin version</string>
+    <string name="screen__settings__desc__app_version">Version: %1$s, Version code: %2$d</string>
+
+
+    <!-- Open Source Licenses -->
+    <string name="screen__open_source_licenses">Open source licenses</string>
+    <string name="screen__open_source_licenses__error__loading_licenses">Cannot load licenses details</string>
+
+
+    <!-- Open Source License -->
+    <string name="screen__open_source_license__error__loading_license">Cannot load license details</string>
+
+
+    <!-- Project Editor -->
+    <string name="screen__project_editor__tab__logs">Logs</string>
+    <string name="screen__project_editor__label__logs">Logs:</string>
+    <string name="screen__project_editor__label__logs_sort_order">Order</string>
+    <string name="screen__project_editor__label__logs_auto_scroll">Auto Scroll</string>
+    <string name="screen__project_editor__label__clear_logs">Clear</string>
+    <string name="screen__project_editor__label__no_files">No files</string>
+    <string name="screen__project_editor__error__loading_project">Cannot load project</string>
+    <string name="screen__project_editor__overflow_menu__manage_config">Configuration</string>
+    <string name="screen__project_editor__overflow_menu__args_empty">Command line args</string>
+    <string name="screen__project_editor__overflow_menu__args">Args: %1$s</string>
+
+
+    <!-- Project Configuration -->
+    <string name="screen__project_configuration__title">Project Config: %1$s</string>
+    <string name="screen__project_configuration__label__args">Args:</string>
+    <string name="screen__project_configuration__label__empty_args">tap to edit</string>
+    <string name="screen__project_configuration__label__project_files">Project Files:</string>
+    <string name="screen__project_configuration__label__add_file">New File</string>
+    <!-- </Screens>  -->
+
+
+    <!-- <Dialogs> -->
+    <!-- Add Project -->
+    <string name="dialog__add_project__title">New Project</string>
+    <string name="dialog__add_project__positive_button">Add</string>
+    <string name="dialog__add_project__negative_button">Cancel</string>
+    <string name="dialog__add_project__default_name">HelloWorld</string>
+    <string name="dialog__add_project__include_main">Include \'fun main()\'</string>
+    <string name="dialog__add_project__label">Project name</string>
+
+
+    <!-- Change Project Name -->
+    <string name="dialog__change_project_name__label">Project name</string>
+    <string name="dialog__change_project_name__positive_button">Save</string>
+    <string name="dialog__change_project_name__negative_button">Cancel</string>
+
+
+    <!-- Confirm Delete All Projects -->
+    <string name="dialog__delete_all__title">Empty trash bin</string>
+    <string name="dialog__delete_all__description">Are you sure?</string>
+    <string name="dialog__delete_all__negative_button">Cancel</string>
+    <string name="dialog__delete_all__positive_button">Yes</string>
+
+
+    <!-- Command Line Args -->
     <string name="dialog__command_line_args__title">Command line args</string>
     <string name="dialog__command_line_args__hint">args</string>
     <string name="dialog__command_line_args__positive_button">Save</string>
     <string name="dialog__command_line_args__negative_button">Cancel</string>
 
+
+    <!-- Line Error -->
     <string name="dialog__line_errors__title">%1$s at line %2$d</string>
     <string name="dialog__line_errors__positive_button">OK</string>
 
-    <string name="dialog__add_project__title">New Project</string>
-    <string name="dialog__add_project__hint">Project name</string>
-    <string name="dialog__add_project__include_main">Include \'fun main(args: Array&lt;String&gt;)\'</string>
-    <string name="dialog__add_project__positive_button">Add</string>
-    <string name="dialog__add_project__negative_button">Cancel</string>
 
-    <string name="dialog__change_project_name__positive_button">Save</string>
+    <!-- Create File -->
+    <string name="dialog__create_file__title">New</string>
+    <string name="dialog__create_file__positive_button">Add</string>
+    <string name="dialog__create_file__negative_button">Cancel</string>
+    <string name="dialog__create_file__default_name">File%1$d</string>
+    <string name="dialog__create_file__label__name">Name</string>
+    <string name="dialog__create_file__label__file">File</string>
+    <string name="dialog__create_file__label__class">Class</string>
+    <string name="dialog__create_file__label__data_class">Data Class</string>
+    <string name="dialog__create_file__label__interface">Interface</string>
+    <string name="dialog__create_file__label__enum">Enum</string>
+    <string name="dialog__create_file__label__object">Object</string>
 
-    <string name="dialog__text__positive_button">@android:string/ok</string>
 
-    <string name="editor__tab__log">Log (%1$d)</string>
-    <string name="editor__tab__log_no_logs">Log</string>
+    <!-- Delete File -->
+    <string name="dialog__delete_file__title">Delete %1$s?</string>
+    <string name="dialog__delete_file__positive_button">Yes</string>
+    <string name="dialog__delete_file__negative_button">Cancel</string>
+    <!-- </Dialogs> -->
 
-    <string name="nav_drawer__header__title">@string/app_name</string>
-    <string name="nav_drawer__header__desc">@string/app_name</string>
 
-    <string name="error_message__invalid_project_id">Invalid project</string>
-    <string name="error_message__editor_exit">One more time</string>
+    <!-- <SettingOptions> -->
+    <!-- App Theme -->
+    <string name="setting_option__app_theme_light">Light</string>
+    <string name="setting_option__app_theme_dark">Dark</string>
+    <string name="setting_option__app_theme_auto">Auto</string>
+    <!-- </SettingOptions> -->
 
-    <string name="my_projects__empty_message">No projects yet</string>
+
+    <!-- <Other> -->
+    <!-- <Logs> -->
+    <string name="logs__timestamp_format">hh:mm:ss.SSS</string> <!--13:47:59.875-->
+    <string name="logs__execute_project">run \'%1$s\', args:\'%2$s\'.</string>
+    <string name="logs__execute_project__no_args">run \'%1$s\'.</string>
+    <plurals name="logs__tests_results">
+        <item quantity="zero">All tests passed in %3$.2fs</item>
+        <item quantity="one">%1$d test failed in %3$.2fs</item>
+        <item quantity="other">%1$d of %2$d tests failed in %3$.2fs</item>
+    </plurals>
+    <string name="logs__exception">Exception in thread "main" %1$s: %2$s</string>
+    <string name="logs__exception__at">\n\tat</string>
+    <string name="logs__exception__caused_by">\tcaused by:\n</string>
+    <!-- </Logs> -->
+
+
+    <!-- <Tools> -->
+    <string name="editor__tools__logs">Logs</string>
+    <string name="editor__tools__braces">{ }</string>
+    <string name="editor__tools__parentheses">( )</string>
+    <string name="editor__tools__lt_gt">&lt; &gt;</string>
+    <string name="editor__tools__doubleQuote">\" \"</string>
+    <string name="editor__tools__delete">Del</string>
+    <string name="editor__tools__tab">Tab</string>
+    <string name="editor__execute_project">Run</string>
+    <string name="editor__example_project_name_pattern">Example: %1$s</string>
+    <!-- </Tools> -->
+
+
+    <string name="content_desc__editor__tools__braces">Curly brackets</string>
+    <string name="content_desc__editor__tools__parentheses">Parentheses</string>
+    <string name="content_desc__editor__tools__lt_gt">Angle brackets</string>
+    <string name="content_desc__editor__tools__doubleQuote">Double quotes</string>
+    <string name="content_desc__editor__tools__delete">Delete</string>
+    <string name="content_desc__editor__tools__tab">Tab</string>
+    <string name="content_desc__editor__tools__go_left">Move cursor left</string>
+    <string name="content_desc__editor__tools__go_up">Move cursor up</string>
+    <string name="content_desc__editor__tools__go_down">Move cursor down</string>
+    <string name="content_desc__editor__tools__go_right">Move cursor right</string>
+    <!-- </Other> -->
 
 </resources>
