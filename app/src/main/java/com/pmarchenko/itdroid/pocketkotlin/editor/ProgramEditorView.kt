@@ -11,7 +11,7 @@ import com.pmarchenko.itdroid.pocketkotlin.utils.asRange
 /**
  * @author Pavel Marchenko
  */
-class ProgramEditor(context: Context) : AppCompatEditText(context) {
+class ProgramEditorView(context: Context) : AppCompatEditText(context) {
 
     var selectionListener: ((Long) -> Unit)? = null
 

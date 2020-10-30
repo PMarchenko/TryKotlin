@@ -61,7 +61,7 @@ private fun EditorFileContentInput(
     val editorBgColor = MaterialTheme.colors.background.toArgb()
     val editorTextColor = MaterialTheme.colors.onSurface.toArgb()
     val editorProvider = remember {
-        EditorProvider(
+        ProgramEditorViewProvider(
             bgColor = editorBgColor,
             textColor = editorTextColor
         )

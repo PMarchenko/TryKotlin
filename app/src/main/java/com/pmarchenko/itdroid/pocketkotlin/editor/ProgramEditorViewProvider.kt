@@ -3,20 +3,20 @@ package com.pmarchenko.itdroid.pocketkotlin.editor
 import android.content.Context
 import android.text.Editable
 import androidx.core.widget.doAfterTextChanged
-import com.pmarchenko.itdroid.pocketkotlin.view.ProgramEditor
+import com.pmarchenko.itdroid.pocketkotlin.view.ProgramEditorView
 
 /**
  * @author Pavel Marchenko
  */
-class EditorProvider(
+class ProgramEditorViewProvider(
     private val bgColor: Int,
     private val textColor: Int,
-) : (Context) -> ProgramEditor {
+) : (Context) -> ProgramEditorView {
 
     var editAction: ((Editable) -> Unit)? = null
 
-    override fun invoke(context: Context): ProgramEditor {
-        return ProgramEditor(context).apply {
+    override fun invoke(context: Context): ProgramEditorView {
+        return ProgramEditorView(context).apply {
             setBackgroundColor(bgColor)
             setTextColor(textColor)
 
