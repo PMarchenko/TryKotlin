@@ -1,4 +1,4 @@
-package com.itdroid.pocketkotlin.syntax.parser.kotlin;// Generated from .\KotlinParser.g4 by ANTLR 4.8import com.pmarchenko.itdroid.pocketkotlin.utils.PocketKotlinLogger;import org.antlr.v4.runtime.ParserRuleContext;
+package com.itdroid.pocketkotlin.syntax.parser.kotlin;// Generated from .\KotlinParser.g4 by ANTLR 4.8import com.itdroid.pocketkotlin.utils.PocketKotlinLogger;import org.antlr.v4.runtime.ParserRuleContext;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;

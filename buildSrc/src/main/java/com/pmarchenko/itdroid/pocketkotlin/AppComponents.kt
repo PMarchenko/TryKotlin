@@ -1,10 +1,10 @@
-package com.pmarchenko.itdroid.pocketkotlin
+package com.itdroid.pocketkotlin
 
 import org.gradle.api.JavaVersion
 
 
 /**
- * @author Pavel Marchenko
+ * @author itdroid
  */
 object AppComponents {
 

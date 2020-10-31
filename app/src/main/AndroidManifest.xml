@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.pmarchenko.itdroid.pocketkotlin">
+    package="com.itdroid.pocketkotlin">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,7 +16,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
-            android:name="com.pmarchenko.itdroid.pocketkotlin.MainActivity"
+            android:name="com.itdroid.pocketkotlin.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

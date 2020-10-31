@@ -1,5 +1,5 @@
-import com.pmarchenko.itdroid.pocketkotlin.AppComponents
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.AppComponents
+import com.itdroid.pocketkotlin.Dependencies.jarLibs
 
 plugins {
     id("java-library")

@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin
+package com.itdroid.pocketkotlin
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
@@ -6,7 +6,7 @@ import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.kotlin.dsl.kotlin
 
 /**
- * @author Pavel Marchenko
+ * @author itdroid
  */
 object Dependencies {
 

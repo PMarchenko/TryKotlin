@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.pmarchenko.itdroid.pocketkotlin.network">
+    package="com.itdroid.pocketkotlin.network">
 
     <application>
         <provider
@@ -11,10 +11,9 @@
             tools:node="merge">
 
             <meta-data
-                android:name="com.pmarchenko.itdroid.pocketkotlin.network.StethoInitializer"
+                android:name="com.itdroid.pocketkotlin.network.StethoInitializer"
                 android:value="androidx.startup" />
 
         </provider>
     </application>
-
 </manifest>

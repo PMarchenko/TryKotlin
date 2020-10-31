@@ -1,10 +1,10 @@
-import com.pmarchenko.itdroid.pocketkotlin.AppComponents
-import com.pmarchenko.itdroid.pocketkotlin.AppVersion
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.AndroidX
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Module
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Tests
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.kotlinStdLib
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.AppComponents
+import com.itdroid.pocketkotlin.AppVersion
+import com.itdroid.pocketkotlin.Dependencies.AndroidX
+import com.itdroid.pocketkotlin.Dependencies.Module
+import com.itdroid.pocketkotlin.Dependencies.Tests
+import com.itdroid.pocketkotlin.Dependencies.kotlinStdLib
+import com.itdroid.pocketkotlin.Dependencies.jarLibs
 
 plugins {
     id("com.android.library")

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.pmarchenko.itdroid.pocketkotlin.utils">
+    package="com.itdroid.pocketkotlin.utils">
 
     <application>
 
@@ -11,7 +11,7 @@
             tools:node="merge">
 
             <meta-data
-                android:name="com.pmarchenko.itdroid.pocketkotlin.utils.DebugToolsInitializer"
+                android:name="com.itdroid.pocketkotlin.utils.DebugToolsInitializer"
                 android:value="androidx.startup" />
 
         </provider>
