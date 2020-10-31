@@ -23,9 +23,6 @@ class AppPreferencesViewMolder(app: Application) : AndroidViewModel(app) {
     var logsPanelWeight: Float by prefs.logsPanelWeight
     val logsPanelWeightObservable: LiveData<Float> = prefs.logsPanelWeight.liveData()
 
-    var showLogsPanel: Boolean by prefs.showLogsPanel
-    val showLogsPanelObservable: LiveData<Boolean> = prefs.showLogsPanel.liveData()
-
     override fun onCleared() {
         super.onCleared()
         prefs.release()

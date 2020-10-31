@@ -21,13 +21,6 @@ class AppPreferences(context: Context, coroutineScope: CoroutineScope) {
             filter = LogsPanelWeightPreference.filter
         )
 
-    val showLogsPanel: AppPreference<Boolean> =
-        AppPreferenceImpl(
-            SHOW_LOGS_PANNEL,
-            true,
-            storage,
-        )
-
     fun release() {
         storage.release()
     }
@@ -38,6 +31,5 @@ class AppPreferences(context: Context, coroutineScope: CoroutineScope) {
         const val APP_THEME = "ap_dsps_s_at"
         const val SETTINGS_EASTER_EGG_DIALOG_SHOWN = "ap_dsps_b_seeds"
         const val LOGS_PANEL_WEIGHT = "ap_dsps_f_lpw"
-        const val SHOW_LOGS_PANNEL = "ap_dsps_b_slp"
     }
 }

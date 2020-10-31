@@ -16,4 +16,8 @@ data class EditorInfo(
         project.files
             .find { it.id == selectedFileId }
             ?: project.files.first()
+
+    fun selectedFileIndex(): Int =
+        project.files.indexOf(selectedFile())
+
 }

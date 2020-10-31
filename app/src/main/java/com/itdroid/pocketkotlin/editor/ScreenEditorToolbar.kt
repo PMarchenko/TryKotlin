@@ -4,7 +4,9 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScrollableTabRow
+import androidx.compose.material.Tab
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -20,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import com.itdroid.pocketkotlin.R
-import com.itdroid.pocketkotlin.ui.compose.*
 import com.itdroid.pocketkotlin.dialog.CreateFileDialog
 import com.itdroid.pocketkotlin.dialog.ProjectArgsDialog
 import com.itdroid.pocketkotlin.dialog.dialogs
@@ -29,6 +30,7 @@ import com.itdroid.pocketkotlin.navigation.navigation
 import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.projects.model.Project
 import com.itdroid.pocketkotlin.projects.projectExamples
+import com.itdroid.pocketkotlin.ui.compose.*
 import com.itdroid.pocketkotlin.utils.ImageInput
 import com.itdroid.pocketkotlin.utils.TextInput
 import com.itdroid.pocketkotlin.utils.UiAction
@@ -38,42 +40,43 @@ import com.itdroid.pocketkotlin.utils.tint
  * @author itdroid
  */
 @Composable
-fun EditorToolbar(
+fun ScreenEditorToolbar(
     editorInfo: EditorInfo,
-    drawerState: DrawerState?,
+    logsAsDrawer: Boolean,
+    toggleLogsAction: (Boolean) -> Unit,
 ) {
     val vm = viewModel<EditorViewModel>()
     var showPopup by savedInstanceState { false }
     val nav = navigation()
     val dialog = dialogs()
 
-    EditorToolbarUi(
+    ScreenEditorToolbarUi(
+        includeLogsTab = logsAsDrawer,
         editorInfo = editorInfo,
         showPopup = showPopup,
-        drawerState = drawerState,
         navUpAction = { nav.popCurrentScreen() },
         showPopupAction = { showPopup = true },
         dismissPopupAction = { showPopup = false },
         openConfigAction = { nav.navigateTo(ProjectConfigurationDestination(it.id)) },
         editArgsAction = { dialog.show(ProjectArgsDialog(it)) },
-        openDrawerAction = { drawerState?.open() },
+        showLogsAction = { toggleLogsAction(true) },
         selectFileAction = { vm.selectFile(it) },
         addFileAction = { dialog.show(CreateFileDialog(editorInfo.project)) }
     )
 }
 
 @Composable
-private fun EditorToolbarUi(
+private fun ScreenEditorToolbarUi(
+    includeLogsTab: Boolean,
     editorInfo: EditorInfo,
     showPopup: Boolean,
-    drawerState: DrawerState?,
 
     navUpAction: () -> Unit,
     showPopupAction: () -> Unit,
     dismissPopupAction: () -> Unit,
     openConfigAction: (Project) -> Unit,
     editArgsAction: (Project) -> Unit,
-    openDrawerAction: () -> Unit,
+    showLogsAction: () -> Unit,
     selectFileAction: (Long) -> Unit,
     addFileAction: () -> Unit,
 ) {
@@ -94,15 +97,14 @@ private fun EditorToolbarUi(
             )
 
             ScrollableTabRow(
-                selectedTabIndex = editorInfo.project.files.indexOf(editorInfo.selectedFile())
-                        + (if (drawerState == null) 0 else 1),
+                selectedTabIndex = editorInfo.selectedFileIndex() + if (includeLogsTab) 1 else 0,
                 backgroundColor = Color.Transparent,
                 edgePadding = 0.dp,
                 tabs = {
                     ProjectTabs(
+                        includeLogsTab = includeLogsTab,
                         editorInfo = editorInfo,
-                        drawerState = drawerState,
-                        openDrawerAction = openDrawerAction,
+                        showLogsAction = showLogsAction,
                         selectFileAction = selectFileAction,
                         addFileAction = addFileAction,
                     )
@@ -140,18 +142,18 @@ private fun EditorToolbarUi(
 
 @Composable
 private fun ProjectTabs(
+    includeLogsTab: Boolean,
     editorInfo: EditorInfo,
-    drawerState: DrawerState?,
-    openDrawerAction: () -> Unit,
+    showLogsAction: () -> Unit,
     selectFileAction: (Long) -> Unit,
     addFileAction: () -> Unit,
 ) {
-    if (drawerState != null) {
+    if (includeLogsTab) {
         // we have logs content as drawer
         Tab(
             selected = false,
             text = { Text(stringResource(R.string.screen__project_editor__tab__logs)) },
-            onClick = { openDrawerAction() },
+            onClick = { showLogsAction() },
         )
     }
 
@@ -178,16 +180,16 @@ private fun ProjectTabs(
 @Composable
 private fun ScreenEditorPreviewLightTheme() {
     PocketKotlinTheme(AppThemePreference.Light) {
-        EditorToolbarUi(
+        ScreenEditorToolbarUi(
+            includeLogsTab = true,
             editorInfo = EditorInfo(projectExamples[0]),
             showPopup = true,
-            drawerState = rememberDrawerState(DrawerValue.Open),
             navUpAction = {},
             showPopupAction = {},
             dismissPopupAction = {},
             openConfigAction = {},
             editArgsAction = {},
-            openDrawerAction = {},
+            showLogsAction = {},
             selectFileAction = {},
             addFileAction = {}
         )
@@ -198,16 +200,16 @@ private fun ScreenEditorPreviewLightTheme() {
 @Composable
 private fun ScreenEditorPreviewDarkTheme() {
     PocketKotlinTheme(AppThemePreference.Dark) {
-        EditorToolbarUi(
+        ScreenEditorToolbarUi(
+            includeLogsTab = true,
             editorInfo = EditorInfo(projectExamples[0]),
             showPopup = true,
-            drawerState = rememberDrawerState(DrawerValue.Open),
             navUpAction = {},
             showPopupAction = {},
             dismissPopupAction = {},
             openConfigAction = {},
             editArgsAction = {},
-            openDrawerAction = {},
+            showLogsAction = {},
             selectFileAction = {},
             addFileAction = {}
         )

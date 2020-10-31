@@ -18,13 +18,13 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.itdroid.pocketkotlin.R
-import com.itdroid.pocketkotlin.ui.compose.AppImage
-import com.itdroid.pocketkotlin.ui.compose.Empty
-import com.itdroid.pocketkotlin.ui.compose.PocketKotlinTheme
 import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.preferences.LogsPanelWeightPreference
 import com.itdroid.pocketkotlin.projects.projectExamples
 import com.itdroid.pocketkotlin.settings.preferences
+import com.itdroid.pocketkotlin.ui.compose.AppImage
+import com.itdroid.pocketkotlin.ui.compose.Empty
+import com.itdroid.pocketkotlin.ui.compose.PocketKotlinTheme
 import com.itdroid.pocketkotlin.utils.ImageInput
 import com.itdroid.pocketkotlin.utils.tint
 
@@ -32,17 +32,13 @@ import com.itdroid.pocketkotlin.utils.tint
  * @author itdroid
  */
 @Composable
-fun EditorContent(
+fun ScreenEditorContent(
     editorInfo: EditorInfo,
-    logsAsTab: Boolean,
+    withLogsPanel: Boolean,
+    logsState: MutableState<Boolean>,
+    toggleLogsAction: (Boolean) -> Unit,
 ) {
-    if (logsAsTab) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            ContentUi(editorInfo)
-        }
-    } else {
+    if (withLogsPanel) {
         var contentSize by remember { mutableStateOf(IntSize(0, 0)) }
 
         Box(
@@ -52,15 +48,10 @@ fun EditorContent(
         ) {
             val prefs = preferences()
 
-            val showLogs by prefs.showLogsPanelObservable.observeAsState(false)
-            val logsToggleAction: (Boolean) -> Unit = {
-                prefs.showLogsPanel = it
-            }
-
             val logsPanelWeight by prefs.logsPanelWeightObservable
                 .observeAsState(LogsPanelWeightPreference.DEFAULT)
             val editorWeight = LogsPanelWeightPreference.MAX -
-                    if (showLogs) logsPanelWeight else 0f
+                    if (logsState.value) logsPanelWeight else 0f
             val panelsOrientation =
                 if (integerResource(id = R.integer.editor__orientation) == 0) Orientation.Vertical
                 else Orientation.Horizontal
@@ -73,17 +64,21 @@ fun EditorContent(
                 }
             }
 
-            val logsWeight = if (showLogs) logsPanelWeight else 0f
+            val logsWeight = if (logsState.value) logsPanelWeight else 0f
 
             EditorContentUi(
                 editorInfo = editorInfo,
                 orientation = panelsOrientation,
                 editorWeight = editorWeight,
                 logsWeight = logsWeight,
-                logsVisible = showLogs,
+                logsVisible = logsState.value,
                 logsSizeChangeAction = logsSizeChangeAction,
-                logsVisibilityAction = logsToggleAction,
+                toggleLogsAction = toggleLogsAction,
             )
+        }
+    } else {
+        Box(Modifier.fillMaxSize()) {
+            ContentUi(editorInfo)
         }
     }
 }
@@ -96,14 +91,14 @@ private fun EditorContentUi(
     logsWeight: Float,
     logsVisible: Boolean,
     logsSizeChangeAction: (Float) -> Unit,
-    logsVisibilityAction: (Boolean) -> Unit,
+    toggleLogsAction: (Boolean) -> Unit,
 ) {
     EditorContentPanels(
         orientation = orientation,
         editorWeight = editorWeight,
         logsWeight = logsWeight,
         logsVisible = logsVisible,
-        logsVisibilityAction = logsVisibilityAction,
+        toggleLogsAction = toggleLogsAction,
         editor = { ContentUi(editorInfo) }
     ) {
         LogsContent(
@@ -131,7 +126,7 @@ private fun EditorContentPanels(
     logsWeight: Float,
     logsVisible: Boolean,
 
-    logsVisibilityAction: (Boolean) -> Unit,
+    toggleLogsAction: (Boolean) -> Unit,
 
     editor: @Composable () -> Unit,
     logs: @Composable (Orientation) -> Unit,
@@ -148,7 +143,7 @@ private fun EditorContentPanels(
             }
             EditorTools(
                 logsVisible = logsVisible,
-                logsVisibilityAction = logsVisibilityAction
+                toggleLogsAction = toggleLogsAction
             )
         }
     } else {
@@ -165,7 +160,7 @@ private fun EditorContentPanels(
             }
             EditorTools(
                 logsVisible = logsVisible,
-                logsVisibilityAction = logsVisibilityAction
+                toggleLogsAction = toggleLogsAction
             )
         }
     }
@@ -202,7 +197,7 @@ private fun ScreenEditorPreviewLightTheme() {
             logsWeight = 0.5f,
             logsVisible = true,
             logsSizeChangeAction = {},
-            logsVisibilityAction = {},
+            toggleLogsAction = {},
         )
     }
 }
@@ -218,7 +213,7 @@ private fun ScreenEditorPreviewDarkTheme() {
             logsWeight = 0.5f,
             logsVisible = true,
             logsSizeChangeAction = {},
-            logsVisibilityAction = {},
+            toggleLogsAction = {},
         )
     }
 }

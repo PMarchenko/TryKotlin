@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onActive
-import androidx.compose.runtime.onDispose
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,12 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import com.itdroid.pocketkotlin.R
-import com.itdroid.pocketkotlin.ui.compose.AppScreen
-import com.itdroid.pocketkotlin.ui.compose.PocketKotlinTheme
-import com.itdroid.pocketkotlin.ui.compose.state.defaultUiState
 import com.itdroid.pocketkotlin.navigation.navigation
 import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.projects.projectExamples
+import com.itdroid.pocketkotlin.ui.compose.AppScreen
+import com.itdroid.pocketkotlin.ui.compose.PocketKotlinTheme
+import com.itdroid.pocketkotlin.ui.compose.state.defaultUiState
 
 /**
  * @author itdroid
@@ -39,57 +37,36 @@ fun ScreenEditor(
     onActive {
         vm.loadProject(projectId, fileId)
     }
-
-    val hasDrawer = booleanResource(id = R.bool.editor__with_drawer)
-    val drawerState =
-        if (hasDrawer) {
-            val state = rememberDrawerState(initialValue = DrawerValue.Closed)
-            val nav = navigation()
-            val drawerInterceptorKey = "INTERCEPTOR_LOGS_DRAWER"
-
-            onActive {
-                nav.addOnBackPressedInterceptor(drawerInterceptorKey) {
-                    if (state.isOpen) {
-                        state.close()
-                        true
-                    } else false
-                }
-            }
-
-            onDispose {
-                nav.removeOnBackPressedInterceptor(drawerInterceptorKey)
-            }
-            state
-        } else null
-
-    val uiState by vm.uiState.observeAsState(defaultUiState())
-    uiState.consume { editorInfo ->
-        ScreenEditorUi(
-            drawerState = drawerState,
-            editorInfo = editorInfo,
-            executeProjectAction = { vm.executeProject(editorInfo.project) },
-        )
-    }
+    vm.uiState
+        .observeAsState(defaultUiState())
+        .value
+        .consume { editorInfo ->
+            ScreenEditorUi(
+                editorInfo = editorInfo,
+                logsAsDrawer = booleanResource(id = R.bool.editor__logs_as_drawer),
+                executeProjectAction = { vm.executeProject(editorInfo.project) },
+            )
+        }
 }
 
 @Composable
 private fun ScreenEditorUi(
-    drawerState: DrawerState?,
     editorInfo: EditorInfo,
+    logsAsDrawer: Boolean,
     executeProjectAction: () -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (drawerState == null) {
-            Content(editorInfo, null)
+    Box(Modifier.fillMaxSize()) {
+        if (logsAsDrawer) {
+            ScreenEditorContentWithDrawerUi(editorInfo)
         } else {
-            ModalDrawerLayout(
-                drawerElevation = 0.dp,
-                drawerBackgroundColor = Color.Transparent,
-                drawerState = drawerState,
-                drawerContent = { LogsContent() },
-            ) {
-                Content(editorInfo, drawerState)
-            }
+            val logsState = savedInstanceState { true }
+            val toggleLogsAction: (Boolean) -> Unit = { logsState.value = it }
+            ScreenEditorContentUi(
+                editorInfo = editorInfo,
+                withLogsPanel = true,
+                logsState = logsState,
+                toggleLogsAction = toggleLogsAction,
+            )
         }
 
         if (editorInfo.project.files.isNotEmpty()) {
@@ -115,16 +92,65 @@ private fun ScreenEditorUi(
 }
 
 @Composable
-private fun Content(
-    uiState: EditorInfo,
-    drawerState: DrawerState?,
+private fun ScreenEditorContentUi(
+    editorInfo: EditorInfo,
+    withLogsPanel: Boolean,
+    logsState: MutableState<Boolean>,
+    toggleLogsAction: (Boolean) -> Unit,
 ) {
     AppScreen(
-        toolbar = { EditorToolbar(uiState, drawerState) },
+        toolbar = {
+            ScreenEditorToolbar(
+                editorInfo = editorInfo,
+                logsAsDrawer = !withLogsPanel,
+                toggleLogsAction = toggleLogsAction,
+            )
+        },
     ) {
         Box {
-            EditorContent(uiState, drawerState != null)
+            ScreenEditorContent(
+                withLogsPanel = withLogsPanel,
+                editorInfo = editorInfo,
+                logsState = logsState,
+                toggleLogsAction = toggleLogsAction,
+            )
         }
+    }
+}
+
+@Composable
+fun ScreenEditorContentWithDrawerUi(editorInfo: EditorInfo) {
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+    val nav = navigation()
+    val drawerInterceptorKey = "INTERCEPTOR_LOGS_DRAWER"
+
+    onActive {
+        nav.addOnBackPressedInterceptor(drawerInterceptorKey) {
+            if (drawerState.isOpen) {
+                drawerState.close()
+                true
+            } else false
+        }
+    }
+
+    onDispose {
+        nav.removeOnBackPressedInterceptor(drawerInterceptorKey)
+    }
+
+    ModalDrawerLayout(
+        drawerElevation = 0.dp,
+        drawerBackgroundColor = Color.Transparent,
+        scrimColor = Color.Transparent,
+        drawerState = drawerState,
+        drawerContent = { LogsContent() },
+    ) {
+        ScreenEditorContentUi(
+            editorInfo = editorInfo,
+            withLogsPanel = false,
+            logsState = mutableStateOf(false),
+            toggleLogsAction = { if (it) drawerState.open() else drawerState.close() },
+        )
     }
 }
 
@@ -133,10 +159,9 @@ private fun Content(
 private fun ScreenEditorPreviewLightTheme() {
     PocketKotlinTheme(AppThemePreference.Light) {
         ScreenEditorUi(
-            drawerState = rememberDrawerState(DrawerValue.Open),
             editorInfo = EditorInfo(projectExamples[0]),
-            executeProjectAction = {}
-        )
+            logsAsDrawer = true,
+        ) {}
     }
 }
 
@@ -145,9 +170,8 @@ private fun ScreenEditorPreviewLightTheme() {
 private fun ScreenEditorPreviewDarkTheme() {
     PocketKotlinTheme(AppThemePreference.Dark) {
         ScreenEditorUi(
-            drawerState = rememberDrawerState(DrawerValue.Open),
             editorInfo = EditorInfo(projectExamples[0]),
-            executeProjectAction = {}
-        )
+            logsAsDrawer = true,
+        ) {}
     }
 }

@@ -21,7 +21,7 @@ import com.itdroid.pocketkotlin.utils.TextInput
 @Composable
 fun EditorTools(
     logsVisible: Boolean,
-    logsVisibilityAction: (Boolean) -> Unit,
+    toggleLogsAction: (Boolean) -> Unit,
 ) {
     AppDivider()
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -29,7 +29,7 @@ fun EditorTools(
             modifier = Modifier.padding(4.dp),
             text = TextInput(R.string.editor__tools__logs),
             checked = logsVisible,
-            onCheckedChange = logsVisibilityAction
+            onCheckedChange = toggleLogsAction
         )
     }
 }
@@ -40,7 +40,7 @@ private fun EditorToolsPreviewLightTheme() {
     PocketKotlinTheme(AppThemePreference.Light) {
         EditorTools(
             logsVisible = true,
-            logsVisibilityAction = {},
+            toggleLogsAction = {},
         )
     }
 }
@@ -51,7 +51,7 @@ private fun EditorToolsPreviewDarkTheme() {
     PocketKotlinTheme(AppThemePreference.Dark) {
         EditorTools(
             logsVisible = true,
-            logsVisibilityAction = {},
+            toggleLogsAction = {},
         )
     }
 }
