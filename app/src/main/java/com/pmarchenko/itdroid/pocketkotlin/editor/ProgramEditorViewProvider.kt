@@ -3,7 +3,6 @@ package com.pmarchenko.itdroid.pocketkotlin.editor
 import android.content.Context
 import android.text.Editable
 import androidx.core.widget.doAfterTextChanged
-import com.pmarchenko.itdroid.pocketkotlin.view.ProgramEditorView
 
 /**
  * @author Pavel Marchenko

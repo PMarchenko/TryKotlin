@@ -1,4 +1,4 @@
-package com.pmarchenko.itdroid.pocketkotlin.view
+package com.pmarchenko.itdroid.pocketkotlin.editor
 
 import android.content.Context
 import android.text.InputFilter
