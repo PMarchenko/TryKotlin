@@ -21,8 +21,11 @@ import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
 import com.itdroid.pocketkotlin.R
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.projects.model.Project
+import com.itdroid.pocketkotlin.projects.projectExamples
 import com.itdroid.pocketkotlin.utils.UiAction
 import com.itdroid.pocketkotlin.utils.takeIfOr
 
@@ -32,18 +35,19 @@ import com.itdroid.pocketkotlin.utils.takeIfOr
 @Composable
 fun ProjectsGrid(
     projects: List<Project>,
-    popupItems: List<UiAction<Project>>,
+    projectsPerRow: Int = integerResource(R.integer.projectsListGridSize),
+    popupActions: List<UiAction<Project>>,
     projectPreview: @Composable (ColumnScope.(Project) -> Unit)? = null,
     projectFooter: @Composable (ColumnScope.(Project) -> Unit)? = null,
     onItemClick: ((Project) -> Unit)? = null,
 ) {
     LazyGridFor(
-        projects,
-        integerResource(R.integer.projectsListGridSize),
+        items = projects,
+        rowSize = projectsPerRow,
     ) { project ->
         ProjectItem(
             project = project,
-            popupActions = popupItems,
+            popupActions = popupActions,
             projectPreview = projectPreview,
             projectFooter = projectFooter,
             onClick = onItemClick?.let { { onItemClick(project) } }
@@ -157,4 +161,28 @@ fun ProjectFooter(project: Project) {
     )
 
     Spacer(modifier = Modifier.height(4.dp))
+}
+
+@Preview("ProjectsGrid preview [Light Theme]")
+@Composable
+private fun ProjectsGridPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        ProjectsGrid(
+            projects = projectExamples,
+            projectsPerRow = 2,
+            popupActions = emptyList(),
+        )
+    }
+}
+
+@Preview("ProjectsGrid preview [Dark Theme]")
+@Composable
+private fun ProjectsGridScreenDarkThemePreview() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        ProjectsGrid(
+            projects = projectExamples,
+            projectsPerRow = 2,
+            popupActions = emptyList(),
+        )
+    }
 }

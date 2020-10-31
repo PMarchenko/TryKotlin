@@ -21,6 +21,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.utils.TextInput
 
 /**
@@ -77,5 +79,21 @@ fun Empty(
         alignment = Alignment.Center
     ) {
         AppText(text)
+    }
+}
+
+@Preview("AppText preview [Light Theme]")
+@Composable
+private fun AppTextPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        AppText(TextInput(text = "AppText"))
+    }
+}
+
+@Preview("AppText preview [Dark Theme]")
+@Composable
+private fun AppTextPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        AppText(TextInput(text = "AppText"))
     }
 }

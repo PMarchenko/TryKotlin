@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.utils.TextInput
 
 /**
@@ -51,4 +53,42 @@ fun ListSection(
         modifier = modifier.padding(top = 16.dp, bottom = 8.dp),
         style = MaterialTheme.typography.body2
     )
+}
+
+@Preview("TwoLineListItem preview [Light Theme]")
+@Composable
+private fun TwoLineListItemPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        TwoLineListItem(
+            title = TextInput(text = "Title"),
+            subtitle = TextInput(text = "Subtitle")
+        )
+    }
+}
+
+@Preview("TwoLineListItem preview [Dark Theme]")
+@Composable
+private fun TwoLineListItemPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        TwoLineListItem(
+            title = TextInput(text = "Title"),
+            subtitle = TextInput(text = "Subtitle")
+        )
+    }
+}
+
+@Preview("ListSection preview [Light Theme]")
+@Composable
+private fun ListSectionPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        ListSection(TextInput(text = "Title"))
+    }
+}
+
+@Preview("ListSection preview [Dark Theme]")
+@Composable
+private fun ListSectionPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        ListSection(TextInput(text = "Title"))
+    }
 }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.utils.TextInput
 
 /**
@@ -39,11 +40,22 @@ fun AppCheckBox(
     }
 }
 
-@Preview("AppCheckBox: Preview")
+@Preview("AppCheckBox preview [Light Theme]")
 @Composable
-fun AppCheckBoxPreview() {
-    AppCheckBox(
-        text = TextInput(text = "Check box"),
-        onCheckedChange = {}
-    )
+private fun AppCheckBoxPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        AppCheckBox(
+            text = TextInput(text = "Check box")
+        ) {}
+    }
+}
+
+@Preview("AppCheckBox preview [Dark Theme]")
+@Composable
+private fun AppCheckBoxPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        AppCheckBox(
+            text = TextInput(text = "Check box")
+        ) {}
+    }
 }

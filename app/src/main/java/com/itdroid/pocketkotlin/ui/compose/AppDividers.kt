@@ -1,7 +1,10 @@
 package com.itdroid.pocketkotlin.ui.compose
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -9,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 
 /**
  * @author itdroid
@@ -53,4 +58,36 @@ fun AppDividerVertical(
             .preferredWidth(thickness)
             .background(color = color)
     )
+}
+
+@Preview("AppDivider preview [Light Theme]")
+@Composable
+private fun AppDividerPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        AppDivider()
+    }
+}
+
+@Preview("AppCheckBox preview [Dark Theme]")
+@Composable
+private fun AppDividerPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        AppDivider()
+    }
+}
+
+@Preview("AppDividerVertical preview [Light Theme]")
+@Composable
+private fun AppDividerVerticalPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        AppDividerVertical()
+    }
+}
+
+@Preview("AppDividerVertical preview [Dark Theme]")
+@Composable
+private fun AppDividerVerticalPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        AppDividerVertical()
+    }
 }

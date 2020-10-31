@@ -16,11 +16,11 @@ import com.itdroid.pocketkotlin.preferences.AppThemePreference
  */
 @Composable
 fun <T> LazyGridFor(
-    data: List<T>,
+    items: List<T>,
     rowSize: Int = 1,
     itemContent: @Composable BoxScope.(T) -> Unit,
 ) {
-    val rows = data.windowed(rowSize, rowSize, true)
+    val rows = items.windowed(rowSize, rowSize, true)
     LazyColumnFor(rows) { row ->
         Row(Modifier.fillParentMaxWidth()) {
             for ((index, item) in row.withIndex()) {

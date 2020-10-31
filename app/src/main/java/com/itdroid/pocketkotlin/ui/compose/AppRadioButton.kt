@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.utils.TextInput
 
 /**
@@ -38,5 +40,27 @@ fun <T> AppRadioButton(
                 modifier = Modifier.padding(8.dp)
             )
         }
+    }
+}
+
+@Preview("AppRadioButton preview [Light Theme]")
+@Composable
+private fun AppRadioButtonPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        AppRadioButton(
+            item = "",
+            text = TextInput(text = "AppRadioButton"),
+        ) {}
+    }
+}
+
+@Preview("AppRadioButton preview [Dark Theme]")
+@Composable
+private fun AppRadioButtonPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        AppRadioButton(
+            item = "",
+            text = TextInput(text = "AppRadioButton"),
+        ) {}
     }
 }

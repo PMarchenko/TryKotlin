@@ -6,10 +6,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.itdroid.pocketkotlin.R
-import com.itdroid.pocketkotlin.editor.logs.LogsColorConfig
 import com.itdroid.pocketkotlin.preferences.AppThemePreference
 
 /**

@@ -1,11 +1,16 @@
 package com.itdroid.pocketkotlin.ui.compose
 
 import androidx.compose.foundation.Image
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
+import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.utils.ImageInput
 
 /**
@@ -42,5 +47,21 @@ fun AppImage(
             )
         }
         else -> error("No image asset provided")
+    }
+}
+
+@Preview("AppImage preview [Light Theme]")
+@Composable
+private fun AppImagePreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        AppImage(ImageInput(Icons.Default.Add))
+    }
+}
+
+@Preview("AppImage preview [Dark Theme]")
+@Composable
+private fun AppImagePreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        AppImage(ImageInput(Icons.Default.Add))
     }
 }

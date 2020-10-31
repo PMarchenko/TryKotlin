@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.utils.ImageInput
 import com.itdroid.pocketkotlin.utils.TextInput
 import com.itdroid.pocketkotlin.utils.tint
@@ -91,5 +93,25 @@ fun ToolbarAction(
                 text?.let { AppText(it) }
             }
         }
+    }
+}
+
+@Preview("Toolbar preview [Light Theme]")
+@Composable
+private fun ToolbarPreviewLightTheme() {
+    PocketKotlinTheme(AppThemePreference.Light) {
+        Toolbar(
+            title = TextInput(text = "AppText")
+        )
+    }
+}
+
+@Preview("Toolbar preview [Dark Theme]")
+@Composable
+private fun ToolbarPreviewDarkTheme() {
+    PocketKotlinTheme(AppThemePreference.Dark) {
+        Toolbar(
+            title = TextInput(text = "AppText")
+        )
     }
 }

@@ -116,7 +116,7 @@ private fun ProjectsInput(
 
     ProjectsGrid(
         projects = projects,
-        popupItems = popupItems,
+        popupActions = popupItems,
         onItemClick = openProjectAction)
 }
 

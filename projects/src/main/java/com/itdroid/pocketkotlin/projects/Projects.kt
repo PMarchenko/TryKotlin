@@ -63,7 +63,7 @@ internal fun newFile(projectId: Long, name: String, type: FileType) =
         program = newProgram(name, type)
     )
 
-fun newProgram(name: String, type: FileType): String =
+private fun newProgram(name: String, type: FileType): String =
     when (type) {
         FileType.File -> ""
         FileType.Class ->

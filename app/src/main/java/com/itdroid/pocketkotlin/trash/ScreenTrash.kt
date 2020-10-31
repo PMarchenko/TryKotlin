@@ -66,7 +66,7 @@ private fun ScreenTrashInput(
         if (projects.isEmpty()) Empty(R.string.screen__trash_bin__empty)
         else ProjectsGrid(
             projects = projects,
-            popupItems = prepareMenuItems(
+            popupActions = prepareMenuItems(
                 restoreProjectAction = restoreProjectAction,
                 deleteProjectAction = deleteProjectAction
             ),
