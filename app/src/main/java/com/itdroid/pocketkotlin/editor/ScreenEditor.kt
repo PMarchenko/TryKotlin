@@ -143,6 +143,7 @@ fun ScreenEditorContentWithDrawerUi(editorInfo: EditorInfo) {
         drawerBackgroundColor = Color.Transparent,
         scrimColor = Color.Transparent,
         drawerState = drawerState,
+        gesturesEnabled = false,
         drawerContent = { LogsContent() },
     ) {
         ScreenEditorContentUi(

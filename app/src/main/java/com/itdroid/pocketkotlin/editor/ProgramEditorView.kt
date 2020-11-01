@@ -6,14 +6,13 @@ import android.view.Gravity
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatEditText
 import com.itdroid.pocketkotlin.projects.FileMaxLength
-import com.itdroid.pocketkotlin.utils.asRange
 
 /**
  * @author itdroid
  */
 class ProgramEditorView(context: Context) : AppCompatEditText(context) {
 
-    var selectionListener: ((Long) -> Unit)? = null
+    var selectionListener: ((IntRange) -> Unit)? = null
 
     init {
         layoutParams = ViewGroup.LayoutParams(
@@ -30,8 +29,10 @@ class ProgramEditorView(context: Context) : AppCompatEditText(context) {
         selectionListener = null
     }
 
+
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
-        selectionListener?.invoke(selStart.asRange(selEnd))
+
+        selectionListener?.invoke(selStart..selEnd)
     }
 }
