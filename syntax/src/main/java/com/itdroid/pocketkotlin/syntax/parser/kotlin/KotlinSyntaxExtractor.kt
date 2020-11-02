@@ -65,13 +65,6 @@ internal class KotlinSyntaxExtractor : KotlinParserLoggerImplementation() {
         }
     }
 
-    override fun enterTypeParameter(ctx: TypeParameterContext?) {
-        super.enterTypeParameter(ctx)
-        ctx?.run {
-            syntax[range()] = TypeParam
-        }
-    }
-
     override fun visitTerminal(node: TerminalNode?) {
         super.visitTerminal(node)
         if (node == null) return
