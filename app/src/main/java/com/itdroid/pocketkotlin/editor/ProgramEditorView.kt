@@ -29,7 +29,6 @@ class ProgramEditorView(context: Context) : AppCompatEditText(context) {
         selectionListener = null
     }
 
-
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
 

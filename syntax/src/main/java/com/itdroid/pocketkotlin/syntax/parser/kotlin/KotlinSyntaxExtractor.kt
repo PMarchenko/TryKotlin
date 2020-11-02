@@ -62,7 +62,6 @@ internal class KotlinSyntaxExtractor : KotlinParserLoggerImplementation() {
                     BooleanLiteral, NullLiteral -> syntax[range()] = KeywordMarker
                 }
             }
-            syntax[range()] = StrCharLiteralMarker
         }
     }
 

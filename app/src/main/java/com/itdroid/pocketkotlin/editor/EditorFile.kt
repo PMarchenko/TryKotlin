@@ -3,7 +3,10 @@ package com.itdroid.pocketkotlin.editor
 import android.text.Editable
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.viewinterop.viewModel
@@ -31,19 +34,22 @@ fun EditorFile(
 
     val isLightTheme = MaterialTheme.colors.isLight
     val syntaxVm = viewModel<SyntaxViewModel>()
+    val program: MutableState<CharSequence> = savedInstanceState(file.id) { file.program }
 
     val editAction: (Editable, IntRange) -> Unit = { input, range ->
         syntaxVm.highlightSyntax(file.id, input, range, isLightTheme)
+        program.value = input
 
-        val program = input.toString()
-        if (file.program != program) {
-            file.program = program
+        val update = input.toString()
+        if (file.program != update) {
+            file.program = update
             vm.edit(project, file)
         }
     }
 
     EditorFileContentUi(
         file = file,
+        program = program.value,
         selection = selections[file.id] ?: 0..0,
         selectionChangeAction = selectionChangeAction,
         editAction = editAction
@@ -53,6 +59,7 @@ fun EditorFile(
 @Composable
 private fun EditorFileContentUi(
     file: ProjectFile,
+    program: CharSequence,
     selection: IntRange,
     selectionChangeAction: (ProjectFile, IntRange) -> Unit,
     editAction: (Editable, IntRange) -> Unit,
@@ -70,7 +77,9 @@ private fun EditorFileContentUi(
 
     AndroidView(editorProvider) { editor ->
         editor.reset()
-        editor.setText(file.program)
+        if (program != editor.text) {
+            editor.setText(program)
+        }
         editor.setSelection(selection.first, selection.last)
         editor.selectionListener = { range -> selectionChangeAction(file, range) }
     }
@@ -82,6 +91,7 @@ private fun EditorFileContentPreviewLightTheme() {
     PocketKotlinTheme(AppThemePreference.Light) {
         EditorFileContentUi(
             file = projectExamples[0].files[0],
+            program = projectExamples[0].files[0].program,
             selectionChangeAction = { _, _ -> },
             editAction = { _, _ -> },
             selection = 0..0,
@@ -95,6 +105,7 @@ private fun EditorFileContentPreviewDarkTheme() {
     PocketKotlinTheme(AppThemePreference.Dark) {
         EditorFileContentUi(
             file = projectExamples[0].files[0],
+            program = projectExamples[0].files[0].program,
             selectionChangeAction = { _, _ -> },
             editAction = { _, _ -> },
             selection = 0..0,
