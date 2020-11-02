@@ -4,7 +4,6 @@ import android.text.Editable
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.graphics.toArgb
@@ -77,7 +76,7 @@ private fun EditorFileContentUi(
 
     AndroidView(editorProvider) { editor ->
         editor.reset()
-        if (program != editor.text) {
+        if (program !== editor.text) {
             editor.setText(program)
         }
         editor.setSelection(selection.first, selection.last)

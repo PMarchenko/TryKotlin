@@ -20,17 +20,13 @@ internal class KotlinSyntaxExtractor : KotlinParserLoggerImplementation() {
         syntax.clear()
     }
 
-    override fun enterPropertyDeclaration(ctx: PropertyDeclarationContext?) {
-        super.enterPropertyDeclaration(ctx)
-        ctx?.variableDeclaration()?.simpleIdentifier()?.run {
-            syntax[range()] = PropertyMarker
-        }
-    }
-
-    override fun enterFunctionDeclaration(ctx: FunctionDeclarationContext?) {
-        super.enterFunctionDeclaration(ctx)
-        ctx?.simpleIdentifier()?.run {
-            syntax[range()] = FunctionMarker
+    override fun enterSimpleIdentifier(ctx: SimpleIdentifierContext?) {
+        super.enterSimpleIdentifier(ctx)
+        ctx?.run {
+            when(parent) {
+                is FunctionDeclarationContext -> syntax[range()] = FunctionMarker
+                is PropertyDeclarationContext -> syntax[range()] = PropertyMarker
+            }
         }
     }
 
@@ -54,7 +50,11 @@ internal class KotlinSyntaxExtractor : KotlinParserLoggerImplementation() {
             val child = getChild(0)
             if (child is TerminalNode) {
                 when (child.symbol.type) {
-                    IntegerLiteral, HexLiteral, BinLiteral, FloatLiteral, DoubleLiteral ->
+                    UnsignedLiteral,
+                    LongLiteral,
+                    IntegerLiteral, HexLiteral, BinLiteral,
+                    RealLiteral, FloatLiteral, DoubleLiteral,
+                    ->
                         syntax[range()] = NumberMarker
 
                     CharacterLiteral -> syntax[range()] = StrCharLiteralMarker
