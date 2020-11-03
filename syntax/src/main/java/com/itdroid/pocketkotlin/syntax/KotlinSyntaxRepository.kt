@@ -3,9 +3,7 @@ package com.itdroid.pocketkotlin.syntax
 import android.text.Editable
 import android.text.Spannable
 import com.itdroid.pocketkotlin.syntax.model.MappingHolder
-import com.itdroid.pocketkotlin.syntax.model.SyntaxMapping
 import com.itdroid.pocketkotlin.syntax.span.SyntaxSpanFactoryProvider
-import com.itdroid.pocketkotlin.utils.iLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn

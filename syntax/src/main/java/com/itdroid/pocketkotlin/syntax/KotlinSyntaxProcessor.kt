@@ -20,87 +20,27 @@ internal class KotlinSyntaxProcessor {
     suspend fun process(
         collector: FlowCollector<SyntaxToken>,
         tree: ParseTree,
-        indent: String = "",
     ) {
         when (tree) {
-            is TerminalNode -> maybeEmitKeyword(collector, tree, indent)
+            is TerminalNode -> maybeEmitKeyword(collector, tree)
             is RuleNode -> {
-                enterBranch(indent, tree)
-                checkBranch(collector, tree)
                 for (i in 0 until tree.childCount) {
-                    process(collector, tree.getChild(i), "$indent ")
+                    process(collector, tree.getChild(i))
                 }
-                exitBranch(tree)
-            }
-        }
-    }
-
-    private fun enterBranch(indent: String, tree: RuleNode) {
-        iLog { "$indent enter: ${tree::class.java.simpleName}: ${tree.text}" }
-        when (tree) {
-            is KotlinParser.TopLevelObjectContext -> contextStack.push(Scope.TopLevel)
-            is KotlinParser.ClassParametersContext -> contextStack.push(Scope.ClassParameters)
-            is KotlinParser.ClassBodyContext -> contextStack.push(Scope.ClassBody)
-            is KotlinParser.PropertyDeclarationContext -> {
-                @Suppress("NON_EXHAUSTIVE_WHEN")
-                when (contextStack.peek()) {
-                    Scope.TopLevel, Scope.ClassBody -> contextStack.push(Scope.PropertyDeclaration)
-                }
-            }
-            is KotlinParser.FunctionDeclarationContext -> contextStack.push(Scope.FunDeclaration)
-            is KotlinParser.FunctionBodyContext -> contextStack.push(Scope.FunBody)
-
-            is KotlinParser.FunctionValueParametersContext -> contextStack.push(Scope.Parameters)
-        }
-    }
-
-    private fun exitBranch(tree: RuleNode) {
-        when (tree) {
-            is KotlinParser.TopLevelObjectContext,
-            is KotlinParser.ClassParametersContext,
-            is KotlinParser.ClassBodyContext,
-            is KotlinParser.FunctionDeclarationContext,
-            is KotlinParser.FunctionBodyContext,
-            is KotlinParser.FunctionValueParametersContext,
-            -> contextStack.pop()
-            is KotlinParser.PropertyDeclarationContext -> {
-                if (contextStack.peek() == Scope.PropertyDeclaration) contextStack.pop()
-            }
-        }
-    }
-
-    private suspend fun checkBranch(collector: FlowCollector<SyntaxToken>, tree: RuleNode) {
-        when (tree) {
-            is KotlinParser.EnumEntryContext ->
-                collector.emit(SyntaxToken(tree.range(), PropertyMarker))
-            is KotlinParser.VariableDeclarationContext -> {
-                @Suppress("NON_EXHAUSTIVE_WHEN")
-                when (contextStack.peek()) {
-                    Scope.ClassParameters,
-                    Scope.PropertyDeclaration,
-                    ->
-                        collector.emit(SyntaxToken(tree.range(), PropertyMarker))
-                }
-            }
-            is KotlinParser.SimpleIdentifierContext ->
-                if (contextStack.peek() == Scope.FunDeclaration) {
-                    collector.emit(SyntaxToken(tree.range(), FunctionMarker))
-                }
-            is KotlinParser.StringLiteralContext -> {
-                collector.emit(SyntaxToken(tree.range(), StrCharLiteralMarker))
             }
         }
     }
 
     private suspend fun maybeEmitKeyword(
         collector: FlowCollector<SyntaxToken>,
-        node: TerminalNode?,
-        indent: String,
+        node: TerminalNode,
     ) {
-        val type = node?.symbol?.type ?: return
-        iLog { "$indent terminal: $type" }
+        val type = node.symbol?.type ?: return
+        iLog { "terminal: $type, -> ${node.text}" }
         when (type) {
-            KotlinParser.LineComment, KotlinParser.DelimitedComment -> {
+            KotlinParser.LineComment -> collector.emit(SyntaxToken(node.range(), CommentMarker))
+
+            KotlinParser.DelimitedComment -> {
                 val comment = node.symbol?.text
                 if (comment?.startsWith("/**") == true) {
                     collector.emit(SyntaxToken(node.range(), DocCommentMarker))
