@@ -35,8 +35,8 @@ fun EditorFile(
     val syntaxVm = viewModel<SyntaxViewModel>()
     val program: MutableState<CharSequence> = savedInstanceState(file.id) { file.program }
 
-    val editAction: (Editable, IntRange) -> Unit = { input, range ->
-        syntaxVm.highlightSyntax(file.id, input, range, isLightTheme)
+    val editAction: (Editable) -> Unit = { input ->
+        syntaxVm.highlightSyntax(file.id, input, isLightTheme)
         program.value = input
 
         val update = input.toString()
@@ -61,7 +61,7 @@ private fun EditorFileContentUi(
     program: CharSequence,
     selection: IntRange,
     selectionChangeAction: (ProjectFile, IntRange) -> Unit,
-    editAction: (Editable, IntRange) -> Unit,
+    editAction: (Editable) -> Unit,
 ) {
     val editorBgColor = MaterialTheme.colors.background.toArgb()
     val editorTextColor = MaterialTheme.colors.onSurface.toArgb()
@@ -92,7 +92,7 @@ private fun EditorFileContentPreviewLightTheme() {
             file = projectExamples[0].files[0],
             program = projectExamples[0].files[0].program,
             selectionChangeAction = { _, _ -> },
-            editAction = { _, _ -> },
+            editAction = {},
             selection = 0..0,
         )
     }
@@ -106,7 +106,7 @@ private fun EditorFileContentPreviewDarkTheme() {
             file = projectExamples[0].files[0],
             program = projectExamples[0].files[0].program,
             selectionChangeAction = { _, _ -> },
-            editAction = { _, _ -> },
+            editAction = {},
             selection = 0..0,
         )
     }

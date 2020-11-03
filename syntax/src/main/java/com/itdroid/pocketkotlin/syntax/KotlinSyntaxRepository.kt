@@ -2,12 +2,11 @@ package com.itdroid.pocketkotlin.syntax
 
 import android.text.Editable
 import android.text.Spannable
-import com.itdroid.pocketkotlin.syntax.model.Syntax
-import com.itdroid.pocketkotlin.syntax.model.SyntaxDiff
-import com.itdroid.pocketkotlin.syntax.model.SyntaxMarker
 import com.itdroid.pocketkotlin.syntax.span.SyntaxSpanFactoryProvider
+import com.itdroid.pocketkotlin.utils.eLog
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 
 /**
  * @author itdroid
@@ -16,33 +15,22 @@ internal class KotlinSyntaxRepository {
 
     private val syntaxService = KotlinSyntaxService()
 
-    private val syntaxStore: MutableMap<Long, Syntax> = mutableMapOf()
-
     suspend fun analyze(
-        syntaxId: Long,
         program: Editable,
-        range: IntRange,
         spanFactoryProvider: SyntaxSpanFactoryProvider,
     ) {
-        val update: Map<IntRange, SyntaxMarker> = syntaxService.analyze(program, range)
-
-        val syntax: Syntax = syntaxStore.getOrPut(syntaxId) { Syntax() }
-        val diff = syntax.apply(update, range, spanFactoryProvider)
-
-        syntax.sync(program, diff)
-
-        withContext(Dispatchers.Main) {
-            program.apply(diff)
-        }
-    }
-}
-
-private fun Editable.apply(diff: SyntaxDiff) {
-    for (span in diff.spansToDelete) {
-        removeSpan(span)
-    }
-
-    for ((range, span) in diff.spansToAdd) {
-        setSpan(span, range.first, range.last, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val start = System.nanoTime()
+        var tokenNumber = 0
+        syntaxService.analyze(program)
+            .flowOn(Dispatchers.Default)
+            .collect { token ->
+                eLog { "Receive token ${tokenNumber++} after ${(System.nanoTime() - start) / 1e6}ms" }
+                program.setSpan(
+                    spanFactoryProvider.factoryFor(token.marker).create(),
+                    token.range.first,
+                    token.range.last,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
     }
 }

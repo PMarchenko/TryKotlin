@@ -34,8 +34,3 @@ internal class NumberLiteralSyntaxSpanFactory(private val color: Int) : SyntaxSp
 
     override fun create() = ForegroundColorSpan(color)
 }
-
-internal class TypeParamSyntaxSpanFactory(private val color: Int) : SyntaxSpanFactory {
-
-    override fun create() = ForegroundColorSpan(color)
-}

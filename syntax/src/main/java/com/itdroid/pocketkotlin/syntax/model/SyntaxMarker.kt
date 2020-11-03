@@ -15,5 +15,3 @@ internal object FunctionMarker : SyntaxMarker()
 internal object StrCharLiteralMarker : SyntaxMarker()
 
 internal object NumberMarker : SyntaxMarker()
-
-internal object TypeParam : SyntaxMarker()

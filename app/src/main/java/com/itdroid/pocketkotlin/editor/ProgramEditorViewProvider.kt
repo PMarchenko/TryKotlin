@@ -12,7 +12,7 @@ class ProgramEditorViewProvider(
     private val textColor: Int,
 ) : (Context) -> ProgramEditorView {
 
-    var editAction: ((Editable, IntRange) -> Unit)? = null
+    var editAction: ((Editable) -> Unit)? = null
 
     override fun invoke(context: Context): ProgramEditorView {
         return ProgramEditorView(context).apply {
@@ -20,7 +20,7 @@ class ProgramEditorViewProvider(
             setTextColor(textColor)
             doAfterTextChanged {
                 if (it != null) {
-                    editAction?.invoke(it, 0..it.length)
+                    editAction?.invoke(it)
                 }
             }
         }

@@ -20,8 +20,6 @@ internal class SyntaxSpanFactoryProvider(colors: ColorConfig) {
 
     private val numberLiteralSpanFactory = NumberLiteralSyntaxSpanFactory(colors.numberLiteralColor)
 
-    private val typeParamSpanFactory = TypeParamSyntaxSpanFactory(colors.numberLiteralColor)
-
     fun factoryFor(marker: SyntaxMarker): SyntaxSpanFactory =
         when (marker) {
             KeywordMarker -> keywordSpanFactory
@@ -29,6 +27,5 @@ internal class SyntaxSpanFactoryProvider(colors: ColorConfig) {
             FunctionMarker -> funNameSpanFactory
             StrCharLiteralMarker -> strCharLiteralSpanFactory
             NumberMarker -> numberLiteralSpanFactory
-            TypeParam -> typeParamSpanFactory
         }.checkAllMatched
 }

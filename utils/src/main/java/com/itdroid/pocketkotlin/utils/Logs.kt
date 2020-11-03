@@ -68,11 +68,11 @@ inline fun wtfLog(
     Timber.wtf(throwable, lazyMsg())
 }
 
-inline fun <T> measureExecutionTime(tag: String? = null, block: () -> T): T {
+inline fun <T> measureExecutionTime(tag: String? = null, msg: String = "", block: () -> T): T {
     var result: T
     val time = measureNanoTime {
         result = block()
     }
-    dLog(tag) { "MEASURE: block execution took ${time / 1e6} ms" }
+    dLog(tag) { "MEASURE: '$msg' execution took ${time / 1e6} ms" }
     return result
 }

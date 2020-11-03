@@ -16,18 +16,18 @@ class SyntaxViewModel : ViewModel() {
 
     private val executor = ThrottleExecutor.forScope(viewModelScope, 0L)
 
-    fun highlightSyntax(fileId: Long, program: Editable, range: IntRange, isLightTheme: Boolean) {
-        val spanFactoryProvider = SyntaxSpanFactoryProvider(
-            if (isLightTheme) LightThemeColorConfig
-            else DarkThemeColorConfig
-        )
+    private val spanFactoryProviderLightTheme = SyntaxSpanFactoryProvider(LightThemeColorConfig)
+    private val spanFactoryProviderDarkTheme = SyntaxSpanFactoryProvider(DarkThemeColorConfig)
 
-        executor.post(Dispatchers.Default) {
+    fun highlightSyntax(fileId: Long, program: Editable, isLightTheme: Boolean) {
+        executor.post(Dispatchers.Main) {
             syntaxRepo.analyze(
-                syntaxId = fileId,
                 program = program,
-                range = 0..program.length,
-                spanFactoryProvider = spanFactoryProvider
+                spanFactoryProvider = if (isLightTheme) {
+                    spanFactoryProviderLightTheme
+                } else {
+                    spanFactoryProviderDarkTheme
+                }
             )
         }
     }

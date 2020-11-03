@@ -9,7 +9,6 @@ internal data class ColorConfig(
     val funNameColor: Int,
     val strCharLiteralColor: Int,
     val numberLiteralColor: Int,
-    val typeParamColor: Int,
 )
 
 internal val DarkThemeColorConfig = ColorConfig(
@@ -18,7 +17,6 @@ internal val DarkThemeColorConfig = ColorConfig(
     funNameColor = 0xFFFFC66DL.toInt(),
     strCharLiteralColor = 0xFF499C54L.toInt(),
     numberLiteralColor = 0xFF4D8ABAL.toInt(),
-    typeParamColor = 0xFF20999D.toInt(),
 )
 
 internal val LightThemeColorConfig = ColorConfig(
@@ -27,5 +25,4 @@ internal val LightThemeColorConfig = ColorConfig(
     funNameColor = 0xFFFFC66DL.toInt(),
     strCharLiteralColor = 0xFF499C54L.toInt(),
     numberLiteralColor = 0xFF4D8ABAL.toInt(),
-    typeParamColor = 0xFF20999D.toInt(),
 )
