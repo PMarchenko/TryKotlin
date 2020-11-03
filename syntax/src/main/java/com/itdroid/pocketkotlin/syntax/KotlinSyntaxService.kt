@@ -4,6 +4,7 @@ import android.text.Editable
 import com.itdroid.pocketkotlin.syntax.model.SyntaxToken
 import com.itdroid.pocketkotlin.syntax.parser.kotlin.KotlinLexer
 import com.itdroid.pocketkotlin.syntax.parser.kotlin.KotlinParser
+import com.itdroid.pocketkotlin.syntax.processor.KotlinSyntaxProcessor
 import com.itdroid.pocketkotlin.utils.measureExecutionTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

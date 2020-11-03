@@ -49,11 +49,8 @@ internal class KotlinSyntaxRepository {
     }
 }
 
-/**
- * We declare a package-level function main which returns Unit and takes
- * an Array of strings as a parameter. Note that semicolons are optional.
- */
-
-fun main(args: Array<String>) {
-    println("Hello, world!")
-}
+//open class A(text: String)
+//
+//open class B : A("hello")
+//
+//class C : B

@@ -1,10 +1,9 @@
-package com.itdroid.pocketkotlin.syntax
+package com.itdroid.pocketkotlin.syntax.processor
 
 import com.itdroid.pocketkotlin.syntax.model.*
 import com.itdroid.pocketkotlin.syntax.parser.kotlin.KotlinParser
 import com.itdroid.pocketkotlin.utils.iLog
 import kotlinx.coroutines.flow.FlowCollector
-import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.RuleNode
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -15,7 +14,7 @@ import java.util.*
  */
 internal class KotlinSyntaxProcessor {
 
-    private val contextStack = LinkedList<Scope>()
+    private val branches = LinkedList<Branch>()
 
     suspend fun process(
         collector: FlowCollector<SyntaxToken>,
@@ -36,19 +35,25 @@ internal class KotlinSyntaxProcessor {
         node: TerminalNode,
     ) {
         val type = node.symbol?.type ?: return
+
+        val start = node.start
+        val end = node.end
+        val range = node.range
+
         iLog { "terminal: $type, -> ${node.text}" }
         when (type) {
-            KotlinParser.LineComment -> collector.emit(SyntaxToken(node.range(), CommentMarker))
-
+            //Comments
+            KotlinParser.LineComment -> collector.emit(SyntaxToken(range, CommentMarker))
             KotlinParser.DelimitedComment -> {
                 val comment = node.symbol?.text
                 if (comment?.startsWith("/**") == true) {
-                    collector.emit(SyntaxToken(node.range(), DocCommentMarker))
+                    collector.emit(SyntaxToken(range, DocCommentMarker))
                 } else {
-                    collector.emit(SyntaxToken(node.range(), CommentMarker))
+                    collector.emit(SyntaxToken(range, CommentMarker))
                 }
             }
 
+            //Keywords
             KotlinParser.PACKAGE,
             KotlinParser.IMPORT, KotlinParser.TYPE_ALIAS,
             KotlinParser.SEALED, KotlinParser.OPEN, KotlinParser.ABSTRACT, KotlinParser.FINAL,
@@ -69,35 +74,37 @@ internal class KotlinSyntaxProcessor {
             KotlinParser.CONST,
             KotlinParser.BooleanLiteral, KotlinParser.NullLiteral,
             ->
-                collector.emit(SyntaxToken(node.range(), KeywordMarker))
+                collector.emit(SyntaxToken(range, KeywordMarker))
+
+            //Strings
+            KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN ->
+                branches.push(StringLiteral(start))
+            KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE ->
+                if (branches.peek() is StringLiteral) {
+                    val strStart = branches.pop().position
+                    collector.emit(SyntaxToken(strStart..end, StrCharLiteralMarker))
+                } else error("Expected 'StringLiteral' branch, has '${branches.peek()}'")
 
             KotlinParser.UnsignedLiteral,
             KotlinParser.LongLiteral,
             KotlinParser.IntegerLiteral, KotlinParser.HexLiteral, KotlinParser.BinLiteral,
             KotlinParser.RealLiteral, KotlinParser.FloatLiteral, KotlinParser.DoubleLiteral,
             ->
-                collector.emit(SyntaxToken(node.range(), NumberMarker))
+                collector.emit(SyntaxToken(range, NumberMarker))
 
             KotlinParser.CharacterLiteral,
             ->
-                collector.emit(SyntaxToken(node.range(), StrCharLiteralMarker))
+                collector.emit(SyntaxToken(range, StrCharLiteralMarker))
 
         }
     }
 }
 
-private enum class Scope {
-    TopLevel,
-    ClassParameters,
-    ClassBody,
-    FunBody,
-    PropertyDeclaration,
-    FunDeclaration,
-    Parameters,
-}
+private val TerminalNode.start: Int
+    get() = symbol.startIndex
 
-private fun ParserRuleContext.range(): IntRange =
-    start.startIndex..stop.stopIndex + 1
+private val TerminalNode.end: Int
+    get() = symbol.stopIndex + 1
 
-private fun TerminalNode.range(): IntRange =
-    symbol.startIndex..symbol.stopIndex + 1
+private val TerminalNode.range: IntRange
+    get() = start..end
