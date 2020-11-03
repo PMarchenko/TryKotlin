@@ -22,6 +22,7 @@ class SyntaxViewModel : ViewModel() {
     fun highlightSyntax(fileId: Long, program: Editable, isLightTheme: Boolean) {
         executor.post(Dispatchers.Main) {
             syntaxRepo.analyze(
+                syntaxMappingId = fileId,
                 program = program,
                 spanFactoryProvider = if (isLightTheme) {
                     spanFactoryProviderLightTheme

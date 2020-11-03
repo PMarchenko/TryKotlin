@@ -23,7 +23,7 @@ internal class KotlinSyntaxProcessor {
         indent: String = "",
     ) {
         when (tree) {
-            is TerminalNode -> maybeEmitKeyword(collector, tree)
+            is TerminalNode -> maybeEmitKeyword(collector, tree, indent)
             is RuleNode -> {
                 enterBranch(indent, tree)
                 checkBranch(collector, tree)
@@ -49,7 +49,6 @@ internal class KotlinSyntaxProcessor {
             }
             is KotlinParser.FunctionDeclarationContext -> contextStack.push(Scope.FunDeclaration)
             is KotlinParser.FunctionBodyContext -> contextStack.push(Scope.FunBody)
-            is KotlinParser.EnumEntryContext -> contextStack.push(Scope.EnumEntry)
 
             is KotlinParser.FunctionValueParametersContext -> contextStack.push(Scope.Parameters)
         }
@@ -72,18 +71,21 @@ internal class KotlinSyntaxProcessor {
 
     private suspend fun checkBranch(collector: FlowCollector<SyntaxToken>, tree: RuleNode) {
         when (tree) {
-            is KotlinParser.SimpleIdentifierContext -> {
+            is KotlinParser.EnumEntryContext ->
+                collector.emit(SyntaxToken(tree.range(), PropertyMarker))
+            is KotlinParser.VariableDeclarationContext -> {
                 @Suppress("NON_EXHAUSTIVE_WHEN")
                 when (contextStack.peek()) {
-                    Scope.EnumEntry,
                     Scope.ClassParameters,
                     Scope.PropertyDeclaration,
                     ->
                         collector.emit(SyntaxToken(tree.range(), PropertyMarker))
-                    Scope.FunDeclaration ->
-                        collector.emit(SyntaxToken(tree.range(), FunctionMarker))
                 }
             }
+            is KotlinParser.SimpleIdentifierContext ->
+                if (contextStack.peek() == Scope.FunDeclaration) {
+                    collector.emit(SyntaxToken(tree.range(), FunctionMarker))
+                }
             is KotlinParser.StringLiteralContext -> {
                 collector.emit(SyntaxToken(tree.range(), StrCharLiteralMarker))
             }
@@ -93,8 +95,10 @@ internal class KotlinSyntaxProcessor {
     private suspend fun maybeEmitKeyword(
         collector: FlowCollector<SyntaxToken>,
         node: TerminalNode?,
+        indent: String,
     ) {
         val type = node?.symbol?.type ?: return
+        iLog { "$indent terminal: $type" }
         when (type) {
             KotlinParser.PACKAGE,
             KotlinParser.IMPORT, KotlinParser.TYPE_ALIAS,
@@ -137,7 +141,6 @@ private enum class Scope {
     TopLevel,
     ClassParameters,
     ClassBody,
-    EnumEntry,
     FunBody,
     PropertyDeclaration,
     FunDeclaration,

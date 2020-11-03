@@ -23,11 +23,13 @@ internal class KotlinSyntaxService : SyntaxService {
 
     override suspend fun analyze(program: Editable): Flow<SyntaxToken> =
         flow {
-            val tree = parseTree(program.toString())
-            processor.process(this, tree)
+            measureExecutionTime {
+                val tree = asParseTree(program.toString())
+                processor.process(this, tree)
+            }
         }
 
-    private fun parseTree(program: String): KotlinParser.KotlinFileContext {
+    private fun asParseTree(program: String): KotlinParser.KotlinFileContext {
         lexer.inputStream = measureExecutionTime(msg = "lexer") {
             CharStreams.fromString(program)
         }
