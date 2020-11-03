@@ -100,6 +100,15 @@ internal class KotlinSyntaxProcessor {
         val type = node?.symbol?.type ?: return
         iLog { "$indent terminal: $type" }
         when (type) {
+            KotlinParser.LineComment, KotlinParser.DelimitedComment -> {
+                val comment = node.symbol?.text
+                if (comment?.startsWith("/**") == true) {
+                    collector.emit(SyntaxToken(node.range(), DocCommentMarker))
+                } else {
+                    collector.emit(SyntaxToken(node.range(), CommentMarker))
+                }
+            }
+
             KotlinParser.PACKAGE,
             KotlinParser.IMPORT, KotlinParser.TYPE_ALIAS,
             KotlinParser.SEALED, KotlinParser.OPEN, KotlinParser.ABSTRACT, KotlinParser.FINAL,

@@ -9,6 +9,10 @@ import com.itdroid.pocketkotlin.utils.checkAllMatched
  */
 internal class SyntaxSpanFactoryProvider(colors: ColorConfig) {
 
+    private val docCommentSpanFactory = KeywordSyntaxSpanFactory(colors.docCommentColor)
+
+    private val commentSpanFactory = KeywordSyntaxSpanFactory(colors.commentColor)
+
     private val keywordSpanFactory = KeywordSyntaxSpanFactory(colors.keywordColor)
 
     private val propNameSpanFactory = PropertySyntaxSpanFactory(colors.propNameColor)
@@ -22,6 +26,8 @@ internal class SyntaxSpanFactoryProvider(colors: ColorConfig) {
 
     fun factoryFor(marker: SyntaxMarker): SyntaxSpanFactory =
         when (marker) {
+            DocCommentMarker -> docCommentSpanFactory
+            CommentMarker -> commentSpanFactory
             KeywordMarker -> keywordSpanFactory
             PropertyMarker -> propNameSpanFactory
             FunctionMarker -> funNameSpanFactory

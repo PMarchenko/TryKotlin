@@ -33,7 +33,6 @@ internal class KotlinSyntaxRepository {
             .collect { (range, marker) ->
                 currentRanges.remove(range)
                 if (currentSyntax.getMarker(range) != marker) {
-                    iLog { "Add span for $range" }
                     currentSyntax.getSpan(range)?.let { program.removeSpan(it) }
 
                     val span = spanFactoryProvider.factoryFor(marker).create()
@@ -46,7 +45,6 @@ internal class KotlinSyntaxRepository {
         //clean up spans which were not emitted this pass
         currentRanges
             .mapNotNull {
-                iLog { "Remove span for $it" }
                 currentSyntax.remove(it)
             }
             .forEach { program.removeSpan(it) }

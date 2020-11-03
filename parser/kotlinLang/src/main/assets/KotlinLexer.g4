@@ -14,12 +14,10 @@ ShebangLine
 
 DelimitedComment
     : '/*' ( DelimitedComment | . )*? '*/'
-      -> channel(HIDDEN)
     ;
 
 LineComment
     : '//' ~[\r\n]*
-      -> channel(HIDDEN)
     ;
 
 WS
@@ -514,7 +512,8 @@ Inside_LongLiteral: LongLiteral -> type(LongLiteral);
 Inside_UnsignedLiteral: UnsignedLiteral -> type(UnsignedLiteral);
 
 Inside_Identifier: Identifier -> type(Identifier);
-Inside_Comment: (LineComment | DelimitedComment) -> channel(HIDDEN);
+Inside_LineComment: LineComment -> type(LineComment);
+Inside_DelimitedComment: DelimitedComment -> type(DelimitedComment);
 Inside_WS: WS -> channel(HIDDEN);
 Inside_NL: NL -> channel(HIDDEN);
 

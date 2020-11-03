@@ -6,6 +6,10 @@ package com.itdroid.pocketkotlin.syntax.model
 
 internal sealed class SyntaxMarker
 
+internal object DocCommentMarker : SyntaxMarker()
+
+internal object CommentMarker : SyntaxMarker()
+
 internal object KeywordMarker : SyntaxMarker()
 
 internal object PropertyMarker : SyntaxMarker()

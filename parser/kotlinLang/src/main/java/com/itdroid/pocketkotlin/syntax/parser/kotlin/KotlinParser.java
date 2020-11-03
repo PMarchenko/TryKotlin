@@ -47,7 +47,7 @@ public class KotlinParser extends Parser {
 		UNICODE_CLASS_NL=156, QUOTE_CLOSE=157, LineStrRef=158, LineStrText=159, 
 		LineStrEscapedChar=160, LineStrExprStart=161, TRIPLE_QUOTE_CLOSE=162, 
 		MultiLineStringQuote=163, MultiLineStrRef=164, MultiLineStrText=165, MultiLineStrExprStart=166, 
-		Inside_Comment=167, Inside_WS=168, Inside_NL=169, ErrorCharacter=170;
+		Inside_WS=167, Inside_NL=168, ErrorCharacter=169;
 	public static final int
 		RULE_kotlinFile = 0, RULE_script = 1, RULE_shebangLine = 2, RULE_fileAnnotation = 3, 
 		RULE_packageHeader = 4, RULE_importList = 5, RULE_importHeader = 6, RULE_importAlias = 7, 
@@ -206,7 +206,7 @@ public class KotlinParser extends Parser {
 			"UNICODE_CLASS_ND", "UNICODE_CLASS_NL", "QUOTE_CLOSE", "LineStrRef", 
 			"LineStrText", "LineStrEscapedChar", "LineStrExprStart", "TRIPLE_QUOTE_CLOSE", 
 			"MultiLineStringQuote", "MultiLineStrRef", "MultiLineStrText", "MultiLineStrExprStart", 
-			"Inside_Comment", "Inside_WS", "Inside_NL", "ErrorCharacter"
+			"Inside_WS", "Inside_NL", "ErrorCharacter"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -16936,7 +16936,7 @@ public class KotlinParser extends Parser {
 
 	private static final int _serializedATNSegments = 2;
 	private static final String _serializedATNSegment0 =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\u00ac\u0de4\4\2\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\u00ab\u0de4\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
