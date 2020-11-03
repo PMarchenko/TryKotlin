@@ -1,10 +1,14 @@
-package com.itdroid.pocketkotlin.syntax.parser.kotlin;// Generated from .\KotlinParser.g4 by ANTLR 4.8
+// Generated from KotlinParser.g4 by ANTLR 4.8
+package com.itdroid.pocketkotlin.syntax.parser.kotlin;
+
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class KotlinParser extends Parser {
@@ -240,7 +244,7 @@ public class KotlinParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "src/main/assets/KotlinParser.g4"; }
+	public String getGrammarFileName() { return "KotlinParser.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -287,14 +291,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_kotlinFile; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterKotlinFile(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitKotlinFile(this);
-		}
 	}
 
 	public final KotlinFileContext kotlinFile() throws RecognitionException {
@@ -415,14 +411,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_script; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterScript(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitScript(this);
-		}
 	}
 
 	public final ScriptContext script() throws RecognitionException {
@@ -520,14 +508,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_shebangLine; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterShebangLine(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitShebangLine(this);
-		}
 	}
 
 	public final ShebangLineContext shebangLine() throws RecognitionException {
@@ -593,14 +573,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_fileAnnotation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFileAnnotation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFileAnnotation(this);
-		}
 	}
 
 	public final FileAnnotationContext fileAnnotation() throws RecognitionException {
@@ -774,14 +746,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_packageHeader; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPackageHeader(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPackageHeader(this);
-		}
 	}
 
 	public final PackageHeaderContext packageHeader() throws RecognitionException {
@@ -837,14 +801,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_importList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterImportList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitImportList(this);
-		}
 	}
 
 	public final ImportListContext importList() throws RecognitionException {
@@ -900,14 +856,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_importHeader; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterImportHeader(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitImportHeader(this);
-		}
 	}
 
 	public final ImportHeaderContext importHeader() throws RecognitionException {
@@ -1070,14 +1018,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_importAlias; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterImportAlias(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitImportAlias(this);
-		}
 	}
 
 	public final ImportAliasContext importAlias() throws RecognitionException {
@@ -1114,14 +1054,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_topLevelObject; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTopLevelObject(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTopLevelObject(this);
-		}
 	}
 
 	public final TopLevelObjectContext topLevelObject() throws RecognitionException {
@@ -1178,14 +1110,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeAlias; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeAlias(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeAlias(this);
-		}
 	}
 
 	public final TypeAliasContext typeAlias() throws RecognitionException {
@@ -1312,14 +1236,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitDeclaration(this);
-		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -1414,14 +1330,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassDeclaration(this);
-		}
 	}
 
 	public final ClassDeclarationContext classDeclaration() throws RecognitionException {
@@ -1688,14 +1596,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_primaryConstructor; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPrimaryConstructor(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPrimaryConstructor(this);
-		}
 	}
 
 	public final PrimaryConstructorContext primaryConstructor() throws RecognitionException {
@@ -1768,14 +1668,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassBody(this);
-		}
 	}
 
 	public final ClassBodyContext classBody() throws RecognitionException {
@@ -1856,14 +1748,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classParameters; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassParameters(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassParameters(this);
-		}
 	}
 
 	public final ClassParametersContext classParameters() throws RecognitionException {
@@ -2028,14 +1912,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classParameter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassParameter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassParameter(this);
-		}
 	}
 
 	public final ClassParameterContext classParameter() throws RecognitionException {
@@ -2182,14 +2058,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_delegationSpecifiers; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterDelegationSpecifiers(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitDelegationSpecifiers(this);
-		}
 	}
 
 	public final DelegationSpecifiersContext delegationSpecifiers() throws RecognitionException {
@@ -2280,14 +2148,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_delegationSpecifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterDelegationSpecifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitDelegationSpecifier(this);
-		}
 	}
 
 	public final DelegationSpecifierContext delegationSpecifier() throws RecognitionException {
@@ -2349,14 +2209,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constructorInvocation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterConstructorInvocation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitConstructorInvocation(this);
-		}
 	}
 
 	public final ConstructorInvocationContext constructorInvocation() throws RecognitionException {
@@ -2400,14 +2252,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_annotatedDelegationSpecifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAnnotatedDelegationSpecifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAnnotatedDelegationSpecifier(this);
-		}
 	}
 
 	public final AnnotatedDelegationSpecifierContext annotatedDelegationSpecifier() throws RecognitionException {
@@ -2482,14 +2326,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_explicitDelegation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterExplicitDelegation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitExplicitDelegation(this);
-		}
 	}
 
 	public final ExplicitDelegationContext explicitDelegation() throws RecognitionException {
@@ -2584,14 +2420,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeParameters; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeParameters(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeParameters(this);
-		}
 	}
 
 	public final TypeParametersContext typeParameters() throws RecognitionException {
@@ -2742,14 +2570,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeParameter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeParameter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeParameter(this);
-		}
 	}
 
 	public final TypeParameterContext typeParameter() throws RecognitionException {
@@ -2858,14 +2678,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeConstraints; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeConstraints(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeConstraints(this);
-		}
 	}
 
 	public final TypeConstraintsContext typeConstraints() throws RecognitionException {
@@ -2975,14 +2787,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeConstraint; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeConstraint(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeConstraint(this);
-		}
 	}
 
 	public final TypeConstraintContext typeConstraint() throws RecognitionException {
@@ -3070,14 +2874,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classMemberDeclarations; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassMemberDeclarations(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassMemberDeclarations(this);
-		}
 	}
 
 	public final ClassMemberDeclarationsContext classMemberDeclarations() throws RecognitionException {
@@ -3141,14 +2937,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classMemberDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassMemberDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassMemberDeclaration(this);
-		}
 	}
 
 	public final ClassMemberDeclarationContext classMemberDeclaration() throws RecognitionException {
@@ -3212,14 +3000,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_anonymousInitializer; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAnonymousInitializer(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAnonymousInitializer(this);
-		}
 	}
 
 	public final AnonymousInitializerContext anonymousInitializer() throws RecognitionException {
@@ -3284,14 +3064,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_companionObject; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterCompanionObject(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitCompanionObject(this);
-		}
 	}
 
 	public final CompanionObjectContext companionObject() throws RecognitionException {
@@ -3454,14 +3226,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionValueParameters; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionValueParameters(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionValueParameters(this);
-		}
 	}
 
 	public final FunctionValueParametersContext functionValueParameters() throws RecognitionException {
@@ -3618,14 +3382,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionValueParameter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionValueParameter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionValueParameter(this);
-		}
 	}
 
 	public final FunctionValueParameterContext functionValueParameter() throws RecognitionException {
@@ -3739,14 +3495,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionDeclaration(this);
-		}
 	}
 
 	public final FunctionDeclarationContext functionDeclaration() throws RecognitionException {
@@ -3981,14 +3729,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionBody(this);
-		}
 	}
 
 	public final FunctionBodyContext functionBody() throws RecognitionException {
@@ -4068,14 +3808,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variableDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterVariableDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitVariableDeclaration(this);
-		}
 	}
 
 	public final VariableDeclarationContext variableDeclaration() throws RecognitionException {
@@ -4189,14 +3921,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiVariableDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMultiVariableDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMultiVariableDeclaration(this);
-		}
 	}
 
 	public final MultiVariableDeclarationContext multiVariableDeclaration() throws RecognitionException {
@@ -4375,14 +4099,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_propertyDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPropertyDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPropertyDeclaration(this);
-		}
 	}
 
 	public final PropertyDeclarationContext propertyDeclaration() throws RecognitionException {
@@ -4814,14 +4530,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_propertyDelegate; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPropertyDelegate(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPropertyDelegate(this);
-		}
 	}
 
 	public final PropertyDelegateContext propertyDelegate() throws RecognitionException {
@@ -4886,14 +4594,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_getter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterGetter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitGetter(this);
-		}
 	}
 
 	public final GetterContext getter() throws RecognitionException {
@@ -5065,14 +4765,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_setter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSetter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSetter(this);
-		}
 	}
 
 	public final SetterContext setter() throws RecognitionException {
@@ -5279,14 +4971,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parametersWithOptionalType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParametersWithOptionalType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParametersWithOptionalType(this);
-		}
 	}
 
 	public final ParametersWithOptionalTypeContext parametersWithOptionalType() throws RecognitionException {
@@ -5443,14 +5127,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parameterWithOptionalType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParameterWithOptionalType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParameterWithOptionalType(this);
-		}
 	}
 
 	public final ParameterWithOptionalTypeContext parameterWithOptionalType() throws RecognitionException {
@@ -5544,14 +5220,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parameter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParameter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParameter(this);
-		}
 	}
 
 	public final ParameterContext parameter() throws RecognitionException {
@@ -5631,14 +5299,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_objectDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterObjectDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitObjectDeclaration(this);
-		}
 	}
 
 	public final ObjectDeclarationContext objectDeclaration() throws RecognitionException {
@@ -5779,14 +5439,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_secondaryConstructor; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSecondaryConstructor(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSecondaryConstructor(this);
-		}
 	}
 
 	public final SecondaryConstructorContext secondaryConstructor() throws RecognitionException {
@@ -5918,14 +5570,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_constructorDelegationCall; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterConstructorDelegationCall(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitConstructorDelegationCall(this);
-		}
 	}
 
 	public final ConstructorDelegationCallContext constructorDelegationCall() throws RecognitionException {
@@ -6015,14 +5659,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_enumClassBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterEnumClassBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitEnumClassBody(this);
-		}
 	}
 
 	public final EnumClassBodyContext enumClassBody() throws RecognitionException {
@@ -6151,14 +5787,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_enumEntries; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterEnumEntries(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitEnumEntries(this);
-		}
 	}
 
 	public final EnumEntriesContext enumEntries() throws RecognitionException {
@@ -6277,14 +5905,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_enumEntry; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterEnumEntry(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitEnumEntry(this);
-		}
 	}
 
 	public final EnumEntryContext enumEntry() throws RecognitionException {
@@ -6401,14 +6021,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_type; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitType(this);
-		}
 	}
 
 	public final TypeContext type() throws RecognitionException {
@@ -6477,14 +6089,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeReference; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeReference(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeReference(this);
-		}
 	}
 
 	public final TypeReferenceContext typeReference() throws RecognitionException {
@@ -6542,14 +6146,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nullableType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterNullableType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitNullableType(this);
-		}
 	}
 
 	public final NullableTypeContext nullableType() throws RecognitionException {
@@ -6678,14 +6274,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_quest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterQuest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitQuest(this);
-		}
 	}
 
 	public final QuestContext quest() throws RecognitionException {
@@ -6737,14 +6325,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_userType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterUserType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitUserType(this);
-		}
 	}
 
 	public final UserTypeContext userType() throws RecognitionException {
@@ -6831,14 +6411,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_simpleUserType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSimpleUserType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSimpleUserType(this);
-		}
 	}
 
 	public final SimpleUserTypeContext simpleUserType() throws RecognitionException {
@@ -6899,14 +6471,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeProjection; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeProjection(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeProjection(this);
-		}
 	}
 
 	public final TypeProjectionContext typeProjection() throws RecognitionException {
@@ -7016,14 +6580,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeProjectionModifiers; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeProjectionModifiers(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeProjectionModifiers(this);
-		}
 	}
 
 	public final TypeProjectionModifiersContext typeProjectionModifiers() throws RecognitionException {
@@ -7081,14 +6637,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeProjectionModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeProjectionModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeProjectionModifier(this);
-		}
 	}
 
 	public final TypeProjectionModifierContext typeProjectionModifier() throws RecognitionException {
@@ -7164,14 +6712,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionType(this);
-		}
 	}
 
 	public final FunctionTypeContext functionType() throws RecognitionException {
@@ -7295,14 +6835,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionTypeParameters; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionTypeParameters(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionTypeParameters(this);
-		}
 	}
 
 	public final FunctionTypeParametersContext functionTypeParameters() throws RecognitionException {
@@ -7474,14 +7006,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parenthesizedType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParenthesizedType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParenthesizedType(this);
-		}
 	}
 
 	public final ParenthesizedTypeContext parenthesizedType() throws RecognitionException {
@@ -7555,14 +7079,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_receiverType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterReceiverType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitReceiverType(this);
-		}
 	}
 
 	public final ReceiverTypeContext receiverType() throws RecognitionException {
@@ -7633,14 +7149,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parenthesizedUserType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParenthesizedUserType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParenthesizedUserType(this);
-		}
 	}
 
 	public final ParenthesizedUserTypeContext parenthesizedUserType() throws RecognitionException {
@@ -7759,14 +7267,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statements; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterStatements(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitStatements(this);
-		}
 	}
 
 	public final StatementsContext statements() throws RecognitionException {
@@ -7856,14 +7356,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitStatement(this);
-		}
 	}
 
 	public final StatementContext statement() throws RecognitionException {
@@ -8005,14 +7497,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_label; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLabel(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLabel(this);
-		}
 	}
 
 	public final LabelContext label() throws RecognitionException {
@@ -8075,14 +7559,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_controlStructureBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterControlStructureBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitControlStructureBody(this);
-		}
 	}
 
 	public final ControlStructureBodyContext controlStructureBody() throws RecognitionException {
@@ -8133,14 +7609,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_block; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterBlock(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitBlock(this);
-		}
 	}
 
 	public final BlockContext block() throws RecognitionException {
@@ -8214,14 +7682,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_loopStatement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLoopStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLoopStatement(this);
-		}
 	}
 
 	public final LoopStatementContext loopStatement() throws RecognitionException {
@@ -8298,14 +7758,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forStatement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterForStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitForStatement(this);
-		}
 	}
 
 	public final ForStatementContext forStatement() throws RecognitionException {
@@ -8481,14 +7933,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whileStatement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterWhileStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitWhileStatement(this);
-		}
 	}
 
 	public final WhileStatementContext whileStatement() throws RecognitionException {
@@ -8620,14 +8064,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_doWhileStatement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterDoWhileStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitDoWhileStatement(this);
-		}
 	}
 
 	public final DoWhileStatementContext doWhileStatement() throws RecognitionException {
@@ -8737,14 +8173,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignment; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAssignment(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAssignment(this);
-		}
 	}
 
 	public final AssignmentContext assignment() throws RecognitionException {
@@ -8833,14 +8261,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_semi; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSemi(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSemi(this);
-		}
 	}
 
 	public final SemiContext semi() throws RecognitionException {
@@ -8920,14 +8340,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_semis; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSemis(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSemis(this);
-		}
 	}
 
 	public final SemisContext semis() throws RecognitionException {
@@ -9003,14 +8415,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitExpression(this);
-		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -9053,14 +8457,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_disjunction; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterDisjunction(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitDisjunction(this);
-		}
 	}
 
 	public final DisjunctionContext disjunction() throws RecognitionException {
@@ -9153,14 +8549,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_conjunction; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterConjunction(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitConjunction(this);
-		}
 	}
 
 	public final ConjunctionContext conjunction() throws RecognitionException {
@@ -9255,14 +8643,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_equality; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterEquality(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitEquality(this);
-		}
 	}
 
 	public final EqualityContext equality() throws RecognitionException {
@@ -9342,14 +8722,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comparison; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterComparison(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitComparison(this);
-		}
 	}
 
 	public final ComparisonContext comparison() throws RecognitionException {
@@ -9422,14 +8794,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_genericCallLikeComparison; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterGenericCallLikeComparison(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitGenericCallLikeComparison(this);
-		}
 	}
 
 	public final GenericCallLikeComparisonContext genericCallLikeComparison() throws RecognitionException {
@@ -9503,14 +8867,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_infixOperation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterInfixOperation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitInfixOperation(this);
-		}
 	}
 
 	public final InfixOperationContext infixOperation() throws RecognitionException {
@@ -9623,14 +8979,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_elvisExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterElvisExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitElvisExpression(this);
-		}
 	}
 
 	public final ElvisExpressionContext elvisExpression() throws RecognitionException {
@@ -9711,14 +9059,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_elvis; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterElvis(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitElvis(this);
-		}
 	}
 
 	public final ElvisContext elvis() throws RecognitionException {
@@ -9765,14 +9105,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_infixFunctionCall; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterInfixFunctionCall(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitInfixFunctionCall(this);
-		}
 	}
 
 	public final InfixFunctionCallContext infixFunctionCall() throws RecognitionException {
@@ -9850,14 +9182,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_rangeExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterRangeExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitRangeExpression(this);
-		}
 	}
 
 	public final RangeExpressionContext rangeExpression() throws RecognitionException {
@@ -9937,14 +9261,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_additiveExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAdditiveExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAdditiveExpression(this);
-		}
 	}
 
 	public final AdditiveExpressionContext additiveExpression() throws RecognitionException {
@@ -10024,14 +9340,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiplicativeExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMultiplicativeExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMultiplicativeExpression(this);
-		}
 	}
 
 	public final MultiplicativeExpressionContext multiplicativeExpression() throws RecognitionException {
@@ -10114,14 +9422,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_asExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAsExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAsExpression(this);
-		}
 	}
 
 	public final AsExpressionContext asExpression() throws RecognitionException {
@@ -10207,14 +9507,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_prefixUnaryExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPrefixUnaryExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPrefixUnaryExpression(this);
-		}
 	}
 
 	public final PrefixUnaryExpressionContext prefixUnaryExpression() throws RecognitionException {
@@ -10273,14 +9565,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_unaryPrefix; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterUnaryPrefix(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitUnaryPrefix(this);
-		}
 	}
 
 	public final UnaryPrefixContext unaryPrefix() throws RecognitionException {
@@ -10409,14 +9693,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_postfixUnaryExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPostfixUnaryExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPostfixUnaryExpression(this);
-		}
 	}
 
 	public final PostfixUnaryExpressionContext postfixUnaryExpression() throws RecognitionException {
@@ -10494,14 +9770,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_postfixUnarySuffix; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPostfixUnarySuffix(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPostfixUnarySuffix(this);
-		}
 	}
 
 	public final PostfixUnarySuffixContext postfixUnarySuffix() throws RecognitionException {
@@ -10576,14 +9844,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_directlyAssignableExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterDirectlyAssignableExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitDirectlyAssignableExpression(this);
-		}
 	}
 
 	public final DirectlyAssignableExpressionContext directlyAssignableExpression() throws RecognitionException {
@@ -10643,14 +9903,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parenthesizedDirectlyAssignableExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParenthesizedDirectlyAssignableExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParenthesizedDirectlyAssignableExpression(this);
-		}
 	}
 
 	public final ParenthesizedDirectlyAssignableExpressionContext parenthesizedDirectlyAssignableExpression() throws RecognitionException {
@@ -10721,14 +9973,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignableExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAssignableExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAssignableExpression(this);
-		}
 	}
 
 	public final AssignableExpressionContext assignableExpression() throws RecognitionException {
@@ -10779,14 +10023,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parenthesizedAssignableExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParenthesizedAssignableExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParenthesizedAssignableExpression(this);
-		}
 	}
 
 	public final ParenthesizedAssignableExpressionContext parenthesizedAssignableExpression() throws RecognitionException {
@@ -10860,14 +10096,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignableSuffix; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAssignableSuffix(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAssignableSuffix(this);
-		}
 	}
 
 	public final AssignableSuffixContext assignableSuffix() throws RecognitionException {
@@ -10937,14 +10165,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_indexingSuffix; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterIndexingSuffix(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitIndexingSuffix(this);
-		}
 	}
 
 	public final IndexingSuffixContext indexingSuffix() throws RecognitionException {
@@ -11095,14 +10315,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_navigationSuffix; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterNavigationSuffix(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitNavigationSuffix(this);
-		}
 	}
 
 	public final NavigationSuffixContext navigationSuffix() throws RecognitionException {
@@ -11239,14 +10451,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_callSuffix; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterCallSuffix(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitCallSuffix(this);
-		}
 	}
 
 	public final CallSuffixContext callSuffix() throws RecognitionException {
@@ -11335,14 +10539,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_annotatedLambda; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAnnotatedLambda(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAnnotatedLambda(this);
-		}
 	}
 
 	public final AnnotatedLambdaContext annotatedLambda() throws RecognitionException {
@@ -11426,14 +10622,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeArguments; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeArguments(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeArguments(this);
-		}
 	}
 
 	public final TypeArgumentsContext typeArguments() throws RecognitionException {
@@ -11582,14 +10770,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_valueArguments; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterValueArguments(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitValueArguments(this);
-		}
 	}
 
 	public final ValueArgumentsContext valueArguments() throws RecognitionException {
@@ -11770,14 +10950,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_valueArgument; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterValueArgument(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitValueArgument(this);
-		}
 	}
 
 	public final ValueArgumentContext valueArgument() throws RecognitionException {
@@ -11944,14 +11116,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_primaryExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPrimaryExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPrimaryExpression(this);
-		}
 	}
 
 	public final PrimaryExpressionContext primaryExpression() throws RecognitionException {
@@ -12086,14 +11250,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parenthesizedExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParenthesizedExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParenthesizedExpression(this);
-		}
 	}
 
 	public final ParenthesizedExpressionContext parenthesizedExpression() throws RecognitionException {
@@ -12174,14 +11330,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_collectionLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterCollectionLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitCollectionLiteral(this);
-		}
 	}
 
 	public final CollectionLiteralContext collectionLiteral() throws RecognitionException {
@@ -12356,14 +11504,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_literalConstant; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLiteralConstant(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLiteralConstant(this);
-		}
 	}
 
 	public final LiteralConstantContext literalConstant() throws RecognitionException {
@@ -12407,14 +11547,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_stringLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterStringLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitStringLiteral(this);
-		}
 	}
 
 	public final StringLiteralContext stringLiteral() throws RecognitionException {
@@ -12472,14 +11604,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lineStringLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLineStringLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLineStringLiteral(this);
-		}
 	}
 
 	public final LineStringLiteralContext lineStringLiteral() throws RecognitionException {
@@ -12559,14 +11683,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiLineStringLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMultiLineStringLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMultiLineStringLiteral(this);
-		}
 	}
 
 	public final MultiLineStringLiteralContext multiLineStringLiteral() throws RecognitionException {
@@ -12633,14 +11749,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lineStringContent; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLineStringContent(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLineStringContent(this);
-		}
 	}
 
 	public final LineStringContentContext lineStringContent() throws RecognitionException {
@@ -12683,14 +11791,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lineStringExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLineStringExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLineStringExpression(this);
-		}
 	}
 
 	public final LineStringExpressionContext lineStringExpression() throws RecognitionException {
@@ -12726,14 +11826,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiLineStringContent; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMultiLineStringContent(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMultiLineStringContent(this);
-		}
 	}
 
 	public final MultiLineStringContentContext multiLineStringContent() throws RecognitionException {
@@ -12780,14 +11872,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiLineStringExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMultiLineStringExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMultiLineStringExpression(this);
-		}
 	}
 
 	public final MultiLineStringExpressionContext multiLineStringExpression() throws RecognitionException {
@@ -12865,14 +11949,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lambdaLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLambdaLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLambdaLiteral(this);
-		}
 	}
 
 	public final LambdaLiteralContext lambdaLiteral() throws RecognitionException {
@@ -13040,14 +12116,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lambdaParameters; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLambdaParameters(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLambdaParameters(this);
-		}
 	}
 
 	public final LambdaParametersContext lambdaParameters() throws RecognitionException {
@@ -13164,14 +12232,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lambdaParameter; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterLambdaParameter(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitLambdaParameter(this);
-		}
 	}
 
 	public final LambdaParameterContext lambdaParameter() throws RecognitionException {
@@ -13327,14 +12387,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_anonymousFunction; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAnonymousFunction(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAnonymousFunction(this);
-		}
 	}
 
 	public final AnonymousFunctionContext anonymousFunction() throws RecognitionException {
@@ -13514,14 +12566,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionLiteral(this);
-		}
 	}
 
 	public final FunctionLiteralContext functionLiteral() throws RecognitionException {
@@ -13577,14 +12621,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_objectLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterObjectLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitObjectLiteral(this);
-		}
 	}
 
 	public final ObjectLiteralContext objectLiteral() throws RecognitionException {
@@ -13696,14 +12732,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_thisExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterThisExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitThisExpression(this);
-		}
 	}
 
 	public final ThisExpressionContext thisExpression() throws RecognitionException {
@@ -13756,14 +12784,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_superExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSuperExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSuperExpression(this);
-		}
 	}
 
 	public final SuperExpressionContext superExpression() throws RecognitionException {
@@ -13883,14 +12903,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ifExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterIfExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitIfExpression(this);
-		}
 	}
 
 	public final IfExpressionContext ifExpression() throws RecognitionException {
@@ -14378,14 +13390,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whenSubject; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterWhenSubject(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitWhenSubject(this);
-		}
 	}
 
 	public final WhenSubjectContext whenSubject() throws RecognitionException {
@@ -14524,14 +13528,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whenExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterWhenExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitWhenExpression(this);
-		}
 	}
 
 	public final WhenExpressionContext whenExpression() throws RecognitionException {
@@ -14690,14 +13686,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whenEntry; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterWhenEntry(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitWhenEntry(this);
-		}
 	}
 
 	public final WhenEntryContext whenEntry() throws RecognitionException {
@@ -15002,14 +13990,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whenCondition; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterWhenCondition(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitWhenCondition(this);
-		}
 	}
 
 	public final WhenConditionContext whenCondition() throws RecognitionException {
@@ -15158,14 +14138,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_rangeTest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterRangeTest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitRangeTest(this);
-		}
 	}
 
 	public final RangeTestContext rangeTest() throws RecognitionException {
@@ -15223,14 +14195,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeTest; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeTest(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeTest(this);
-		}
 	}
 
 	public final TypeTestContext typeTest() throws RecognitionException {
@@ -15293,14 +14257,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_tryExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTryExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTryExpression(this);
-		}
 	}
 
 	public final TryExpressionContext tryExpression() throws RecognitionException {
@@ -15457,14 +14413,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_catchBlock; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterCatchBlock(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitCatchBlock(this);
-		}
 	}
 
 	public final CatchBlockContext catchBlock() throws RecognitionException {
@@ -15580,14 +14528,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_finallyBlock; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFinallyBlock(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFinallyBlock(this);
-		}
 	}
 
 	public final FinallyBlockContext finallyBlock() throws RecognitionException {
@@ -15647,14 +14587,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_jumpExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterJumpExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitJumpExpression(this);
-		}
 	}
 
 	public final JumpExpressionContext jumpExpression() throws RecognitionException {
@@ -15777,14 +14709,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_callableReference; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterCallableReference(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitCallableReference(this);
-		}
 	}
 
 	public final CallableReferenceContext callableReference() throws RecognitionException {
@@ -15923,14 +14847,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignmentAndOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAssignmentAndOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAssignmentAndOperator(this);
-		}
 	}
 
 	public final AssignmentAndOperatorContext assignmentAndOperator() throws RecognitionException {
@@ -15972,14 +14888,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_equalityOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterEqualityOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitEqualityOperator(this);
-		}
 	}
 
 	public final EqualityOperatorContext equalityOperator() throws RecognitionException {
@@ -16021,14 +14929,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comparisonOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterComparisonOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitComparisonOperator(this);
-		}
 	}
 
 	public final ComparisonOperatorContext comparisonOperator() throws RecognitionException {
@@ -16068,14 +14968,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterInOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitInOperator(this);
-		}
 	}
 
 	public final InOperatorContext inOperator() throws RecognitionException {
@@ -16115,14 +15007,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_isOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterIsOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitIsOperator(this);
-		}
 	}
 
 	public final IsOperatorContext isOperator() throws RecognitionException {
@@ -16162,14 +15046,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_additiveOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAdditiveOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAdditiveOperator(this);
-		}
 	}
 
 	public final AdditiveOperatorContext additiveOperator() throws RecognitionException {
@@ -16210,14 +15086,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiplicativeOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMultiplicativeOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMultiplicativeOperator(this);
-		}
 	}
 
 	public final MultiplicativeOperatorContext multiplicativeOperator() throws RecognitionException {
@@ -16257,14 +15125,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_asOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAsOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAsOperator(this);
-		}
 	}
 
 	public final AsOperatorContext asOperator() throws RecognitionException {
@@ -16309,14 +15169,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_prefixUnaryOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPrefixUnaryOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPrefixUnaryOperator(this);
-		}
 	}
 
 	public final PrefixUnaryOperatorContext prefixUnaryOperator() throws RecognitionException {
@@ -16388,14 +15240,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_postfixUnaryOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPostfixUnaryOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPostfixUnaryOperator(this);
-		}
 	}
 
 	public final PostfixUnaryOperatorContext postfixUnaryOperator() throws RecognitionException {
@@ -16450,14 +15294,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_excl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterExcl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitExcl(this);
-		}
 	}
 
 	public final ExclContext excl() throws RecognitionException {
@@ -16500,14 +15336,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_memberAccessOperator; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMemberAccessOperator(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMemberAccessOperator(this);
-		}
 	}
 
 	public final MemberAccessOperatorContext memberAccessOperator() throws RecognitionException {
@@ -16560,14 +15388,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_safeNav; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSafeNav(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSafeNav(this);
-		}
 	}
 
 	public final SafeNavContext safeNav() throws RecognitionException {
@@ -16610,14 +15430,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_modifiers; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterModifiers(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitModifiers(this);
-		}
 	}
 
 	public final ModifiersContext modifiers() throws RecognitionException {
@@ -16717,14 +15529,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parameterModifiers; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParameterModifiers(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParameterModifiers(this);
-		}
 	}
 
 	public final ParameterModifiersContext parameterModifiers() throws RecognitionException {
@@ -16817,14 +15621,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_modifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitModifier(this);
-		}
 	}
 
 	public final ModifierContext modifier() throws RecognitionException {
@@ -16946,14 +15742,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeModifiers; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeModifiers(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeModifiers(this);
-		}
 	}
 
 	public final TypeModifiersContext typeModifiers() throws RecognitionException {
@@ -17009,14 +15797,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeModifier(this);
-		}
 	}
 
 	public final TypeModifierContext typeModifier() throws RecognitionException {
@@ -17081,14 +15861,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterClassModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitClassModifier(this);
-		}
 	}
 
 	public final ClassModifierContext classModifier() throws RecognitionException {
@@ -17128,14 +15900,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_memberModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMemberModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMemberModifier(this);
-		}
 	}
 
 	public final MemberModifierContext memberModifier() throws RecognitionException {
@@ -17177,14 +15941,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_visibilityModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterVisibilityModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitVisibilityModifier(this);
-		}
 	}
 
 	public final VisibilityModifierContext visibilityModifier() throws RecognitionException {
@@ -17224,14 +15980,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_varianceModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterVarianceModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitVarianceModifier(this);
-		}
 	}
 
 	public final VarianceModifierContext varianceModifier() throws RecognitionException {
@@ -17275,14 +16023,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeParameterModifiers; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeParameterModifiers(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeParameterModifiers(this);
-		}
 	}
 
 	public final TypeParameterModifiersContext typeParameterModifiers() throws RecognitionException {
@@ -17343,14 +16083,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeParameterModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterTypeParameterModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitTypeParameterModifier(this);
-		}
 	}
 
 	public final TypeParameterModifierContext typeParameterModifier() throws RecognitionException {
@@ -17442,14 +16174,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_functionModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterFunctionModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitFunctionModifier(this);
-		}
 	}
 
 	public final FunctionModifierContext functionModifier() throws RecognitionException {
@@ -17488,14 +16212,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_propertyModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPropertyModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPropertyModifier(this);
-		}
 	}
 
 	public final PropertyModifierContext propertyModifier() throws RecognitionException {
@@ -17527,14 +16243,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inheritanceModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterInheritanceModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitInheritanceModifier(this);
-		}
 	}
 
 	public final InheritanceModifierContext inheritanceModifier() throws RecognitionException {
@@ -17575,14 +16283,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parameterModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterParameterModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitParameterModifier(this);
-		}
 	}
 
 	public final ParameterModifierContext parameterModifier() throws RecognitionException {
@@ -17621,14 +16321,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_reificationModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterReificationModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitReificationModifier(this);
-		}
 	}
 
 	public final ReificationModifierContext reificationModifier() throws RecognitionException {
@@ -17659,14 +16351,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_platformModifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterPlatformModifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitPlatformModifier(this);
-		}
 	}
 
 	public final PlatformModifierContext platformModifier() throws RecognitionException {
@@ -17714,14 +16398,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_annotation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAnnotation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAnnotation(this);
-		}
 	}
 
 	public final AnnotationContext annotation() throws RecognitionException {
@@ -17793,14 +16469,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_singleAnnotation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSingleAnnotation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSingleAnnotation(this);
-		}
 	}
 
 	public final SingleAnnotationContext singleAnnotation() throws RecognitionException {
@@ -17886,14 +16554,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiAnnotation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterMultiAnnotation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitMultiAnnotation(this);
-		}
 	}
 
 	public final MultiAnnotationContext multiAnnotation() throws RecognitionException {
@@ -18009,14 +16669,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_annotationUseSiteTarget; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterAnnotationUseSiteTarget(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitAnnotationUseSiteTarget(this);
-		}
 	}
 
 	public final AnnotationUseSiteTargetContext annotationUseSiteTarget() throws RecognitionException {
@@ -18086,14 +16738,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_unescapedAnnotation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterUnescapedAnnotation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitUnescapedAnnotation(this);
-		}
 	}
 
 	public final UnescapedAnnotationContext unescapedAnnotation() throws RecognitionException {
@@ -18182,14 +16826,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_simpleIdentifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterSimpleIdentifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitSimpleIdentifier(this);
-		}
 	}
 
 	public final SimpleIdentifierContext simpleIdentifier() throws RecognitionException {
@@ -18241,14 +16877,6 @@ public class KotlinParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_identifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).enterIdentifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof KotlinParserListener ) ((KotlinParserListener)listener).exitIdentifier(this);
-		}
 	}
 
 	public final IdentifierContext identifier() throws RecognitionException {

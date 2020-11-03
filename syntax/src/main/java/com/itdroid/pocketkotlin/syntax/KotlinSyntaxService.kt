@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
-import kotlin.system.measureTimeMillis
 
 
 /**
@@ -24,14 +23,9 @@ internal class KotlinSyntaxService : SyntaxService {
 
     override suspend fun analyze(program: Editable): Flow<SyntaxToken> =
         flow {
-            warmup()
             val tree = parseTree(program.toString())
             processor.process(this, tree)
         }
-
-    private fun warmup() {
-        parseTree("")
-    }
 
     private fun parseTree(program: String): KotlinParser.KotlinFileContext {
         lexer.inputStream = measureExecutionTime(msg = "lexer") {

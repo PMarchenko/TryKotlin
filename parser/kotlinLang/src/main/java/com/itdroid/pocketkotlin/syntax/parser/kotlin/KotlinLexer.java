@@ -1,4 +1,6 @@
-package com.itdroid.pocketkotlin.syntax.parser.kotlin;// Generated from .\KotlinLexer.g4 by ANTLR 4.8
+// Generated from KotlinLexer.g4 by ANTLR 4.8
+package com.itdroid.pocketkotlin.syntax.parser.kotlin;
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -218,7 +220,7 @@ public class KotlinLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "src/main/assets/KotlinLexer.g4"; }
+	public String getGrammarFileName() { return "KotlinLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
