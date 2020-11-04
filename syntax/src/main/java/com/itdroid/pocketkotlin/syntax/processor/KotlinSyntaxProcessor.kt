@@ -1,77 +1,48 @@
 package com.itdroid.pocketkotlin.syntax.processor
 
-import com.itdroid.pocketkotlin.syntax.model.*
 import com.itdroid.pocketkotlin.syntax.parser.kotlin.KotlinParser
 import com.itdroid.pocketkotlin.utils.iLog
-import kotlinx.coroutines.flow.FlowCollector
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.RuleNode
 import org.antlr.v4.runtime.tree.TerminalNode
-import java.util.*
 
 /**
  * @author Pavel Marchenko
  */
-internal class KotlinSyntaxProcessor {
+internal class KotlinSyntaxProcessor(
+    private val listener: KotlinSyntaxListener,
+) {
 
-    private val branches = LinkedList<Branch>()
-
-    suspend fun process(
-        collector: FlowCollector<SyntaxToken>,
-        tree: ParseTree,
-    ) {
+    suspend fun process(tree: ParseTree) {
         when (tree) {
-            is TerminalNode -> maybeEmitSyntaxToken(collector, tree)
+            is TerminalNode -> processTerminalNode(tree)
             is RuleNode -> {
                 for (i in 0 until tree.childCount) {
-                    process(collector, tree.getChild(i))
+                    process(tree.getChild(i))
                 }
             }
         }
     }
 
-    private suspend fun maybeEmitSyntaxToken(
-        collector: FlowCollector<SyntaxToken>,
-        node: TerminalNode,
-    ) {
+    private suspend fun processTerminalNode(node: TerminalNode) {
         val type = node.symbol?.type ?: return
         val start = node.start
         val end = node.end
 
         iLog { "terminal: $type, -> ${node.text}" }
 
-        maybeEmitComment(collector, type, node.text, start, end)
-        maybeEmitKeyword(collector, type, start, end)
-        maybeEmitStringLiteral(collector, type, start, end)
-        maybeEmitNumberLiteral(collector, type, start, end)
-    }
-
-    private suspend fun maybeEmitComment(
-        collector: FlowCollector<SyntaxToken>,
-        type: Int,
-        text: String?,
-        start: Int,
-        end: Int,
-    ) {
         when (type) {
-            KotlinParser.LineComment -> collector.emit(SyntaxToken(start..end, CommentMarker))
+            // Comments
+            KotlinParser.LineComment -> listener.onComment(start..end)
             KotlinParser.DelimitedComment -> {
-                if (text?.startsWith("/**") == true) {
-                    collector.emit(SyntaxToken(start..end, DocCommentMarker))
+                if (node.text?.startsWith("/**") == true) {
+                    listener.onDocComment(start..end)
                 } else {
-                    collector.emit(SyntaxToken(start..end, CommentMarker))
+                    listener.onComment(start..end)
                 }
             }
-        }
-    }
 
-    private suspend fun maybeEmitKeyword(
-        collector: FlowCollector<SyntaxToken>,
-        type: Int,
-        start: Int,
-        end: Int,
-    ) {
-        when (type) {
+            // Keywords
             KotlinParser.PACKAGE,
             KotlinParser.IMPORT, KotlinParser.TYPE_ALIAS,
             KotlinParser.SEALED, KotlinParser.OPEN, KotlinParser.ABSTRACT, KotlinParser.FINAL,
@@ -92,69 +63,38 @@ internal class KotlinSyntaxProcessor {
             KotlinParser.CONST,
             KotlinParser.BooleanLiteral, KotlinParser.NullLiteral,
             ->
-                collector.emit(SyntaxToken(start..end, KeywordMarker))
-        }
-    }
+                listener.onKeyword(start..end)
 
-    private suspend fun maybeEmitStringLiteral(
-        collector: FlowCollector<SyntaxToken>,
-        type: Int,
-        start: Int,
-        end: Int,
-    ) {
-        when (type) {
+            // String literals
             KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN ->
-                branches.push(StringLiteral(start))
+                listener.onStringLiteralStart(start)
+
             KotlinParser.LineStrRef, KotlinParser.MultiLineStrRef -> {
-                emitStringLiteral(collector, start)
-                branches.push(StringLiteral(end))
+                listener.onStringLiteralExpressionStart(start)
+                listener.onStringLiteralExpressionEnd(end)
             }
             KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart -> {
-                emitStringLiteral(collector, start)
-                branches.push(StringExpression(end))
+                listener.onStringLiteralExpressionStart(start)
             }
             KotlinParser.RCURL -> {
                 //check if LineStrExpr end
-                if (branches.peek() is StringExpression) {
-                    branches.pop()
-                    branches.push(StringLiteral(end))
-                }
+                listener.onStringLiteralExpressionEnd(start)
             }
             KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE ->
-                if (branches.peek() is StringLiteral) {
-                    val strStart = branches.pop().position
-                    collector.emit(SyntaxToken(strStart..end, StrCharLiteralMarker))
-                } else error("Expected 'StringLiteral' branch, has '${branches.peek()}'")
-            
+                listener.onStringLiteralEnd(end)
+
+            // Char literals
             KotlinParser.CharacterLiteral,
             ->
-                collector.emit(SyntaxToken(start..end, StrCharLiteralMarker))
-        }
-    }
+                listener.onCharLiteral(start..end)
 
-    private suspend fun emitStringLiteral(
-        collector: FlowCollector<SyntaxToken>,
-        end: Int,
-    ) {
-        if (branches.peek() is StringLiteral) {
-            val strStart = branches.pop().position
-            collector.emit(SyntaxToken(strStart..end, StrCharLiteralMarker))
-        } else error("Expected 'StringLiteral' branch, has '${branches.peek()}'")
-    }
-
-    private suspend fun maybeEmitNumberLiteral(
-        collector: FlowCollector<SyntaxToken>,
-        type: Int,
-        start: Int,
-        end: Int,
-    ) {
-        when (type) {
+            // Number literals
             KotlinParser.UnsignedLiteral,
             KotlinParser.LongLiteral,
             KotlinParser.IntegerLiteral, KotlinParser.HexLiteral, KotlinParser.BinLiteral,
             KotlinParser.RealLiteral, KotlinParser.FloatLiteral, KotlinParser.DoubleLiteral,
             ->
-                collector.emit(SyntaxToken(start..end, NumberMarker))
+                listener.onNumberLiteral(start..end)
         }
     }
 }
