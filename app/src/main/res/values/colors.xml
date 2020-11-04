@@ -3,8 +3,8 @@
     <color name="darkTheme.primary">#3C3F41</color>
     <color name="darkTheme.primaryVariant">#2D2F30</color>
     <color name="darkTheme.secondary">#0288D1</color>
-    <color name="darkTheme.background">#424242</color>
-    <color name="darkTheme.surface">#424242</color>
+    <color name="darkTheme.background">#2B2B2B</color>
+    <color name="darkTheme.surface">#2B2B2B</color>
     <color name="darkTheme.onPrimary">#EAEEF1</color>
     <color name="darkTheme.onSecondary">@android:color/white</color>
     <color name="darkTheme.onBackground">#EAEEF1</color>

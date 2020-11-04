@@ -3,7 +3,9 @@ package com.itdroid.pocketkotlin.syntax.processor
 /**
  * @author Pavel Marchenko
  */
-sealed class Branch(val position: Int)
+internal sealed class Branch(val position: Int)
 
-class StringLiteral(position: Int) : Branch(position)
+internal class StringLiteral(position: Int) : Branch(position)
+
+internal class StringExpression(position: Int) : Branch(position)
 

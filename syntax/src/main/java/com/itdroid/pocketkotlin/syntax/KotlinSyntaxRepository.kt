@@ -22,7 +22,6 @@ internal class KotlinSyntaxRepository {
         program: Editable,
         spanFactoryProvider: SyntaxSpanFactoryProvider,
     ) {
-
         val currentSyntax = mappingHolder.get(syntaxMappingId)
         val currentRanges = currentSyntax.ranges()
 

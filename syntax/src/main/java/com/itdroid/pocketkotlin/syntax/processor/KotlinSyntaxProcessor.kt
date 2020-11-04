@@ -21,7 +21,7 @@ internal class KotlinSyntaxProcessor {
         tree: ParseTree,
     ) {
         when (tree) {
-            is TerminalNode -> maybeEmitKeyword(collector, tree)
+            is TerminalNode -> maybeEmitSyntaxToken(collector, tree)
             is RuleNode -> {
                 for (i in 0 until tree.childCount) {
                     process(collector, tree.getChild(i))
@@ -30,30 +30,48 @@ internal class KotlinSyntaxProcessor {
         }
     }
 
-    private suspend fun maybeEmitKeyword(
+    private suspend fun maybeEmitSyntaxToken(
         collector: FlowCollector<SyntaxToken>,
         node: TerminalNode,
     ) {
         val type = node.symbol?.type ?: return
-
         val start = node.start
         val end = node.end
-        val range = node.range
 
         iLog { "terminal: $type, -> ${node.text}" }
+
+        maybeEmitComment(collector, type, node.text, start, end)
+        maybeEmitKeyword(collector, type, start, end)
+        maybeEmitStringLiteral(collector, type, start, end)
+        maybeEmitNumberLiteral(collector, type, start, end)
+    }
+
+    private suspend fun maybeEmitComment(
+        collector: FlowCollector<SyntaxToken>,
+        type: Int,
+        text: String?,
+        start: Int,
+        end: Int,
+    ) {
         when (type) {
-            //Comments
-            KotlinParser.LineComment -> collector.emit(SyntaxToken(range, CommentMarker))
+            KotlinParser.LineComment -> collector.emit(SyntaxToken(start..end, CommentMarker))
             KotlinParser.DelimitedComment -> {
-                val comment = node.symbol?.text
-                if (comment?.startsWith("/**") == true) {
-                    collector.emit(SyntaxToken(range, DocCommentMarker))
+                if (text?.startsWith("/**") == true) {
+                    collector.emit(SyntaxToken(start..end, DocCommentMarker))
                 } else {
-                    collector.emit(SyntaxToken(range, CommentMarker))
+                    collector.emit(SyntaxToken(start..end, CommentMarker))
                 }
             }
+        }
+    }
 
-            //Keywords
+    private suspend fun maybeEmitKeyword(
+        collector: FlowCollector<SyntaxToken>,
+        type: Int,
+        start: Int,
+        end: Int,
+    ) {
+        when (type) {
             KotlinParser.PACKAGE,
             KotlinParser.IMPORT, KotlinParser.TYPE_ALIAS,
             KotlinParser.SEALED, KotlinParser.OPEN, KotlinParser.ABSTRACT, KotlinParser.FINAL,
@@ -74,28 +92,69 @@ internal class KotlinSyntaxProcessor {
             KotlinParser.CONST,
             KotlinParser.BooleanLiteral, KotlinParser.NullLiteral,
             ->
-                collector.emit(SyntaxToken(range, KeywordMarker))
+                collector.emit(SyntaxToken(start..end, KeywordMarker))
+        }
+    }
 
-            //Strings
+    private suspend fun maybeEmitStringLiteral(
+        collector: FlowCollector<SyntaxToken>,
+        type: Int,
+        start: Int,
+        end: Int,
+    ) {
+        when (type) {
             KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN ->
                 branches.push(StringLiteral(start))
+            KotlinParser.LineStrRef, KotlinParser.MultiLineStrRef -> {
+                emitStringLiteral(collector, start)
+                branches.push(StringLiteral(end))
+            }
+            KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart -> {
+                emitStringLiteral(collector, start)
+                branches.push(StringExpression(end))
+            }
+            KotlinParser.RCURL -> {
+                //check if LineStrExpr end
+                if (branches.peek() is StringExpression) {
+                    branches.pop()
+                    branches.push(StringLiteral(end))
+                }
+            }
             KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE ->
                 if (branches.peek() is StringLiteral) {
                     val strStart = branches.pop().position
                     collector.emit(SyntaxToken(strStart..end, StrCharLiteralMarker))
                 } else error("Expected 'StringLiteral' branch, has '${branches.peek()}'")
+            
+            KotlinParser.CharacterLiteral,
+            ->
+                collector.emit(SyntaxToken(start..end, StrCharLiteralMarker))
+        }
+    }
 
+    private suspend fun emitStringLiteral(
+        collector: FlowCollector<SyntaxToken>,
+        end: Int,
+    ) {
+        if (branches.peek() is StringLiteral) {
+            val strStart = branches.pop().position
+            collector.emit(SyntaxToken(strStart..end, StrCharLiteralMarker))
+        } else error("Expected 'StringLiteral' branch, has '${branches.peek()}'")
+    }
+
+    private suspend fun maybeEmitNumberLiteral(
+        collector: FlowCollector<SyntaxToken>,
+        type: Int,
+        start: Int,
+        end: Int,
+    ) {
+        when (type) {
             KotlinParser.UnsignedLiteral,
             KotlinParser.LongLiteral,
             KotlinParser.IntegerLiteral, KotlinParser.HexLiteral, KotlinParser.BinLiteral,
             KotlinParser.RealLiteral, KotlinParser.FloatLiteral, KotlinParser.DoubleLiteral,
             ->
-                collector.emit(SyntaxToken(range, NumberMarker))
-
-            KotlinParser.CharacterLiteral,
-            ->
-                collector.emit(SyntaxToken(range, StrCharLiteralMarker))
-
+                collector.emit(SyntaxToken(start..end, NumberMarker))
         }
     }
 }
@@ -105,6 +164,3 @@ private val TerminalNode.start: Int
 
 private val TerminalNode.end: Int
     get() = symbol.stopIndex + 1
-
-private val TerminalNode.range: IntRange
-    get() = start..end

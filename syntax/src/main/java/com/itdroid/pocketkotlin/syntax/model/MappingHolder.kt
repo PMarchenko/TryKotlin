@@ -10,8 +10,12 @@ internal class MappingHolder {
 
     fun get(mappingId: Long): SyntaxMapping =
         if (this.mappingId == mappingId) {
-            mapping ?: SyntaxMapping().also { mapping = it }
+            mapping ?: createSyntaxMapping()
         } else {
-            SyntaxMapping().also { mapping = it }
+            this.mappingId = mappingId
+            createSyntaxMapping()
         }
+
+    private fun createSyntaxMapping(): SyntaxMapping = SyntaxMapping().also { mapping = it }
+
 }
