@@ -13,6 +13,9 @@ internal class KotlinSyntaxProcessor(
     private val listener: KotlinSyntaxListener,
 ) {
 
+    private val program: Node = Program()
+    private var currentNode: Node = program
+
     suspend fun process(tree: ParseTree) {
         when (tree) {
             is TerminalNode -> processTerminalNode(tree)
@@ -29,9 +32,70 @@ internal class KotlinSyntaxProcessor(
         val start = node.start
         val end = node.end
 
-        iLog { "terminal: $type, -> ${node.text}" }
+        iLog { "terminal: $type -> ${node.text}" }
 
         when (type) {
+            KotlinParser.LPAREN -> {
+                val block = currentNode.forLParent()
+                currentNode.children.add(block)
+                currentNode = block
+            }
+
+            KotlinParser.RPAREN -> currentNode = currentNode.parent
+
+            KotlinParser.LCURL -> {
+                val block = currentNode.forLCurl()
+                currentNode.children.add(block)
+                currentNode = block
+            }
+            KotlinParser.RCURL -> {
+                currentNode = currentNode.parent
+                if (currentNode is Function || currentNode is Class) {
+                    currentNode = currentNode.parent
+                }
+                listener.maybeStringLiteralExpressionEnd(start)
+            }
+
+            //Classes
+            KotlinParser.CLASS, KotlinParser.INTERFACE, KotlinParser.OBJECT -> {
+                if (currentNode !is ClassBody || currentNode !is FunctionBody) {
+                    currentNode = program
+                }
+                val classNode = Class(currentNode)
+                currentNode.children.add(classNode)
+                currentNode = classNode
+
+                listener.onKeyword(start..end)
+            }
+
+            //VAL VAR
+            KotlinParser.VAL, KotlinParser.VAR -> {
+                val property = Property(currentNode)
+                currentNode.children.add(property)
+
+                listener.onKeyword(start..end)
+            }
+
+            // Function
+            KotlinParser.FUN -> {
+                if (currentNode !is ClassBody || currentNode !is Program) {
+                    currentNode = program
+                }
+                val function = Function(currentNode)
+                currentNode.children.add(function)
+                currentNode = function
+
+                listener.onKeyword(start..end)
+            }
+
+            KotlinParser.Identifier -> {
+                currentNode.let {
+                    if (it is Function && it.children.isEmpty()) {
+                        listener.onFunctionName(start..end)
+                    }
+                }
+            }
+
             // Comments
             KotlinParser.LineComment -> listener.onComment(start..end)
             KotlinParser.DelimitedComment -> {
@@ -46,14 +110,13 @@ internal class KotlinSyntaxProcessor(
             KotlinParser.PACKAGE,
             KotlinParser.IMPORT, KotlinParser.TYPE_ALIAS,
             KotlinParser.SEALED, KotlinParser.OPEN, KotlinParser.ABSTRACT, KotlinParser.FINAL,
-            KotlinParser.CLASS, KotlinParser.INTERFACE, KotlinParser.OBJECT, KotlinParser.ENUM, KotlinParser.DATA, KotlinParser.INNER,
+            KotlinParser.ENUM, KotlinParser.DATA, KotlinParser.INNER,
             KotlinParser.CONSTRUCTOR,
             KotlinParser.PUBLIC, KotlinParser.PROTECTED, KotlinParser.INTERNAL, KotlinParser.PRIVATE,
             KotlinParser.SUSPEND, KotlinParser.OVERRIDE,
-            KotlinParser.VAL, KotlinParser.VAR, KotlinParser.VARARG,
-            KotlinParser.FUN,
+            KotlinParser.VARARG,
             KotlinParser.INLINE, KotlinParser.NOINLINE, KotlinParser.CROSSINLINE,
-            KotlinParser.RETURN,
+            KotlinParser.OPERATOR, KotlinParser.RETURN,
             KotlinParser.CONTINUE, KotlinParser.BREAK,
             KotlinParser.AS, KotlinParser.IS, KotlinParser.IN,
             KotlinParser.BY,
@@ -76,9 +139,7 @@ internal class KotlinSyntaxProcessor(
             KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart -> {
                 listener.onStringLiteralExpressionStart(start)
             }
-            KotlinParser.RCURL -> {
-                listener.maybeStringLiteralExpressionEnd(start)
-            }
+
             KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE ->
                 listener.onStringLiteralEnd(end)
 
@@ -95,6 +156,10 @@ internal class KotlinSyntaxProcessor(
             ->
                 listener.onNumberLiteral(start..end)
         }
+    }
+
+    fun logResult() {
+        iLog { "Result: $program" }
     }
 }
 

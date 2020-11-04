@@ -32,7 +32,7 @@ internal class SyntaxTokenEmitter(
     override suspend fun onStringLiteralExpressionStart(position: Int) {
         if (stringLiteralStart >= 0) {
             stringLiteralExpressionStart = position
-            emit(stringLiteralStart..position, StrCharLiteralMarker)
+            emit(stringLiteralStart..position, TextLiteralMarker)
         }
     }
 
@@ -45,17 +45,25 @@ internal class SyntaxTokenEmitter(
 
     override suspend fun onStringLiteralEnd(position: Int) {
         if (stringLiteralStart >= 0) {
-            emit(stringLiteralStart..position, StrCharLiteralMarker)
+            emit(stringLiteralStart..position, TextLiteralMarker)
             stringLiteralStart = -1
         }
     }
 
     override suspend fun onCharLiteral(range: IntRange) {
-        emit(range, StrCharLiteralMarker)
+        emit(range, TextLiteralMarker)
     }
 
     override suspend fun onNumberLiteral(range: IntRange) {
-        emit(range, NumberMarker)
+        emit(range, NumberLiteralMarker)
+    }
+
+    override suspend fun onFunctionName(range: IntRange) {
+        emit(range, FunctionNameMarker)
+    }
+
+    override suspend fun onPropertyName(range: IntRange) {
+        emit(range, PropertyNameMarker)
     }
 
     private suspend fun emit(range: IntRange, marker: SyntaxMarker) {

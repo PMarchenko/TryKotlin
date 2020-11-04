@@ -29,9 +29,9 @@ internal class SyntaxSpanFactoryProvider(colors: ColorConfig) {
             DocCommentMarker -> docCommentSpanFactory
             CommentMarker -> commentSpanFactory
             KeywordMarker -> keywordSpanFactory
-            PropertyMarker -> propNameSpanFactory
-            FunctionMarker -> funNameSpanFactory
-            StrCharLiteralMarker -> strCharLiteralSpanFactory
-            NumberMarker -> numberLiteralSpanFactory
+            PropertyNameMarker -> propNameSpanFactory
+            FunctionNameMarker -> funNameSpanFactory
+            TextLiteralMarker -> strCharLiteralSpanFactory
+            NumberLiteralMarker -> numberLiteralSpanFactory
         }.checkAllMatched
 }

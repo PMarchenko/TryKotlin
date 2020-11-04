@@ -12,10 +12,12 @@ internal object CommentMarker : SyntaxMarker()
 
 internal object KeywordMarker : SyntaxMarker()
 
-internal object PropertyMarker : SyntaxMarker()
+internal object TextLiteralMarker : SyntaxMarker()
 
-internal object FunctionMarker : SyntaxMarker()
+internal object NumberLiteralMarker : SyntaxMarker()
 
-internal object StrCharLiteralMarker : SyntaxMarker()
+internal object PropertyNameMarker : SyntaxMarker()
 
-internal object NumberMarker : SyntaxMarker()
+internal object FunctionNameMarker : SyntaxMarker()
+
+

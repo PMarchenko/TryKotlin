@@ -24,8 +24,9 @@ internal class KotlinSyntaxService : SyntaxService {
     override suspend fun analyze(program: Editable): Flow<SyntaxToken> =
         flow {
             measureExecutionTime {
-                KotlinSyntaxProcessor(SyntaxTokenEmitter(this))
-                    .process(program.asParseTree())
+                val processor = KotlinSyntaxProcessor(SyntaxTokenEmitter(this))
+                    processor.process(program.asParseTree())
+                processor.logResult()
             }
         }
 

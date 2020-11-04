@@ -22,4 +22,8 @@ internal interface KotlinSyntaxListener {
     suspend fun onCharLiteral(range: IntRange)
 
     suspend fun onNumberLiteral(range: IntRange)
+
+    suspend fun onFunctionName(range: IntRange)
+
+    suspend fun onPropertyName(range: IntRange)
 }
