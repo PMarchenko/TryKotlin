@@ -36,7 +36,7 @@ internal class SyntaxTokenEmitter(
         }
     }
 
-    override suspend fun onStringLiteralExpressionEnd(position: Int) {
+    override suspend fun maybeStringLiteralExpressionEnd(position: Int) {
         if (stringLiteralExpressionStart >= 0) {
             stringLiteralExpressionStart = -1
             stringLiteralStart = position

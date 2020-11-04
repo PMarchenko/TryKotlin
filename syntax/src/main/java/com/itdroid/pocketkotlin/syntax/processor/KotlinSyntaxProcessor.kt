@@ -71,14 +71,13 @@ internal class KotlinSyntaxProcessor(
 
             KotlinParser.LineStrRef, KotlinParser.MultiLineStrRef -> {
                 listener.onStringLiteralExpressionStart(start)
-                listener.onStringLiteralExpressionEnd(end)
+                listener.maybeStringLiteralExpressionEnd(end)
             }
             KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart -> {
                 listener.onStringLiteralExpressionStart(start)
             }
             KotlinParser.RCURL -> {
-                //check if LineStrExpr end
-                listener.onStringLiteralExpressionEnd(start)
+                listener.maybeStringLiteralExpressionEnd(start)
             }
             KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE ->
                 listener.onStringLiteralEnd(end)

@@ -15,7 +15,7 @@ internal interface KotlinSyntaxListener {
 
     suspend fun onStringLiteralExpressionStart(position: Int)
 
-    suspend fun onStringLiteralExpressionEnd(position: Int)
+    suspend fun maybeStringLiteralExpressionEnd(position: Int)
 
     suspend fun onStringLiteralEnd(position: Int)
 
