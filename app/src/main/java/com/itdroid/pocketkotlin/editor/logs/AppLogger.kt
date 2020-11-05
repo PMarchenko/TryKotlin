@@ -42,7 +42,7 @@ class AppLogger<T>(
     }
 
     private fun recordLogs(logs: List<T>) {
-        if (safeCheckUiThread()) {
+        if (safeCheckUiThread) {
             super.setValue(logs)
         } else {
             super.postValue(logs)

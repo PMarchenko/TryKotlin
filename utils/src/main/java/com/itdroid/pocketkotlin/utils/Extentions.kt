@@ -33,35 +33,31 @@ import android.os.Looper
 val <T> T.checkAllMatched: T
     get() = this
 
-fun safeCheckUiThread(): Boolean = Thread.currentThread() == Looper.getMainLooper().thread
+val safeCheckUiThread: Boolean
+    get() = Thread.currentThread() == Looper.getMainLooper().thread
 
-fun safeCheckWorkerThread(): Boolean = !safeCheckUiThread()
+val safeCheckWorkerThread: Boolean
+    get() = !safeCheckUiThread
 
 @Suppress("unused")
 fun checkUiThread() {
-    if (safeCheckWorkerThread()) error("Long running operation in main thread")
+    if (safeCheckWorkerThread) error("Long running operation in main thread")
 }
 
 fun checkWorkerThread() {
-    if (safeCheckUiThread()) error("Long running operation in main thread")
+    if (safeCheckUiThread) error("Long running operation in main thread")
 }
 
 /**
  * Returns `this` value if it satisfies the given [predicate] or [opt], if it doesn't.
  */
-fun <T> T.takeIfOr(opt: T, predicate: (T) -> Boolean): T {
+fun <T> T.optIfNot(opt: T, predicate: (T) -> Boolean): T {
     return if (predicate(this)) this else opt
 }
 
-fun Float.inRange(min: Float, max: Float) =
+fun Float.applyRange(min: Float, max: Float): Float =
     when {
         this < min -> min
         this > max -> max
         else -> this
     }
-
-inline fun <T> T?.runUnless(predicate: T?.() -> Boolean, block: (T) -> Unit) {
-    if (this != null && !this.predicate()) {
-        block(this)
-    }
-}

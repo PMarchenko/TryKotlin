@@ -27,7 +27,7 @@ import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.projects.model.Project
 import com.itdroid.pocketkotlin.projects.projectExamples
 import com.itdroid.pocketkotlin.utils.UiAction
-import com.itdroid.pocketkotlin.utils.takeIfOr
+import com.itdroid.pocketkotlin.utils.optIfNot
 
 /**
  * @author itdroid
@@ -155,7 +155,7 @@ fun ProjectFooter(project: Project) {
         style = MaterialTheme.typography.caption,
         text = DateUtils.formatDateTime(
             ContextAmbient.current,
-            project.dateModified.takeIfOr(project.dateModified) { it > 0 },
+            project.dateModified.optIfNot(project.dateModified) { it > 0 },
             DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_TIME
         ),
     )
