@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="projectsListGridSize">1</integer>
-    <integer name="maxProjectNameLength">50</integer>
-    <integer name="maxProjectArgsLength">100</integer>
-    <integer name="maxProgramLength">10000</integer>
 </resources>

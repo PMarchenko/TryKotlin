@@ -1,24 +1,23 @@
-package com.pmarchenko.itdroid.pocketkotlin
+package com.itdroid.pocketkotlin
 
-import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.project
-import org.gradle.kotlin.dsl.support.delegates.ProjectDelegate
 
 /**
- * @author Pavel Marchenko
+ * @author itdroid
  */
 object Dependencies {
 
-    val ProjectDelegate.jarLibs: ConfigurableFileTree
+    val Project.jarLibs: ConfigurableFileTree
         get() = fileTree(mapOf("dir" to "libs", "include" to "*.jar"))
 
+    @Suppress("MemberVisibilityCanBePrivate")
+    const val kotlinVersion = "1.4.10"
 
     val DependencyHandler.kotlinStdLib
-        get() = kotlin("stdlib", "1.3.50")
-
+        get() = kotlin("stdlib", kotlinVersion)
 
     object Tests {
 
@@ -29,24 +28,7 @@ object Dependencies {
         const val testRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    object Modules {
-
-        val DependencyHandler.projectsModule: ProjectDependency
-            get() = project(projects)
-
-        val DependencyHandler.databaseModule: ProjectDependency
-            get() = project(database)
-
-
-        val DependencyHandler.networkModule: ProjectDependency
-            get() = project(network)
-
-        val DependencyHandler.syntaxModule: ProjectDependency
-            get() = project(syntax)
-
-        val DependencyHandler.utilsModule: ProjectDependency
-            get() = project(utils)
-
+    object Module {
 
         const val app = ":app"
         const val projects = ":projects"
@@ -54,56 +36,80 @@ object Dependencies {
         const val utils = ":utils"
         const val database = ":database"
         const val network = ":network"
+        const val preferences = ":preferences"
+        const val parserKotlinLang = ":parser:kotlinLang"
     }
 
     object DebugTools {
 
-        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.0-alpha-2"
-        const val stetho = "com.facebook.stetho:stetho:1.5.1"
-        const val stethoOkHttp = "com.facebook.stetho:stetho-okhttp3:1.5.1"
-        const val logger = "com.jakewharton.timber:timber:4.7.1"
+        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.4"
 
+
+        private const val stethoVersion = "1.5.1"
+        const val stetho = "com.facebook.stetho:stetho:$stethoVersion"
+        const val stethoOkHttp = "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
     }
 
     object KotlinX {
 
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
     }
 
     object AndroidX {
 
-        const val coreKtx = "androidx.core:core-ktx:1.1.0"
+        const val coreKtx = "androidx.core:core-ktx:1.3.1"
 
-        const val appCompat = "androidx.appcompat:appcompat:1.1.0"
-        const val fragments = "androidx.fragment:fragment-ktx:1.2.0-rc03"
+        const val appCompat = "androidx.appcompat:appcompat:1.3.0-alpha02"
 
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
-        const val viewPager = "androidx.viewpager2:viewpager2:1.0.0"
+        const val activityKtx = "androidx.activity:activity-ktx:1.1.0"
 
-        const val navigationFragment = "androidx.navigation:navigation-fragment:2.1.0"
-        const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:2.1.0"
-        const val navigationUi = "androidx.navigation:navigation-ui:2.1.0"
-        const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:2.1.0"
+        private const val lifecycleVersion = "2.2.0"
+        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+        const val viewModelSaveState =
+            "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
 
-        const val lifecycleExt = "androidx.lifecycle:lifecycle-extensions:2.1.0"
-        const val lifecycleLiveData = "androidx.lifecycle:lifecycle-livedata:2.2.0-rc03"
-        const val lifecycleLiveDataCode = "androidx.lifecycle:lifecycle-livedata-core:2.2.0-rc03"
-        const val lifecycleExtKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03"
-        const val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03"
+        private const val roomVersion = "2.2.5"
+        const val room = "androidx.room:room-ktx:$roomVersion"
+        const val roomCompiler = "androidx.room:room-compiler:$roomVersion"
 
-        const val room = "androidx.room:room-runtime:2.2.2"
-        const val roomKtx = "androidx.room:room-ktx:2.2.2"
-        const val roomCompiler = "androidx.room:room-compiler:2.2.2"
+        private const val prefsVersion = "1.1.1"
+        const val preferences = "androidx.preference:preference-ktx:$prefsVersion"
+
+        private const val initializerVersion = "1.0.0-rc01"
+        const val initializer = "androidx.startup:startup-runtime:$initializerVersion"
+
+        object Compose {
+
+            @Suppress("MemberVisibilityCanBePrivate")
+            const val version = "1.0.0-alpha05"
+
+            const val runtime = "androidx.compose.runtime:runtime:$version"
+            const val uiTooling = "androidx.ui:ui-tooling:$version"
+            const val material = "androidx.compose.material:material:$version"
+            const val liveData = "androidx.compose.runtime:runtime-livedata:$version"
+        }
     }
 
     object Google {
 
-        const val material = "com.google.android.material:material:1.2.0-alpha02"
+        const val material = "com.google.android.material:material:1.2.1"
+
         const val gson = "com.google.code.gson:gson:2.8.6"
     }
 
+    object GooglePlay {
+
+        const val ossLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
+    }
+
     object Network {
-        const val retorfit = "com.squareup.retrofit2:retrofit:2.6.0"
-        const val retorfitGsonConverter = "com.squareup.retrofit2:converter-gson:2.6.0"
+        private const val retorfitVersion = "2.9.0"
+        const val retorfit = "com.squareup.retrofit2:retrofit:$retorfitVersion"
+        const val retorfitGsonConverter = "com.squareup.retrofit2:converter-gson:$retorfitVersion"
+    }
+
+    object Logger {
+        const val timber = "com.jakewharton.timber:timber:4.7.1"
     }
 }

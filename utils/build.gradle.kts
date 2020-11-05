@@ -1,11 +1,11 @@
-import com.pmarchenko.itdroid.pocketkotlin.AppComponents
-import com.pmarchenko.itdroid.pocketkotlin.AppVersion
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.KotlinX
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.DebugTools
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Tests
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.AndroidX
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.kotlinStdLib
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.AppComponents
+import com.itdroid.pocketkotlin.AppVersion
+import com.itdroid.pocketkotlin.Dependencies.AndroidX
+import com.itdroid.pocketkotlin.Dependencies.KotlinX
+import com.itdroid.pocketkotlin.Dependencies.Logger
+import com.itdroid.pocketkotlin.Dependencies.Tests
+import com.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.Dependencies.kotlinStdLib
 
 plugins {
     id("com.android.library")
@@ -51,11 +51,11 @@ dependencies {
     implementation(jarLibs)
     implementation(kotlinStdLib)
 
+    implementation(Logger.timber)
+
     implementation(KotlinX.coroutines)
 
     implementation(AndroidX.appCompat)
-    implementation(AndroidX.lifecycleViewModelKtx)
-    implementation(AndroidX.lifecycleExt)
-
-    implementation(DebugTools.logger)
+    implementation(AndroidX.viewModel)
+    implementation(AndroidX.initializer)
 }

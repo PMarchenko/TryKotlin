@@ -1,10 +1,11 @@
-import com.pmarchenko.itdroid.pocketkotlin.AppComponents
-import com.pmarchenko.itdroid.pocketkotlin.AppVersion
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Modules.utilsModule
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Tests
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.KotlinX
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.kotlinStdLib
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.AppComponents
+import com.itdroid.pocketkotlin.AppVersion
+import com.itdroid.pocketkotlin.Dependencies.AndroidX
+import com.itdroid.pocketkotlin.Dependencies.KotlinX
+import com.itdroid.pocketkotlin.Dependencies.Module
+import com.itdroid.pocketkotlin.Dependencies.Tests
+import com.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.Dependencies.kotlinStdLib
 
 plugins {
     id("com.android.library")
@@ -50,7 +51,9 @@ dependencies {
     implementation(jarLibs)
     implementation(kotlinStdLib)
 
-    implementation(KotlinX.coroutines)
+    implementation(project(Module.utils))
+    implementation(project(Module.parserKotlinLang))
 
-    implementation(utilsModule)
+    implementation(KotlinX.coroutines)
+    implementation(AndroidX.viewModel)
 }

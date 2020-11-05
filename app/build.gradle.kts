@@ -1,21 +1,22 @@
-import com.pmarchenko.itdroid.pocketkotlin.AppComponents
-import com.pmarchenko.itdroid.pocketkotlin.AppVersion
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.DebugTools
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.KotlinX
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.AndroidX
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Google
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Modules.projectsModule
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Modules.syntaxModule
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Modules.utilsModule
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.Tests
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.kotlinStdLib
-import com.pmarchenko.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.AppComponents
+import com.itdroid.pocketkotlin.AppVersion
+import com.itdroid.pocketkotlin.Dependencies
+import com.itdroid.pocketkotlin.Dependencies.AndroidX
+import com.itdroid.pocketkotlin.Dependencies.DebugTools
+import com.itdroid.pocketkotlin.Dependencies.Google
+import com.itdroid.pocketkotlin.Dependencies.GooglePlay
+import com.itdroid.pocketkotlin.Dependencies.KotlinX
+import com.itdroid.pocketkotlin.Dependencies.Module
+import com.itdroid.pocketkotlin.Dependencies.Tests
+import com.itdroid.pocketkotlin.Dependencies.jarLibs
+import com.itdroid.pocketkotlin.Dependencies.kotlinStdLib
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions")
     kotlin("kapt")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -24,7 +25,7 @@ android {
     buildToolsVersion(AppComponents.AndroidSdk.buildTools)
 
     defaultConfig {
-        applicationId = "com.pmarchenko.itdroid.pocketkotlin"
+        applicationId = "com.itdroid.pocketkotlin"
 
         versionCode = AppVersion.code
         versionName = AppVersion.name
@@ -52,10 +53,17 @@ android {
 
     kotlinOptions {
         jvmTarget = AppComponents.KotlinOptions.jvmTarget
+        useIR = true
     }
 
-    viewBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Dependencies.kotlinVersion
+        kotlinCompilerExtensionVersion = AndroidX.Compose.version
     }
 }
 
@@ -63,9 +71,10 @@ dependencies {
     implementation(jarLibs)
     implementation(kotlinStdLib)
 
-    implementation(projectsModule)
-    implementation(syntaxModule)
-    implementation(utilsModule)
+    implementation(project(Module.projects))
+    implementation(project(Module.syntax))
+    implementation(project(Module.utils))
+    implementation(project(Module.preferences))
 
     testImplementation(Tests.junit)
     androidTestImplementation(Tests.androidxJunit)
@@ -76,18 +85,18 @@ dependencies {
     implementation(KotlinX.coroutines)
 
     implementation(AndroidX.appCompat)
-    implementation(AndroidX.fragments)
+    implementation(AndroidX.activityKtx)
     implementation(AndroidX.coreKtx)
-    implementation(AndroidX.constraintLayout)
-    implementation(AndroidX.viewPager)
 
-    implementation(AndroidX.navigationFragment)
-    implementation(AndroidX.navigationFragmentKtx)
-    implementation(AndroidX.navigationUi)
-    implementation(AndroidX.navigationUiKtx)
-
-    implementation(AndroidX.lifecycleExt)
-    implementation(AndroidX.lifecycleExtKtx)
+    implementation(AndroidX.liveData)
+    implementation(AndroidX.viewModelSaveState)
 
     implementation(Google.material)
+    implementation(GooglePlay.ossLicenses)
+
+    implementation(AndroidX.Compose.runtime)
+    implementation(AndroidX.Compose.uiTooling)
+    implementation(AndroidX.Compose.material)
+    implementation(AndroidX.Compose.liveData)
+
 }
