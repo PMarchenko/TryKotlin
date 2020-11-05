@@ -61,6 +61,7 @@ private fun ScreenEditorUi(
         } else {
             val logsState = savedInstanceState { true }
             val toggleLogsAction: (Boolean) -> Unit = { logsState.value = it }
+
             ScreenEditorContentUi(
                 editorInfo = editorInfo,
                 withLogsPanel = true,

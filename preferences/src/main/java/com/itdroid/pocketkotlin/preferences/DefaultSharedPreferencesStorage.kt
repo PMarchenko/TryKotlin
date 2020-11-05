@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
+import com.itdroid.pocketkotlin.utils.safeCheckUiThread
 import kotlinx.coroutines.*
 
 /**
@@ -69,6 +70,20 @@ internal class DefaultSharedPreferencesStorage(
         }
     }
 
+    override fun <T> notifySaveValue(key: String, value: T) {
+        val registries = observersRegistry[key]
+        if (registries.isNullOrEmpty()) return
+
+        val isUiThread = safeCheckUiThread
+        for (registry in registries) {
+            if (isUiThread) {
+                registry.liveData.value = value
+            } else {
+                registry.liveData.postValue(value)
+            }
+        }
+    }
+
     override fun <T> read(key: String, opt: T): T {
         @Suppress("UNCHECKED_CAST")
         return when (opt) {
@@ -95,7 +110,7 @@ internal class DefaultSharedPreferencesStorage(
     }
 
     override fun <T> asLiveData(key: String, pref: AppPreferenceImpl<T>): LiveData<T> {
-        val out = MutableLiveData<T>()
+        val out = PreferenceLiveData<T>()
         @Suppress("UNCHECKED_CAST")
         registerLiveData(out, key, pref)
         coroutineScope.launch {

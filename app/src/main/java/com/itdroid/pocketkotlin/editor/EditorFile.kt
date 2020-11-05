@@ -65,15 +65,9 @@ private fun EditorFileContentUi(
     selectionChangeAction: (ProjectFile, IntRange) -> Unit,
     editAction: (Editable) -> Unit,
 ) {
-    val editorBgColor = MaterialTheme.colors.background.toArgb()
-    val editorSideBarBgColor = MaterialTheme.colors.surface.toArgb()
     val editorTextColor = MaterialTheme.colors.onSurface.toArgb()
     val editorProvider = remember {
-        ProgramEditorViewProvider(
-            sideBarBgColor = editorSideBarBgColor,
-            bgColor = editorBgColor,
-            textColor = editorTextColor
-        )
+        ProgramEditorViewProvider(editorTextColor)
     }
 
     editorProvider.editAction = editAction

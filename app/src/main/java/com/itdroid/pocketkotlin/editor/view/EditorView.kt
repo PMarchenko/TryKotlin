@@ -26,7 +26,7 @@ class EditorView(context: Context) : AppCompatEditText(context) {
     private val realToVirtualLines = SparseIntArray()
 
     private val lineBarWidth = 32f.dp
-    private val sideBarBgPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val sideBarLinePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val lineNumberPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
         .apply {
             textSize = 12f.dp
@@ -64,16 +64,13 @@ class EditorView(context: Context) : AppCompatEditText(context) {
         mapRealToVirtualLines(realToVirtualLines)
     }
 
-    fun setSideBarBgColor(color: Int) {
-        if (sideBarBgPaint.color != color) {
-            sideBarBgPaint.color = color
-            invalidate()
-        }
-    }
-
     override fun setTextColor(color: Int) {
         lineNumberPaint.color = color
         lineNumberPaint.alpha = 127
+
+        sideBarLinePaint.color = color
+        sideBarLinePaint.alpha = 42
+
         super.setTextColor(color)
     }
 
@@ -110,8 +107,7 @@ class EditorView(context: Context) : AppCompatEditText(context) {
     }
 
     private fun drawSizeBar(canvas: Canvas) {
-        canvas.drawRect(0f, 0f, lineBarWidth, bottom.toFloat(), sideBarBgPaint)
-        canvas.drawLine(lineBarWidth, 0f, lineBarWidth, bottom.toFloat(), lineNumberPaint)
+        canvas.drawLine(lineBarWidth, 0f, lineBarWidth, bottom.toFloat() - 8f.dp, sideBarLinePaint)
     }
 
     fun setSelectionListener(listener: (Int, Int) -> Unit) {

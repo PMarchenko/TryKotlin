@@ -13,6 +13,8 @@ internal interface Storage {
 
     fun <T> asLiveData(key: String, pref: AppPreferenceImpl<T>): LiveData<T>
 
+    fun <T> notifySaveValue(key: String, value: T)
+
     fun release()
 
 }

@@ -7,7 +7,7 @@ import com.itdroid.pocketkotlin.utils.applyRange
  */
 object LogsPanelWeightPreference {
 
-    const val DEFAULT = 0.3f
+    const val DEFAULT = 0.7f
 
     const val MAX = 1f
 

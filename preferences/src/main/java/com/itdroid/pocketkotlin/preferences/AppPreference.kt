@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty
  */
 interface AppPreference<T> {
 
-    fun get(checkWorkingThread: Boolean = false): T
+    fun get(checkWorkingThread: Boolean = true): T
 
     fun set(value: T)
 

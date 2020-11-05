@@ -30,11 +30,10 @@ internal class AppPreferenceImpl<T>(
     }
 
     override fun set(value: T) {
-        if (value != get()) {
-            val filtered = filter?.apply(value) ?: value
-            val serialized = converter?.serialize(filtered) ?: filtered
-            storage.save(key, serialized)
-        }
+        val filtered = filter?.apply(value) ?: value
+        storage.notifySaveValue(key, filtered)
+        val serialized = converter?.serialize(filtered) ?: filtered
+        storage.save(key, serialized)
     }
 
     override fun liveData(): LiveData<T> {
