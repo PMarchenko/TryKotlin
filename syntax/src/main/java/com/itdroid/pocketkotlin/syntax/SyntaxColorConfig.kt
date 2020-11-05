@@ -13,4 +13,5 @@ data class SyntaxColorConfig(
     val strCharLiteralColor: Int,
     val numberLiteralColor: Int,
     val annotationColor: Int,
+    val atSuffixColor: Int,
 )

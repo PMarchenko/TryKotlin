@@ -25,6 +25,10 @@ internal class SyntaxTokenEmitter(
         emit(range, KeywordMarker)
     }
 
+    override suspend fun onAtSuffix(range: IntRange) {
+        emit(range, AtSuffixMarker)
+    }
+
     override suspend fun onStringLiteralStart(position: Int) {
         stringLiteralStart = position
     }

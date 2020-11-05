@@ -11,6 +11,8 @@ internal interface KotlinSyntaxListener {
 
     suspend fun onKeyword(range: IntRange)
 
+    suspend fun onAtSuffix(range: IntRange)
+
     suspend fun onStringLiteralStart(position: Int)
 
     suspend fun onStringLiteralExpressionStart(position: Int)

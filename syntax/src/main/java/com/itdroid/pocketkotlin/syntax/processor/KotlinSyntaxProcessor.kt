@@ -89,16 +89,17 @@ internal class KotlinSyntaxProcessor(
             }
 
             //Annotation
-            KotlinParser.AT_PRE_WS -> currentNode = Annotation(start, currentNode)
+            KotlinParser.AT_NO_WS, KotlinParser.AT_PRE_WS ->
+                currentNode = Annotation(start, currentNode)
 
             KotlinParser.Identifier -> {
-                when (val node = currentNode) {
-                    is Function -> if (node.children.isEmpty()) {
+                when (val cNode = currentNode) {
+                    is Function -> if (cNode.children.isEmpty()) {
                         listener.onFunctionName(start..end)
                     }
                     is Annotation -> {
-                        listener.onAnnotation(node.start..end)
-                        currentNode = node.parent
+                        listener.onAnnotation(cNode.start..end)
+                        currentNode = cNode.parent
                     }
                 }
             }
@@ -113,10 +114,20 @@ internal class KotlinSyntaxProcessor(
                 }
             }
 
-            // Keywords
-            KotlinParser.AS_SAFE,
+            // Keywords@at
             KotlinParser.RETURN_AT, KotlinParser.CONTINUE_AT, KotlinParser.BREAK_AT,
             KotlinParser.THIS_AT, KotlinParser.SUPER_AT,
+            -> {
+                val text = node.text
+                val atIndex = text?.indexOf('@') ?: -1
+                if (atIndex > 0) {
+                    listener.onKeyword(start .. start + atIndex)
+                    listener.onAtSuffix(start + atIndex..end)
+                }
+            }
+
+            // Keywords
+            KotlinParser.AS_SAFE,
             KotlinParser.GET, KotlinParser.SET,
             KotlinParser.PACKAGE, KotlinParser.IMPORT,
             KotlinParser.TYPE_ALIAS, KotlinParser.CONSTRUCTOR, KotlinParser.BY,
@@ -143,27 +154,27 @@ internal class KotlinSyntaxProcessor(
             KotlinParser.REIFIED,
             KotlinParser.EXPECT, KotlinParser.ACTUAL,
             KotlinParser.BooleanLiteral, KotlinParser.NullLiteral,
-            -> listener.onKeyword(start..end)
+            ->
+                listener.onKeyword(start..end)
 
             // String literals
-            KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN,
-            -> listener.onStringLiteralStart(start)
+            KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN ->
+                listener.onStringLiteralStart(start)
 
             KotlinParser.LineStrRef, KotlinParser.MultiLineStrRef -> {
                 listener.onStringLiteralExpressionStart(start)
                 listener.maybeStringLiteralExpressionEnd(end)
             }
 
-            KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart,
-            -> listener.onStringLiteralExpressionStart(start)
+            KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart ->
+                listener.onStringLiteralExpressionStart(start)
 
 
-            KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE,
-            -> listener.onStringLiteralEnd(end)
+            KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE ->
+                listener.onStringLiteralEnd(end)
 
             // Char literals
-            KotlinParser.CharacterLiteral,
-            -> listener.onCharLiteral(start..end)
+            KotlinParser.CharacterLiteral -> listener.onCharLiteral(start..end)
 
             // Number literals
             KotlinParser.RealLiteral, KotlinParser.FloatLiteral,
@@ -171,7 +182,8 @@ internal class KotlinSyntaxProcessor(
             KotlinParser.IntegerLiteral, KotlinParser.HexLiteral, KotlinParser.BinLiteral,
             KotlinParser.UnsignedLiteral,
             KotlinParser.LongLiteral,
-            -> listener.onNumberLiteral(start..end)
+            ->
+                listener.onNumberLiteral(start..end)
         }
     }
 

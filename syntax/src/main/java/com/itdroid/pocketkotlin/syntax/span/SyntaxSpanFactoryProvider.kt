@@ -25,6 +25,8 @@ internal class SyntaxSpanFactoryProvider(colors: SyntaxColorConfig) {
 
     private val annotationSpanFactory = SyntaxSpanFactory(colors.annotationColor)
 
+    private val atSuffixSpanFactory = SyntaxSpanFactory(colors.atSuffixColor)
+
     fun factoryFor(marker: SyntaxMarker): SyntaxSpanFactory =
         when (marker) {
             DocCommentMarker -> docCommentSpanFactory
@@ -35,5 +37,6 @@ internal class SyntaxSpanFactoryProvider(colors: SyntaxColorConfig) {
             TextLiteralMarker -> strCharLiteralSpanFactory
             NumberLiteralMarker -> numberLiteralSpanFactory
             AnnotationMarker -> annotationSpanFactory
+            AtSuffixMarker -> atSuffixSpanFactory
         }.checkAllMatched
 }

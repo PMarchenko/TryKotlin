@@ -1,29 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="darkTheme.primary">#3C3F41</color>
-    <color name="darkTheme.primaryVariant">#2D2F30</color>
-    <color name="darkTheme.secondary">#0288D1</color>
-    <color name="darkTheme.background">#2B2B2B</color>
-    <color name="darkTheme.surface">#2B2B2B</color>
-    <color name="darkTheme.onPrimary">#EAEEF1</color>
-    <color name="darkTheme.onSecondary">@android:color/white</color>
-    <color name="darkTheme.onBackground">#EAEEF1</color>
-    <color name="darkTheme.onSurface">#EAEEF1</color>
-    <color name="darkTheme.error">#C75450</color>
-    <color name="darkTheme.onError">#EAEEF1</color>
-    <color name="darkTheme.warning">#BE9117</color>
-    <color name="darkTheme.success">#499C54</color>
-
-    <color name="darkTheme.docComment">#499C54</color>
-    <color name="darkTheme.comment">#808080</color>
-    <color name="darkTheme.keyword">#CC7832</color>
-    <color name="darkTheme.propertyName">#9876AA</color>
-    <color name="darkTheme.functionName">#FFC66D</color>
-    <color name="darkTheme.strCharLiteral">#499C54</color>
-    <color name="darkTheme.numberLiteral">#4D8ABA</color>
-    <color name="darkTheme.annotation">#BBB529</color>
-
-
     <color name="lightTheme.primary">#9E9E9E</color>
     <color name="lightTheme.primaryVariant">#616161</color>
     <color name="lightTheme.secondary">#0288D1</color>
@@ -46,6 +22,33 @@
     <color name="lightTheme.strCharLiteral">#547C1F</color>
     <color name="lightTheme.numberLiteral">#0033B3</color>
     <color name="lightTheme.annotation">#9E880D</color>
+    <color name="lightTheme.atSuffix">#4B87E7</color>
+
+
+    <color name="darkTheme.primary">#3C3F41</color>
+    <color name="darkTheme.primaryVariant">#2D2F30</color>
+    <color name="darkTheme.secondary">#0288D1</color>
+    <color name="darkTheme.background">#2B2B2B</color>
+    <color name="darkTheme.surface">#2B2B2B</color>
+    <color name="darkTheme.onPrimary">#EAEEF1</color>
+    <color name="darkTheme.onSecondary">@android:color/white</color>
+    <color name="darkTheme.onBackground">#EAEEF1</color>
+    <color name="darkTheme.onSurface">#EAEEF1</color>
+    <color name="darkTheme.error">#C75450</color>
+    <color name="darkTheme.onError">#EAEEF1</color>
+    <color name="darkTheme.warning">#BE9117</color>
+    <color name="darkTheme.success">#499C54</color>
+
+    <color name="darkTheme.docComment">#499C54</color>
+    <color name="darkTheme.comment">#808080</color>
+    <color name="darkTheme.keyword">#CC7832</color>
+    <color name="darkTheme.propertyName">#9876AA</color>
+    <color name="darkTheme.functionName">#FFC66D</color>
+    <color name="darkTheme.strCharLiteral">#499C54</color>
+    <color name="darkTheme.numberLiteral">#4D8ABA</color>
+    <color name="darkTheme.annotation">#BBB529</color>
+    <color name="darkTheme.atSuffix">#467CDA</color>
+
 
     <color name="colorPrimary">@color/lightTheme.primary</color>
     <color name="colorPrimaryDark">@color/lightTheme.primaryVariant</color>
