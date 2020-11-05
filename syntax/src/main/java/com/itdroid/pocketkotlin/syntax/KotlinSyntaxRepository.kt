@@ -18,7 +18,7 @@ internal class KotlinSyntaxRepository {
     private val mappingHolder = MappingHolder()
 
     suspend fun analyze(
-        syntaxMappingId: Long,
+        syntaxMappingId: Int,
         program: Editable,
         spanFactoryProvider: SyntaxSpanFactoryProvider,
     ) {

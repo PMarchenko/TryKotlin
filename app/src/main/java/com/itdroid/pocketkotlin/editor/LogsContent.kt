@@ -30,7 +30,7 @@ import com.itdroid.pocketkotlin.R
 import com.itdroid.pocketkotlin.ui.compose.AppCheckBox
 import com.itdroid.pocketkotlin.ui.compose.AppDivider
 import com.itdroid.pocketkotlin.ui.compose.AppImageButton
-import com.itdroid.pocketkotlin.ui.compose.logsConfig
+import com.itdroid.pocketkotlin.ui.compose.logsColorConfig
 import com.itdroid.pocketkotlin.editor.logs.*
 import com.itdroid.pocketkotlin.utils.TextInput
 import com.itdroid.pocketkotlin.utils.checkAllMatched
@@ -64,7 +64,7 @@ fun LogsContent(
 
             AppDivider(modifier = Modifier.padding(top = 0.5f.dp))
 
-            val colorConfig = MaterialTheme.colors.logsConfig
+            val colorConfig = MaterialTheme.colors.logsColorConfig
 
             LazyColumnFor(
                 items = logs,

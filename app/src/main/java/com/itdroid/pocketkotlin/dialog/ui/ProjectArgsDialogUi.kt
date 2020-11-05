@@ -2,6 +2,7 @@ package com.itdroid.pocketkotlin.dialog.ui
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -42,7 +43,7 @@ fun ProjectArgsDialogUi(
             modifier = Modifier.fillMaxWidth(),
             value = args,
             onValueChange = onArgsChangeAction,
-            activeColor = editTextActiveColor(),
+            activeColor = MaterialTheme.colors.editTextActiveColor,
             label = { Text(stringResource(R.string.dialog__command_line_args__hint)) },
             imeAction = ImeAction.Done,
             onImeActionPerformed = { _, _ -> saveAction() },

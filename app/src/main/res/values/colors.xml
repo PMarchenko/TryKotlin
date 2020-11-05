@@ -14,6 +14,16 @@
     <color name="darkTheme.warning">#BE9117</color>
     <color name="darkTheme.success">#499C54</color>
 
+    <color name="darkTheme.docComment">#499C54</color>
+    <color name="darkTheme.comment">#808080</color>
+    <color name="darkTheme.keyword">#CC7832</color>
+    <color name="darkTheme.propertyName">#9876AA</color>
+    <color name="darkTheme.functionName">#FFC66D</color>
+    <color name="darkTheme.strCharLiteral">#499C54</color>
+    <color name="darkTheme.numberLiteral">#4D8ABA</color>
+    <color name="darkTheme.annotation">#BBB529</color>
+
+
     <color name="lightTheme.primary">#9E9E9E</color>
     <color name="lightTheme.primaryVariant">#616161</color>
     <color name="lightTheme.secondary">#0288D1</color>
@@ -27,6 +37,15 @@
     <color name="lightTheme.onError">#EAEEF1</color>
     <color name="lightTheme.warning">#BE9117</color>
     <color name="lightTheme.success">#499C54</color>
+
+    <color name="lightTheme.docComment">#8C8C8C</color>
+    <color name="lightTheme.comment">#8C8C8C</color>
+    <color name="lightTheme.keyword">#0033B3</color>
+    <color name="lightTheme.propertyName">#871094</color>
+    <color name="lightTheme.functionName">#00627A</color>
+    <color name="lightTheme.strCharLiteral">#547C1F</color>
+    <color name="lightTheme.numberLiteral">#0033B3</color>
+    <color name="lightTheme.annotation">#9E880D</color>
 
     <color name="colorPrimary">@color/lightTheme.primary</color>
     <color name="colorPrimaryDark">@color/lightTheme.primaryVariant</color>

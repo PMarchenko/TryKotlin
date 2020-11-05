@@ -66,6 +66,10 @@ internal class SyntaxTokenEmitter(
         emit(range, PropertyNameMarker)
     }
 
+    override suspend fun onAnnotation(range: IntRange) {
+        emit(range, AnnotationMarker)
+    }
+
     private suspend fun emit(range: IntRange, marker: SyntaxMarker) {
         collector.emit(SyntaxToken(range, marker))
     }

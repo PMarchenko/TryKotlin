@@ -88,10 +88,17 @@ internal class KotlinSyntaxProcessor(
                 listener.onKeyword(start..end)
             }
 
+            //Annotation
+            KotlinParser.AT_PRE_WS -> currentNode = Annotation(start, currentNode)
+
             KotlinParser.Identifier -> {
-                currentNode.let {
-                    if (it is Function && it.children.isEmpty()) {
+                when (val node = currentNode) {
+                    is Function -> if (node.children.isEmpty()) {
                         listener.onFunctionName(start..end)
+                    }
+                    is Annotation -> {
+                        listener.onAnnotation(node.start..end)
+                        currentNode = node.parent
                     }
                 }
             }
@@ -137,7 +144,6 @@ internal class KotlinSyntaxProcessor(
             KotlinParser.EXPECT, KotlinParser.ACTUAL,
             KotlinParser.BooleanLiteral, KotlinParser.NullLiteral,
             -> listener.onKeyword(start..end)
-            
 
             // String literals
             KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN,

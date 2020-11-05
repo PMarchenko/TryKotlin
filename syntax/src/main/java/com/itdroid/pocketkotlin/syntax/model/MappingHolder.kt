@@ -5,10 +5,10 @@ package com.itdroid.pocketkotlin.syntax.model
  */
 internal class MappingHolder {
 
-    private var mappingId: Long = -1
+    private var mappingId: Int = -1
     private var mapping: SyntaxMapping? = null
 
-    fun get(mappingId: Long): SyntaxMapping =
+    fun get(mappingId: Int): SyntaxMapping =
         if (this.mappingId == mappingId) {
             mapping ?: createSyntaxMapping()
         } else {

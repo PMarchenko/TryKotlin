@@ -20,4 +20,4 @@ internal object PropertyNameMarker : SyntaxMarker()
 
 internal object FunctionNameMarker : SyntaxMarker()
 
-
+internal object AnnotationMarker : SyntaxMarker()

@@ -26,4 +26,6 @@ internal interface KotlinSyntaxListener {
     suspend fun onFunctionName(range: IntRange)
 
     suspend fun onPropertyName(range: IntRange)
+
+    suspend fun onAnnotation(range: IntRange)
 }

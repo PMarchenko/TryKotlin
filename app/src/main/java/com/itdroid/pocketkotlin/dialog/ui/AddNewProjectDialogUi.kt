@@ -3,6 +3,7 @@ package com.itdroid.pocketkotlin.dialog.ui
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -50,7 +51,7 @@ fun AddNewProjectDialogUi(
                 modifier = Modifier.fillMaxWidth(),
                 value = projectNameState.value,
                 onValueChange = nameChangeAction,
-                activeColor = editTextActiveColor(),
+                activeColor = MaterialTheme.colors.editTextActiveColor,
                 label = { Text(stringResource(R.string.dialog__add_project__label)) },
                 isErrorValue = !isValidState.value,
                 imeAction = ImeAction.Done,

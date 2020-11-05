@@ -92,6 +92,13 @@ internal class FunctionBody(override val parent: Node) : Node() {
     override fun forLCurl(): Node = Block(this)
 }
 
+internal class Annotation(val start: Int, override val parent: Node) : Node() {
+
+    override fun forLParent() = Block(this)
+
+    override fun forLCurl(): Node = Block(this)
+}
+
 internal data class Identifier(
     val start: Int,
     val end: Int,

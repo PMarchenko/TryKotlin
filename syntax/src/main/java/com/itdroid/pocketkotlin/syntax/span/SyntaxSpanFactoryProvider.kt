@@ -1,28 +1,29 @@
 package com.itdroid.pocketkotlin.syntax.span
 
-import com.itdroid.pocketkotlin.syntax.ColorConfig
+import com.itdroid.pocketkotlin.syntax.SyntaxColorConfig
 import com.itdroid.pocketkotlin.syntax.model.*
 import com.itdroid.pocketkotlin.utils.checkAllMatched
 
 /**
  * @author itdroid
  */
-internal class SyntaxSpanFactoryProvider(colors: ColorConfig) {
+internal class SyntaxSpanFactoryProvider(colors: SyntaxColorConfig) {
 
-    private val docCommentSpanFactory = KeywordSyntaxSpanFactory(colors.docCommentColor)
+    private val docCommentSpanFactory = SyntaxSpanFactory(colors.docCommentColor)
 
-    private val commentSpanFactory = KeywordSyntaxSpanFactory(colors.commentColor)
+    private val commentSpanFactory = SyntaxSpanFactory(colors.commentColor)
 
-    private val keywordSpanFactory = KeywordSyntaxSpanFactory(colors.keywordColor)
+    private val keywordSpanFactory = SyntaxSpanFactory(colors.keywordColor)
 
-    private val propNameSpanFactory = PropertySyntaxSpanFactory(colors.propNameColor)
+    private val propNameSpanFactory = SyntaxSpanFactory(colors.propNameColor)
 
-    private val funNameSpanFactory = FunctionNameSyntaxSpanFactory(colors.funNameColor)
+    private val funNameSpanFactory = SyntaxSpanFactory(colors.funNameColor)
 
-    private val strCharLiteralSpanFactory =
-        StrCharLiteralSyntaxSpanFactory(colors.strCharLiteralColor)
+    private val strCharLiteralSpanFactory = SyntaxSpanFactory(colors.strCharLiteralColor)
 
-    private val numberLiteralSpanFactory = NumberLiteralSyntaxSpanFactory(colors.numberLiteralColor)
+    private val numberLiteralSpanFactory = SyntaxSpanFactory(colors.numberLiteralColor)
+
+    private val annotationSpanFactory = SyntaxSpanFactory(colors.annotationColor)
 
     fun factoryFor(marker: SyntaxMarker): SyntaxSpanFactory =
         when (marker) {
@@ -33,5 +34,6 @@ internal class SyntaxSpanFactoryProvider(colors: ColorConfig) {
             FunctionNameMarker -> funNameSpanFactory
             TextLiteralMarker -> strCharLiteralSpanFactory
             NumberLiteralMarker -> numberLiteralSpanFactory
+            AnnotationMarker -> annotationSpanFactory
         }.checkAllMatched
 }

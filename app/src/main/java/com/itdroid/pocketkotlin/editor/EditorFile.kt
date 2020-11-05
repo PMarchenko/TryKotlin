@@ -14,8 +14,10 @@ import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.projects.model.Project
 import com.itdroid.pocketkotlin.projects.model.ProjectFile
 import com.itdroid.pocketkotlin.projects.projectExamples
+import com.itdroid.pocketkotlin.syntax.SyntaxColorConfig
 import com.itdroid.pocketkotlin.syntax.SyntaxViewModel
 import com.itdroid.pocketkotlin.ui.compose.PocketKotlinTheme
+import com.itdroid.pocketkotlin.ui.compose.syntaxColorConfig
 
 /**
  * @author itdroid
@@ -31,12 +33,12 @@ fun EditorFile(
         selections[key.id] = sel
     }
 
-    val isLightTheme = MaterialTheme.colors.isLight
+    val syntaxColors: SyntaxColorConfig = MaterialTheme.colors.syntaxColorConfig
     val syntaxVm = viewModel<SyntaxViewModel>()
     val program: MutableState<CharSequence> = savedInstanceState(file.id) { file.program }
 
     val editAction: (Editable) -> Unit = { input ->
-        syntaxVm.highlightSyntax(file.id, input, isLightTheme)
+        syntaxVm.highlightSyntax(file.id, input, syntaxColors)
         program.value = input
 
         val update = input.toString()
