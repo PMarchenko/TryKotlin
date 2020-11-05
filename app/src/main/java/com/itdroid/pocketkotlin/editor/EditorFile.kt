@@ -64,9 +64,11 @@ private fun EditorFileContentUi(
     editAction: (Editable) -> Unit,
 ) {
     val editorBgColor = MaterialTheme.colors.background.toArgb()
+    val editorSideBarBgColor = MaterialTheme.colors.surface.toArgb()
     val editorTextColor = MaterialTheme.colors.onSurface.toArgb()
     val editorProvider = remember {
         ProgramEditorViewProvider(
+            sideBarBgColor = editorSideBarBgColor,
             bgColor = editorBgColor,
             textColor = editorTextColor
         )
@@ -77,7 +79,7 @@ private fun EditorFileContentUi(
     AndroidView(editorProvider) { editor ->
         editor.reset()
         if (program !== editor.text) {
-            editor.setText(program)
+            editor.text = program
         }
         editor.setSelection(selection.first, selection.last)
         editor.selectionListener = { range -> selectionChangeAction(file, range) }
