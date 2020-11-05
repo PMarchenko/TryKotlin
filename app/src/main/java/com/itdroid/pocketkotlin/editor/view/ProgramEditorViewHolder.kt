@@ -3,7 +3,6 @@ package com.itdroid.pocketkotlin.editor.view
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.ScrollView
-import androidx.appcompat.widget.AppCompatEditText
 
 /**
  * @author itdroid
@@ -21,6 +20,9 @@ class ProgramEditorViewHolder(context: Context) : ScrollView(context) {
         )
 
         addView(EditorView(context).also { editor = it })
+        editor.setSelectionListener { start, end ->
+            selectionListener?.invoke(start..end)
+        }
     }
 
     var text: CharSequence?

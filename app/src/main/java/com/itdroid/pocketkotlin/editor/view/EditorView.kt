@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.text.InputFilter
+import android.text.InputType
 import android.util.SparseIntArray
 import android.view.Gravity
 import android.view.ViewGroup
@@ -20,9 +21,11 @@ import com.itdroid.pocketkotlin.projects.FileMaxLength
  */
 class EditorView(context: Context) : AppCompatEditText(context) {
 
+    private var selectionListener: ((Int, Int) -> Unit)? = null
+
     private val realToVirtualLines = SparseIntArray()
 
-    private val lineBarWidth = 32f.dp
+    private val lineBarWidth = 40f.dp
     private val sideBarBgPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val lineNumberPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
         .apply {
@@ -39,6 +42,11 @@ class EditorView(context: Context) : AppCompatEditText(context) {
         gravity = Gravity.START
         typeface = ResourcesCompat.getFont(context, R.font.jet_brains_mono_regular)
         lineNumberPaint.typeface = typeface
+        lineNumberPaint.textSize = textSize
+
+        inputType = InputType.TYPE_CLASS_TEXT or
+                InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or
+                InputType.TYPE_TEXT_FLAG_MULTI_LINE
 
         updatePaddingRelative(start = paddingStart + lineBarWidth.toInt())
 
@@ -49,6 +57,10 @@ class EditorView(context: Context) : AppCompatEditText(context) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val initialHeight = MeasureSpec.getSize(heightMeasureSpec)
+        if (initialHeight > measuredHeight) {
+            setMeasuredDimension(measuredWidth, initialHeight)
+        }
 
         mapRealToVirtualLines(realToVirtualLines)
     }
@@ -62,6 +74,7 @@ class EditorView(context: Context) : AppCompatEditText(context) {
 
     override fun setTextColor(color: Int) {
         lineNumberPaint.color = color
+        lineNumberPaint.alpha = 127
         super.setTextColor(color)
     }
 
@@ -74,10 +87,10 @@ class EditorView(context: Context) : AppCompatEditText(context) {
         for (index in 0 until realToVirtualLines.size()) {
             val lineVirtual = realToVirtualLines.valueAt(index)
 
-            val baseLine = layout.getLineBaseline(lineVirtual) + paddingTop
             val text = (realToVirtualLines.keyAt(index) + 1).toString()
+
             val textX = (lineBarWidth - lineNumberPaint.measureText(text) - 5f.dp)
-            val textY = baseLine.toFloat() - 2f.dp
+            val textY = layout.getLineBaseline(lineVirtual) + paddingTop.toFloat()
 
             canvas.drawText(text, textX, textY, lineNumberPaint)
         }
@@ -100,6 +113,15 @@ class EditorView(context: Context) : AppCompatEditText(context) {
     private fun drawSizeBar(canvas: Canvas) {
         canvas.drawRect(0f, 0f, lineBarWidth, bottom.toFloat(), sideBarBgPaint)
         canvas.drawLine(lineBarWidth, 0f, lineBarWidth, bottom.toFloat(), lineNumberPaint)
+    }
+
+    fun setSelectionListener(listener: (Int, Int) -> Unit) {
+        selectionListener = listener
+    }
+
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        super.onSelectionChanged(selStart, selEnd)
+        selectionListener?.invoke(selStart, selEnd)
     }
 }
 

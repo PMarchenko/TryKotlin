@@ -24,6 +24,7 @@ internal class KotlinSyntaxRepository {
     ) {
         val currentSyntax = mappingHolder.get(syntaxMappingId)
         val currentRanges = currentSyntax.ranges()
+        val allSpans = program.getSpans(0, program.length, Any::class.java)
 
         syntaxService.analyze(program)
             .flowOn(Dispatchers.Default)
@@ -34,22 +35,23 @@ internal class KotlinSyntaxRepository {
 
                     val span = spanFactoryProvider.factoryFor(marker).create()
                     currentSyntax.add(range, marker, span)
-                    program
-                        .setSpan(span, range.first, range.last, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    program.setSpan(span, range)
+                } else {
+                    currentSyntax.getSpan(range)?.let { span ->
+                        if (!allSpans.contains(span)) {
+                            program.setSpan(span, range)
+                        }
+                    }
                 }
             }
 
         //clean up spans which were not emitted this pass
         currentRanges
-            .mapNotNull {
-                currentSyntax.remove(it)
-            }
+            .mapNotNull { currentSyntax.remove(it) }
             .forEach { program.removeSpan(it) }
     }
 }
 
-//open class A(text: String)
-//
-//open class B : A("hello")
-//
-//class C : B
+private fun Editable.setSpan(span: Any, range: IntRange) {
+    setSpan(span, range.first, range.last, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+}
