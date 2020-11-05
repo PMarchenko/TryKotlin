@@ -25,7 +25,7 @@ class EditorView(context: Context) : AppCompatEditText(context) {
 
     private val realToVirtualLines = SparseIntArray()
 
-    private val lineBarWidth = 40f.dp
+    private val lineBarWidth = 32f.dp
     private val sideBarBgPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val lineNumberPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
         .apply {
@@ -42,7 +42,6 @@ class EditorView(context: Context) : AppCompatEditText(context) {
         gravity = Gravity.START
         typeface = ResourcesCompat.getFont(context, R.font.jet_brains_mono_regular)
         lineNumberPaint.typeface = typeface
-        lineNumberPaint.textSize = textSize
 
         inputType = InputType.TYPE_CLASS_TEXT or
                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or
@@ -90,7 +89,7 @@ class EditorView(context: Context) : AppCompatEditText(context) {
             val text = (realToVirtualLines.keyAt(index) + 1).toString()
 
             val textX = (lineBarWidth - lineNumberPaint.measureText(text) - 5f.dp)
-            val textY = layout.getLineBaseline(lineVirtual) + paddingTop.toFloat()
+            val textY = layout.getLineBaseline(lineVirtual) + paddingTop.toFloat() - 2f.dp
 
             canvas.drawText(text, textX, textY, lineNumberPaint)
         }

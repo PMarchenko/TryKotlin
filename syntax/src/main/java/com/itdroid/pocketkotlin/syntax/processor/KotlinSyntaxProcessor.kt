@@ -107,54 +107,65 @@ internal class KotlinSyntaxProcessor(
             }
 
             // Keywords
-            KotlinParser.PACKAGE,
-            KotlinParser.IMPORT, KotlinParser.TYPE_ALIAS,
-            KotlinParser.SEALED, KotlinParser.OPEN, KotlinParser.ABSTRACT, KotlinParser.FINAL,
-            KotlinParser.ENUM, KotlinParser.DATA, KotlinParser.INNER,
-            KotlinParser.CONSTRUCTOR,
-            KotlinParser.PUBLIC, KotlinParser.PROTECTED, KotlinParser.INTERNAL, KotlinParser.PRIVATE,
-            KotlinParser.SUSPEND, KotlinParser.OVERRIDE,
-            KotlinParser.VARARG,
-            KotlinParser.INLINE, KotlinParser.NOINLINE, KotlinParser.CROSSINLINE,
-            KotlinParser.OPERATOR, KotlinParser.RETURN,
-            KotlinParser.CONTINUE, KotlinParser.BREAK,
+            KotlinParser.AS_SAFE,
+            KotlinParser.RETURN_AT, KotlinParser.CONTINUE_AT, KotlinParser.BREAK_AT,
+            KotlinParser.THIS_AT, KotlinParser.SUPER_AT,
+            KotlinParser.GET, KotlinParser.SET,
+            KotlinParser.PACKAGE, KotlinParser.IMPORT,
+            KotlinParser.TYPE_ALIAS, KotlinParser.CONSTRUCTOR, KotlinParser.BY,
+            KotlinParser.COMPANION, KotlinParser.INIT,
+            KotlinParser.THIS, KotlinParser.SUPER, KotlinParser.TYPEOF, KotlinParser.WHERE,
+            KotlinParser.IF, KotlinParser.ELSE, KotlinParser.WHEN,
+            KotlinParser.TRY, KotlinParser.CATCH, KotlinParser.FINALLY,
+            KotlinParser.FOR, KotlinParser.DO, KotlinParser.WHILE,
+            KotlinParser.THROW, KotlinParser.RETURN, KotlinParser.CONTINUE,
+            KotlinParser.BREAK,
             KotlinParser.AS, KotlinParser.IS, KotlinParser.IN,
-            KotlinParser.BY,
-            KotlinParser.COMPANION,
-            KotlinParser.IF, KotlinParser.ELSE, KotlinParser.FOR, KotlinParser.WHEN, KotlinParser.DO, KotlinParser.WHILE,
-            KotlinParser.THROW, KotlinParser.CATCH,
-            KotlinParser.CONST,
+            KotlinParser.NOT_IS, KotlinParser.NOT_IN,
+            KotlinParser.OUT, KotlinParser.DYNAMIC,
+            KotlinParser.PUBLIC,
+            KotlinParser.PRIVATE, KotlinParser.PROTECTED, KotlinParser.INTERNAL,
+            KotlinParser.ENUM, KotlinParser.SEALED,
+            KotlinParser.ANNOTATION,
+            KotlinParser.DATA, KotlinParser.INNER, KotlinParser.TAILREC, KotlinParser.OPERATOR,
+            KotlinParser.INLINE, KotlinParser.INFIX, KotlinParser.EXTERNAL,
+            KotlinParser.SUSPEND, KotlinParser.OVERRIDE, KotlinParser.ABSTRACT, KotlinParser.FINAL,
+            KotlinParser.OPEN,
+            KotlinParser.CONST, KotlinParser.LATEINIT, KotlinParser.VARARG,
+            KotlinParser.NOINLINE, KotlinParser.CROSSINLINE,
+            KotlinParser.REIFIED,
+            KotlinParser.EXPECT, KotlinParser.ACTUAL,
             KotlinParser.BooleanLiteral, KotlinParser.NullLiteral,
-            ->
-                listener.onKeyword(start..end)
+            -> listener.onKeyword(start..end)
+            
 
             // String literals
-            KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN ->
-                listener.onStringLiteralStart(start)
+            KotlinParser.QUOTE_OPEN, KotlinParser.TRIPLE_QUOTE_OPEN,
+            -> listener.onStringLiteralStart(start)
 
             KotlinParser.LineStrRef, KotlinParser.MultiLineStrRef -> {
                 listener.onStringLiteralExpressionStart(start)
                 listener.maybeStringLiteralExpressionEnd(end)
             }
-            KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart -> {
-                listener.onStringLiteralExpressionStart(start)
-            }
 
-            KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE ->
-                listener.onStringLiteralEnd(end)
+            KotlinParser.LineStrExprStart, KotlinParser.MultiLineStrExprStart,
+            -> listener.onStringLiteralExpressionStart(start)
+
+
+            KotlinParser.QUOTE_CLOSE, KotlinParser.TRIPLE_QUOTE_CLOSE,
+            -> listener.onStringLiteralEnd(end)
 
             // Char literals
             KotlinParser.CharacterLiteral,
-            ->
-                listener.onCharLiteral(start..end)
+            -> listener.onCharLiteral(start..end)
 
             // Number literals
+            KotlinParser.RealLiteral, KotlinParser.FloatLiteral,
+            KotlinParser.DoubleLiteral,
+            KotlinParser.IntegerLiteral, KotlinParser.HexLiteral, KotlinParser.BinLiteral,
             KotlinParser.UnsignedLiteral,
             KotlinParser.LongLiteral,
-            KotlinParser.IntegerLiteral, KotlinParser.HexLiteral, KotlinParser.BinLiteral,
-            KotlinParser.RealLiteral, KotlinParser.FloatLiteral, KotlinParser.DoubleLiteral,
-            ->
-                listener.onNumberLiteral(start..end)
+            -> listener.onNumberLiteral(start..end)
         }
     }
 
