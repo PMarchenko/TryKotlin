@@ -64,9 +64,9 @@ abstract class ProjectDao {
         """
             SELECT *
             FROM ${ExamplesTable.TABLE}
+            ORDER BY ${ExamplesTable.CATEGORY_SORT_ORDER} ASC, ${ExamplesTable.SORT_ORDER} ASC 
               """
     )
-    //TODO BUG what if wrong sort order?
     internal abstract fun getExamples(): Flow<List<ExampleWithProjects>>
 
     fun getExampleByModifiedProjectId(projectId: Long) =

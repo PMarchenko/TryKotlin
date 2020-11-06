@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.0-alpha15")
+        classpath("com.android.tools.build:gradle:4.2.0-alpha16")
         classpath(kotlin("gradle-plugin", version = "1.4.10"))
         classpath("com.google.android.gms:oss-licenses-plugin:0.10.2")
     }

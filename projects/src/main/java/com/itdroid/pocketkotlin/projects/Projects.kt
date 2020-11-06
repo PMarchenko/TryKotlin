@@ -99,19 +99,22 @@ val projectExamples = listOf(
 val exampleExamples = listOf(
     Example(
         category = "Example category",
-        description = "Example description",
+        categorySortOrder = 1,
+        sortOrder = 1,
         exampleProject = newProject("First", true),
         modifiedProject = newProject("First", true)
     ),
     Example(
         category = "Example category",
-        description = "Example description",
+        categorySortOrder = 1,
+        sortOrder = 2,
         exampleProject = newProject("Second", true),
         modifiedProject = newProject("Second", true)
     ),
     Example(
         category = "Example category",
-        description = "Example description",
+        categorySortOrder = 1,
+        sortOrder = 3,
         exampleProject = newProject("Third", true),
         modifiedProject = newProject("Third", true)
     )

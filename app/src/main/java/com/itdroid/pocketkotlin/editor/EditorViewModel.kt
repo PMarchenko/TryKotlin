@@ -96,7 +96,7 @@ class EditorViewModel(private val app: Application) : AndroidViewModel(app) {
                 if (project.type == ProjectType.Example) {
                     project.copy(
                         name = app.getString(
-                            R.string.editor__example_project_name_pattern,
+                            R.string.screen__project_editor__example_project_name_pattern,
                             project.name
                         ),
                         type = ProjectType.ModifiedExample

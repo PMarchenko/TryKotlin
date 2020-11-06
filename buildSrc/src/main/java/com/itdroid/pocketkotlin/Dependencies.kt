@@ -82,7 +82,7 @@ object Dependencies {
         object Compose {
 
             @Suppress("MemberVisibilityCanBePrivate")
-            const val version = "1.0.0-alpha05"
+            const val version = "1.0.0-alpha06"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val uiTooling = "androidx.ui:ui-tooling:$version"

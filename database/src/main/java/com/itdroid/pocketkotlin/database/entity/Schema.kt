@@ -25,7 +25,9 @@ internal object ExamplesTable {
 
     const val CATEGORY = "Category"
 
-    const val DESCRIPTION = "Description"
+    const val CATEGORY_SORT_ORDER = "CategorySortOrder"
+
+    const val SORT_ORDER = "SortOrder"
 
 }
 

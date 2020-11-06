@@ -166,7 +166,12 @@ private fun createListSavedState(
     return remember(
         inputs = arrayOf(autoScroll, if (autoScroll) System.nanoTime() else 0)
     ) {
-        LazyListState(firstVisibleItemIndex, firstVisibleItemScrollOffset, config, clock)
+        LazyListState(
+            firstVisibleItemIndex = firstVisibleItemIndex,
+            firstVisibleItemScrollOffset = firstVisibleItemScrollOffset,
+            flingConfig = config,
+            animationClock = clock
+        )
     }
 }
 

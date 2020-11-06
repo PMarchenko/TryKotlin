@@ -68,5 +68,5 @@ val Colors.syntaxColorConfig: SyntaxColorConfig
                 strCharLiteralColor = colorResource(id = R.color.darkTheme_strCharLiteral).toArgb(),
                 numberLiteralColor = colorResource(id = R.color.darkTheme_numberLiteral).toArgb(),
                 annotationColor = colorResource(id = R.color.darkTheme_annotation).toArgb(),
-                atSuffixColor =  colorResource(id = R.color.lightTheme_atSuffix).toArgb(),
+                atSuffixColor =  colorResource(id = R.color.darkTheme_atSuffix).toArgb(),
             )
