@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonConstants
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -50,7 +52,7 @@ fun DialogUi(
             ) {
 
                 if (negativeButtonText != null) {
-                    Button(
+                    TextButton(
                         onClick = negativeOnClick,
                     ) {
                         AppText(negativeButtonText)
@@ -58,7 +60,7 @@ fun DialogUi(
                 }
 
                 if (positiveButtonText != null) {
-                    Button(
+                    TextButton(
                         onClick = positiveOnClick,
                     ) {
                         AppText(positiveButtonText)

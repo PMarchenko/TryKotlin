@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "04cbd269fcc800bd3ebd1eedc14d4e51",
+    "identityHash": "659d188e0dea00e77aa100424ddf9b86",
     "entities": [
       {
         "tableName": "Project",
@@ -116,7 +116,7 @@
       },
       {
         "tableName": "File",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ProjectId` INTEGER NOT NULL, `PublicId` TEXT NOT NULL, `Name` TEXT NOT NULL, `CreatedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `ModifiedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `Program` TEXT NOT NULL, FOREIGN KEY(`ProjectId`) REFERENCES `Project`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ProjectId` INTEGER NOT NULL, `PublicId` TEXT NOT NULL, `Type` TEXT NOT NULL, `Name` TEXT NOT NULL, `CreatedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `ModifiedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `Program` TEXT NOT NULL, FOREIGN KEY(`ProjectId`) REFERENCES `Project`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -133,6 +133,12 @@
           {
             "fieldPath": "publicId",
             "columnName": "PublicId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "Type",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -268,7 +274,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '04cbd269fcc800bd3ebd1eedc14d4e51')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '659d188e0dea00e77aa100424ddf9b86')"
     ]
   }
 }

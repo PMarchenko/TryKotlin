@@ -79,6 +79,8 @@ internal object FilesTable {
 
     const val PUBLIC_ID = "PublicId"
 
+    const val TYPE = "Type"
+
     const val NAME = "Name"
 
     const val DATE_CREATED = "CreatedTimestamp"

@@ -9,6 +9,7 @@ internal typealias DbProject = com.itdroid.pocketkotlin.database.entity.Project
 internal typealias DbProjectFile = com.itdroid.pocketkotlin.database.entity.ProjectFile
 internal typealias DbProjectType = com.itdroid.pocketkotlin.database.entity.ProjectType
 internal typealias DbProjectStatus = com.itdroid.pocketkotlin.database.entity.ProjectStatus
+internal typealias DbFileType = com.itdroid.pocketkotlin.database.entity.FileType
 internal typealias DbExample = com.itdroid.pocketkotlin.database.entity.Example
 
 //network module

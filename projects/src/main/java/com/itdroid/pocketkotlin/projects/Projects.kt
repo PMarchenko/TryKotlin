@@ -33,6 +33,7 @@ internal fun emptyProject(name: String): Project {
     project.files.add(
         ProjectFile(
             publicId = "Main",
+            type = FileType.File,
             name = "Main.kt",
             dateCreated = timestamp
         )
@@ -58,6 +59,7 @@ internal fun newFile(projectId: Long, name: String, type: FileType) =
         projectId = projectId,
         name = "$name.kt",
         publicId = name,
+        type = type,
         dateCreated = System.currentTimeMillis(),
         dateModified = System.currentTimeMillis(),
         program = newProgram(name, type)

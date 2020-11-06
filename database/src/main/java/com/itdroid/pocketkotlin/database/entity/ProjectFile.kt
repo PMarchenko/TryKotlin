@@ -17,6 +17,7 @@ import androidx.room.*
     ],
     indices = [Index(FilesTable.PROJECT_ID)]
 )
+@TypeConverters(FileConverter::class)
 data class ProjectFile(
 
     @PrimaryKey(autoGenerate = true)
@@ -28,6 +29,9 @@ data class ProjectFile(
 
     @ColumnInfo(name = FilesTable.PUBLIC_ID)
     val publicId: String,
+
+    @ColumnInfo(name = FilesTable.TYPE)
+    val type: FileType = FileType.File,
 
     @ColumnInfo(name = FilesTable.NAME)
     val name: String,
