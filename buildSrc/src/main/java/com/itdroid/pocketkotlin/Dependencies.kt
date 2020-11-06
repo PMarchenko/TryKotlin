@@ -42,7 +42,7 @@ object Dependencies {
 
     object DebugTools {
 
-        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.4"
+        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.5"
 
 
         private const val stethoVersion = "1.5.1"
@@ -52,12 +52,12 @@ object Dependencies {
 
     object KotlinX {
 
-        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
     }
 
     object AndroidX {
 
-        const val coreKtx = "androidx.core:core-ktx:1.3.1"
+        const val coreKtx = "androidx.core:core-ktx:1.3.2"
 
         const val appCompat = "androidx.appcompat:appcompat:1.3.0-alpha02"
 
@@ -76,13 +76,13 @@ object Dependencies {
         private const val prefsVersion = "1.1.1"
         const val preferences = "androidx.preference:preference-ktx:$prefsVersion"
 
-        private const val initializerVersion = "1.0.0-rc01"
+        private const val initializerVersion = "1.0.0"
         const val initializer = "androidx.startup:startup-runtime:$initializerVersion"
 
         object Compose {
 
             @Suppress("MemberVisibilityCanBePrivate")
-            const val version = "1.0.0-alpha05"
+            const val version = "1.0.0-alpha06"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val uiTooling = "androidx.ui:ui-tooling:$version"

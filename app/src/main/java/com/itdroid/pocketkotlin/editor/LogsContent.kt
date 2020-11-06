@@ -2,10 +2,12 @@ package com.itdroid.pocketkotlin.editor
 
 import android.text.Spannable
 import androidx.compose.animation.asDisposableClock
-import androidx.compose.foundation.*
+import androidx.compose.foundation.AmbientTextStyle
+import androidx.compose.foundation.ScrollableRow
+import androidx.compose.foundation.Text
 import androidx.compose.foundation.animation.defaultFlingConfig
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,11 +29,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import com.itdroid.pocketkotlin.R
+import com.itdroid.pocketkotlin.editor.logs.*
 import com.itdroid.pocketkotlin.ui.compose.AppCheckBox
 import com.itdroid.pocketkotlin.ui.compose.AppDivider
-import com.itdroid.pocketkotlin.ui.compose.AppImageButton
 import com.itdroid.pocketkotlin.ui.compose.logsColorConfig
-import com.itdroid.pocketkotlin.editor.logs.*
 import com.itdroid.pocketkotlin.utils.TextInput
 import com.itdroid.pocketkotlin.utils.checkAllMatched
 import com.itdroid.pocketkotlin.utils.measureExecutionTime
@@ -45,7 +46,7 @@ fun LogsContent(
     trailingContent: @Composable (() -> Unit)? = null,
 ) {
     Surface(
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+        modifier = Modifier.padding(all = 4.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = 2.dp
     ) {
@@ -137,14 +138,6 @@ private fun LogsListHeaderScrollableContent(
         ) {
             logsState.value = logsState.value.copyWith(autoScroll = it, listState)
         }
-
-        val editorViewModel = viewModel<EditorViewModel>()
-        AppImageButton(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            text = TextInput(R.string.screen__project_editor__label__clear_logs),
-        ) {
-            editorViewModel.clearLogs()
-        }
     }
 }
 
@@ -173,7 +166,12 @@ private fun createListSavedState(
     return remember(
         inputs = arrayOf(autoScroll, if (autoScroll) System.nanoTime() else 0)
     ) {
-        LazyListState(firstVisibleItemIndex, firstVisibleItemScrollOffset, config, clock)
+        LazyListState(
+            firstVisibleItemIndex = firstVisibleItemIndex,
+            firstVisibleItemScrollOffset = firstVisibleItemScrollOffset,
+            flingConfig = config,
+            animationClock = clock
+        )
     }
 }
 

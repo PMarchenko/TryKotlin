@@ -29,12 +29,14 @@ data class Example(
     @ColumnInfo(name = ExamplesTable.MODIFIED_PROJECT_ID)
     var modifiedProjectId: Long = 0L,
 
+    @ColumnInfo(name = ExamplesTable.SORT_ORDER)
+    val sortOrder: Int,
+
     @ColumnInfo(name = ExamplesTable.CATEGORY)
     val category: String,
 
-    @ColumnInfo(name = ExamplesTable.DESCRIPTION)
-    val description: String
-
+    @ColumnInfo(name = ExamplesTable.CATEGORY_SORT_ORDER)
+    val categorySortOrder: Int,
 ) {
 
     /**

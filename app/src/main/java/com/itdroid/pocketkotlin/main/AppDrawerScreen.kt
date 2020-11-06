@@ -1,10 +1,14 @@
 package com.itdroid.pocketkotlin.main
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.AmbientContentColor
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,7 +29,10 @@ import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.settings.ScreenSettings
 import com.itdroid.pocketkotlin.trash.ScreenTrash
 import com.itdroid.pocketkotlin.ui.compose.*
-import com.itdroid.pocketkotlin.utils.*
+import com.itdroid.pocketkotlin.utils.ImageInput
+import com.itdroid.pocketkotlin.utils.TextInput
+import com.itdroid.pocketkotlin.utils.checkAllMatched
+import com.itdroid.pocketkotlin.utils.tint
 
 /**
  * @author itdroid
@@ -36,7 +43,8 @@ private const val INTERCEPTOR_DRAWER = "INTERCEPTOR_MAIN_DRAWER"
 @Composable
 fun AppDrawerScreen(destination: DrawerDestination) {
     val nav = navigation()
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scaffoldState = rememberScaffoldState()
+    val drawerState = scaffoldState.drawerState
 
     onActive {
         nav.addOnBackPressedInterceptor(INTERCEPTOR_DRAWER) {
@@ -66,7 +74,7 @@ fun AppDrawerScreen(destination: DrawerDestination) {
     AppDrawerScreenInput(
         drawerData = AppDrawerData,
         destination = destination,
-        drawerState = drawerState,
+        scaffoldState = scaffoldState,
         isDefaultDestination = isDefaultDestination,
 
         upNavigationAction = upNavigationAction,
@@ -78,17 +86,24 @@ fun AppDrawerScreen(destination: DrawerDestination) {
 private fun AppDrawerScreenInput(
     drawerData: AppDrawerData,
     destination: DrawerDestination,
-    drawerState: DrawerState,
+    scaffoldState: ScaffoldState,
     isDefaultDestination: Boolean,
 
     upNavigationAction: () -> Unit,
     drawerNavigationAction: (Destination) -> Unit,
 ) {
-    //TODO Use Scaffold after investigation why it crashes with IllegalStateException in state save
-    ModalDrawerLayout(
-        drawerState = drawerState,
-        scrimColor = MaterialTheme.colors.surface.copy(alpha = 0.7f),
-        drawerBackgroundColor = MaterialTheme.colors.background,
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            Toolbar(
+                title = destination.title,
+                icon = ImageInput(
+                    vector = if (isDefaultDestination) Icons.Filled.Menu else Icons.Filled.ArrowBack
+                ),
+                iconOnClick = upNavigationAction,
+            )
+        },
+        drawerScrimColor = MaterialTheme.colors.surface.copy(alpha = 0.7f),
         drawerContent = {
             DrawerContent(
                 content = drawerData,
@@ -97,18 +112,16 @@ private fun AppDrawerScreenInput(
             )
         }
     ) {
-        DrawerContent(
-            destination = destination,
-            modifier = Modifier.padding(top = 56.dp),
-        )
-
-        Toolbar(
-            title = destination.title,
-            icon = ImageInput(
-                vector = if (isDefaultDestination) Icons.Filled.Menu else Icons.Filled.ArrowBack
-            ),
-            iconOnClick = upNavigationAction,
-        )
+        Crossfade(current = destination) {
+            when (it) {
+                MyProjectsDestination -> ScreenMyProjects()
+                ExamplesDestination -> ScreenExamples()
+                KoansDestination -> ScreenKotlinKoans()
+                InActionDestination -> ScreenKotlinInAction()
+                TrashDestination -> ScreenTrash()
+                SettingsDestination -> ScreenSettings()
+            }.checkAllMatched
+        }
     }
 }
 
@@ -197,34 +210,6 @@ private fun MenuItem(
     )
 }
 
-@Composable
-private fun DrawerContent(
-    destination: DrawerDestination,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background,
-    ) {
-        when (destination) {
-            MyProjectsDestination -> ScreenMyProjects()
-            ExamplesDestination -> ScreenExamples()
-            KoansDestination -> ScreenKotlinKoans()
-            InActionDestination -> ScreenKotlinInAction()
-            TrashDestination -> ScreenTrash()
-            SettingsDestination -> ScreenSettings()
-        }.checkAllMatched
-        //TODO Crossfade crashes when screens changes
-//        Crossfade(
-//            destination,
-//            modifier = modifier
-//                .fillMaxSize()
-//        ) { destination ->
-//
-//        }
-    }
-}
-
 @Preview("AppDrawerScreen preview [Light Theme]")
 @Composable
 private fun ScreenMainPreviewLightTheme() {
@@ -232,7 +217,7 @@ private fun ScreenMainPreviewLightTheme() {
         AppDrawerScreenInput(
             drawerData = AppDrawerData,
             destination = MyProjectsDestination,
-            drawerState = rememberDrawerState(DrawerValue.Closed),
+            scaffoldState = rememberScaffoldState(),
             isDefaultDestination = true,
             upNavigationAction = {},
             drawerNavigationAction = {}
@@ -247,7 +232,7 @@ private fun ScreenMainPreviewDarkTheme() {
         AppDrawerScreenInput(
             drawerData = AppDrawerData,
             destination = MyProjectsDestination,
-            drawerState = rememberDrawerState(DrawerValue.Open),
+            scaffoldState = rememberScaffoldState(),
             isDefaultDestination = false,
             upNavigationAction = {},
             drawerNavigationAction = {}

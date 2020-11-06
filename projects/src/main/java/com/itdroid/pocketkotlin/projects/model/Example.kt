@@ -10,22 +10,25 @@ import kotlinx.android.parcel.Parcelize
 data class Example internal constructor(
     val id: Long = 0L,
     val category: String,
-    val description: String,
+    val categorySortOrder: Int,
+    val sortOrder: Int,
     val exampleProject: Project,
-    val modifiedProject: Project
+    val modifiedProject: Project,
 ) : Parcelable
 
 internal fun DbExample.fromDbExample(
     id: Long = this.id,
     category: String = this.category,
-    description: String = this.description,
+    categorySortOrder: Int = this.categorySortOrder,
+    sortOrder: Int = this.sortOrder,
     exampleProject: Project = this.exampleProject!!.fromDbProject(),
-    modifiedProject: Project = this.modifiedProject!!.fromDbProject()
+    modifiedProject: Project = this.modifiedProject!!.fromDbProject(),
 ): Example =
     Example(
         id = id,
         category = category,
-        description = description,
+        categorySortOrder = categorySortOrder,
+        sortOrder = sortOrder,
         exampleProject = exampleProject,
         modifiedProject = modifiedProject
     )
@@ -34,14 +37,16 @@ internal fun DbExample.fromDbExample(
 internal fun Example.toDbExample(
     id: Long = this.id,
     category: String = this.category,
-    description: String = this.description,
+    categorySortOrder: Int = this.categorySortOrder,
+    sortOrder: Int = this.sortOrder,
     exampleProject: DbProject = this.exampleProject.toDbProject(),
-    modifiedProject: DbProject = this.modifiedProject.toDbProject()
+    modifiedProject: DbProject = this.modifiedProject.toDbProject(),
 ): DbExample =
     DbExample(
         id = id,
         category = category,
-        description = description,
+        categorySortOrder = categorySortOrder,
+        sortOrder = sortOrder,
         exampleProjectId = exampleProject.id,
         modifiedProjectId = modifiedProject.id
     ).also {

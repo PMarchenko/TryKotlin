@@ -1,10 +1,10 @@
 package com.itdroid.pocketkotlin.myprojects
 
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -129,7 +129,6 @@ private fun Fab(
         modifier = modifier,
         onClick = onClick,
         icon = { Icon(Icons.Default.Add) },
-        elevation = 4.dp //TODO investigate why it crashes with IllegalStateException with default elevation
     )
 }
 

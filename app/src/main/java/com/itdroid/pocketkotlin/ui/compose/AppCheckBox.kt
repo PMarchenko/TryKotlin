@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxConstants
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +30,8 @@ fun AppCheckBox(
     ) {
         Checkbox(
             checked = checked,
-            checkedColor = AmbientContentColor.current,
+            colors = CheckboxConstants
+                .defaultColors(checkedColor = AmbientContentColor.current),
             onCheckedChange = onCheckedChange
         )
 

@@ -54,7 +54,8 @@ private data class Examples(
 
 private data class Example(
     val category: String,
-    val description: String,
+    val categorySortOrder: Int,
+    val sortOrder: Int,
     var project: Project
 )
 
@@ -78,7 +79,8 @@ private data class File(
 private fun Example.dbEntity(): DBExample =
     DBExample(
         category = category,
-        description = description
+        categorySortOrder = categorySortOrder,
+        sortOrder = sortOrder,
     ).apply {
         exampleProject = project.dbEntity()
         modifiedProject = project.dbEntity()

@@ -27,7 +27,7 @@ internal sealed class Node {
 
 }
 
-internal class Program() : Node() {
+internal class Program : Node() {
     override val parent: Node
         get() = this
 
@@ -98,9 +98,3 @@ internal class Annotation(val start: Int, override val parent: Node) : Node() {
 
     override fun forLCurl(): Node = Block(this)
 }
-
-internal data class Identifier(
-    val start: Int,
-    val end: Int,
-    val name: String
-)

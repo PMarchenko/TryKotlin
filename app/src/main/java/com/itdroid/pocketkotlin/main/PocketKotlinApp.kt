@@ -8,6 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.ui.tooling.preview.Preview
+import com.itdroid.pocketkotlin.dialog.NoneAppDialog
+import com.itdroid.pocketkotlin.dialog.dialogs
 import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.settings.preferences
 import com.itdroid.pocketkotlin.ui.compose.PocketKotlinTheme
@@ -27,6 +29,10 @@ private fun PocketKotlinAppInput(appTheme: AppThemePreference) {
         Surface(modifier = Modifier.fillMaxSize()) {
             ScreenMain()
         }
+
+        val dialog = dialogs()
+        val dialogState by dialog.currentDialog.observeAsState(NoneAppDialog)
+        dialogState.show { dialog.dismiss() }
     }
 }
 

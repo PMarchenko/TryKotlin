@@ -25,7 +25,9 @@ internal object ExamplesTable {
 
     const val CATEGORY = "Category"
 
-    const val DESCRIPTION = "Description"
+    const val CATEGORY_SORT_ORDER = "CategorySortOrder"
+
+    const val SORT_ORDER = "SortOrder"
 
 }
 
@@ -76,6 +78,8 @@ internal object FilesTable {
     const val PROJECT_ID = "ProjectId"
 
     const val PUBLIC_ID = "PublicId"
+
+    const val TYPE = "Type"
 
     const val NAME = "Name"
 

@@ -1,6 +1,5 @@
 package com.itdroid.pocketkotlin.editor
 
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -61,6 +60,7 @@ private fun ScreenEditorUi(
         } else {
             val logsState = savedInstanceState { true }
             val toggleLogsAction: (Boolean) -> Unit = { logsState.value = it }
+
             ScreenEditorContentUi(
                 editorInfo = editorInfo,
                 withLogsPanel = true,
@@ -84,7 +84,6 @@ private fun ScreenEditorUi(
                         .padding(end = 16.dp, bottom = 16.dp),
                     onClick = executeProjectAction,
                     icon = { Icon(Icons.Default.PlayArrow) },
-                    elevation = 4.dp //TODO investigate why it crashes with IllegalStateException with default elevation
                 )
             }
         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.RadioButton
+import androidx.compose.material.RadioButtonConstants
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +31,8 @@ fun <T> AppRadioButton(
     ) {
         RadioButton(
             selected = selected,
-            color = AmbientContentColor.current,
+            colors = RadioButtonConstants
+                .defaultColors(selectedColor = AmbientContentColor.current),
             onClick = { onSelected(item) }
         )
 

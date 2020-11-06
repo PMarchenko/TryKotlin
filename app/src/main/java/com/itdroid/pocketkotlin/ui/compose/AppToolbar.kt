@@ -69,10 +69,7 @@ fun ToolbarAction(
         shape = CircleShape,
         elevation = 0.dp,
         color = Color.Unspecified,
-        contentColor = ButtonConstants.defaultButtonContentColor(
-            true,
-            contentColorFor(ButtonConstants.defaultButtonBackgroundColor(true))
-        ),
+        contentColor = MaterialTheme.colors.onPrimary,
     ) {
         Row(
             modifier = Modifier

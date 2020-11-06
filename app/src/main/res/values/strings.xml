@@ -65,13 +65,11 @@
     <string name="screen__project_editor__label__logs">Logs:</string>
     <string name="screen__project_editor__label__logs_sort_order">Order</string>
     <string name="screen__project_editor__label__logs_auto_scroll">Auto Scroll</string>
-    <string name="screen__project_editor__label__clear_logs">Clear</string>
     <string name="screen__project_editor__label__no_files">No files</string>
-    <string name="screen__project_editor__error__loading_project">Cannot load project</string>
     <string name="screen__project_editor__overflow_menu__manage_config">Configuration</string>
     <string name="screen__project_editor__overflow_menu__args_empty">Command line args</string>
     <string name="screen__project_editor__overflow_menu__args">Args: %1$s</string>
-
+    <string name="screen__project_editor__example_project_name_pattern">Example: %1$s</string>
 
     <!-- Project Configuration -->
     <string name="screen__project_configuration__title">Project Config: %1$s</string>
@@ -139,10 +137,6 @@
 
 
     <!-- <SettingOptions> -->
-    <!-- App Theme -->
-    <string name="setting_option__app_theme_light">Light</string>
-    <string name="setting_option__app_theme_dark">Dark</string>
-    <string name="setting_option__app_theme_auto">Auto</string>
     <!-- </SettingOptions> -->
 
 
@@ -169,9 +163,6 @@
     <string name="editor__tools__lt_gt">&lt; &gt;</string>
     <string name="editor__tools__doubleQuote">\" \"</string>
     <string name="editor__tools__delete">Del</string>
-    <string name="editor__tools__tab">Tab</string>
-    <string name="editor__execute_project">Run</string>
-    <string name="editor__example_project_name_pattern">Example: %1$s</string>
     <!-- </Tools> -->
 
 

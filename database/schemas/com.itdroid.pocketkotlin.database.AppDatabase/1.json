@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "11cf012eaaa325735f85aeb370c52fa3",
+    "identityHash": "659d188e0dea00e77aa100424ddf9b86",
     "entities": [
       {
         "tableName": "Project",
@@ -116,7 +116,7 @@
       },
       {
         "tableName": "File",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ProjectId` INTEGER NOT NULL, `PublicId` TEXT NOT NULL, `Name` TEXT NOT NULL, `CreatedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `ModifiedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `Program` TEXT NOT NULL, FOREIGN KEY(`ProjectId`) REFERENCES `Project`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ProjectId` INTEGER NOT NULL, `PublicId` TEXT NOT NULL, `Type` TEXT NOT NULL, `Name` TEXT NOT NULL, `CreatedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `ModifiedTimestamp` INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, `Program` TEXT NOT NULL, FOREIGN KEY(`ProjectId`) REFERENCES `Project`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -133,6 +133,12 @@
           {
             "fieldPath": "publicId",
             "columnName": "PublicId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "Type",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -195,7 +201,7 @@
       },
       {
         "tableName": "Examples",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ExampleProjectId` INTEGER NOT NULL, `ModifiedProjectId` INTEGER NOT NULL, `Category` TEXT NOT NULL, `Description` TEXT NOT NULL, FOREIGN KEY(`ExampleProjectId`) REFERENCES `Project`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ExampleProjectId` INTEGER NOT NULL, `ModifiedProjectId` INTEGER NOT NULL, `SortOrder` INTEGER NOT NULL, `Category` TEXT NOT NULL, `CategorySortOrder` INTEGER NOT NULL, FOREIGN KEY(`ExampleProjectId`) REFERENCES `Project`(`_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -216,15 +222,21 @@
             "notNull": true
           },
           {
+            "fieldPath": "sortOrder",
+            "columnName": "SortOrder",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "category",
             "columnName": "Category",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "description",
-            "columnName": "Description",
-            "affinity": "TEXT",
+            "fieldPath": "categorySortOrder",
+            "columnName": "CategorySortOrder",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -262,7 +274,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '11cf012eaaa325735f85aeb370c52fa3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '659d188e0dea00e77aa100424ddf9b86')"
     ]
   }
 }

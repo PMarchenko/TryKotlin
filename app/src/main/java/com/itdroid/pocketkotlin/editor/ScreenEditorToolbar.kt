@@ -3,8 +3,9 @@ package com.itdroid.pocketkotlin.editor
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Icon
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
 import androidx.compose.material.icons.Icons
@@ -15,9 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
@@ -29,12 +32,15 @@ import com.itdroid.pocketkotlin.navigation.ProjectConfigurationDestination
 import com.itdroid.pocketkotlin.navigation.navigation
 import com.itdroid.pocketkotlin.preferences.AppThemePreference
 import com.itdroid.pocketkotlin.projects.model.Project
+import com.itdroid.pocketkotlin.projects.model.ProjectFile
 import com.itdroid.pocketkotlin.projects.projectExamples
-import com.itdroid.pocketkotlin.ui.compose.*
+import com.itdroid.pocketkotlin.ui.compose.PocketKotlinTheme
+import com.itdroid.pocketkotlin.ui.compose.PopupMenu
+import com.itdroid.pocketkotlin.ui.compose.Toolbar
+import com.itdroid.pocketkotlin.ui.compose.ToolbarAction
 import com.itdroid.pocketkotlin.utils.ImageInput
 import com.itdroid.pocketkotlin.utils.TextInput
 import com.itdroid.pocketkotlin.utils.UiAction
-import com.itdroid.pocketkotlin.utils.tint
 
 /**
  * @author itdroid
@@ -160,7 +166,7 @@ private fun ProjectTabs(
     for (file in editorInfo.project.files) {
         Tab(
             selected = editorInfo.selectedFileId == file.id,
-            text = { Text(file.name) },
+            text = { FileTabContent(file) },
             onClick = { selectFileAction(file.id) }
         )
     }
@@ -168,12 +174,21 @@ private fun ProjectTabs(
     Tab(
         selected = false,
         icon = {
-            AppImage(
-                ImageInput(Icons.Default.Add).tint(MaterialTheme.colors.onPrimary)
-            )
+            Icon(Icons.Default.Add)
         },
         onClick = addFileAction,
     )
+}
+
+@Composable
+fun FileTabContent(file: ProjectFile) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(vectorResource(R.drawable.ic__editor__file_icon))
+        
+        Text(file.name)
+    }
 }
 
 @Preview("EditorToolbar preview [Light Theme]")
